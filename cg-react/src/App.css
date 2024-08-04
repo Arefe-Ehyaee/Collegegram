@@ -1,3 +1,19 @@
+@font-face {
+  font-family: 'IRANSansWeb';
+  src: url('./assets/Fonts/IRANSansWeb(FaNum).woff') format("woff");
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./assets/Fonts/Montserrat-Black.ttf') format("ttf");
+}
+
+@layer base {
+  body {
+    @apply font-isf;
+  }
+}
+
 .App {
   text-align: center;
 }
