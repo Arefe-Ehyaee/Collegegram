@@ -1,11 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-
-@font-face {
-  font-family: 'IRANSansWeb';
-  src: url('./assets/Fonts/IRANSansWeb(FaNum).tff') format("tff");
+.App {
+  text-align: center;
 }
 
 @font-face {
