@@ -1,11 +1,11 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
 
 export default function App() {
   return (
-    <h1 className="text-3xl font-bold underline">
+    <div className='flex items-center justify-center h-screen'>
+    <h1 className="text-3xl font-bold underline text-okhra-200">
       Hello world!
-    </h1>
+    </h1></div>
   )
 }
