@@ -5,6 +5,7 @@ import CustomButtonH36 from './components/ButtonComponentH36';
 import CustomButtonH52 from './components/ButtonComponentH52';
 import reportWebVitals from './reportWebVitals';
 import addposticon from './assets/icons/addposticon.svg'
+import rclogo from './assets/icons/rclogo.svg'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
