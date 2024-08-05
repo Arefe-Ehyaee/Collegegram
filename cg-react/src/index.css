@@ -18,3 +18,7 @@
     }
   }
 
+.placeholder-start::placeholder {
+  position: relative;
+  left: -15px; 
+}
