@@ -1,13 +1,14 @@
 import React from "react";
 
 interface ButtonProps {
-  text: string;
+  text?: string;
   iconsrc?: string;
   styling?: string;
   handleOnClick?:React.FC
 
 }
 const CustomButtonH52: React.FC<ButtonProps> = ({ text, iconsrc, styling,handleOnClick }) => {
+  console.log('here', iconsrc)
   return (
     <button onClick={handleOnClick}
       className={`flex h-52 items-center gap-2 rounded-3xl px-12 py-4 text-sm text-white font-isf subpixel-antialiased ${styling}`}
