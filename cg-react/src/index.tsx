@@ -1,21 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import CustomButtonH36 from './components/ButtonComponentH36';
-import CustomButtonH52 from './components/ButtonComponentH52';
+// import CustomButtonH36 from './components/ButtonComponentH36';
+// import CustomButtonH52 from './components/ButtonComponentH52';
 import reportWebVitals from './reportWebVitals';
-import addposticon from './assets/icons/addposticon.svg'
-import rclogo from './assets/icons/rclogo.svg'
+import MainLayout from './mainLayout';
+// import addposticon from './assets/icons/addposticon.svg'
+// import rclogo from './assets/icons/rclogo.svg'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <div className='mt-3.5 h-full flex items-center justify-center gap-3 bg-khakeshtari-100'>
-    <CustomButtonH36 text='ثبت نام کنید'styling='bg-okhra-300' />
-    <CustomButtonH52 text='برای پست جدید اینجا کلیک کنید' styling='bg-okhra-200' iconsrc={addposticon} />
-    </div>
+    <MainLayout></MainLayout>
   </React.StrictMode>
 );
 
