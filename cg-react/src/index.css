@@ -22,3 +22,71 @@
   position: relative;
   left: -15px; 
 }
+
+.box-width {
+  width: 485px;
+}
+
+
+.box-style {
+  background-color: #F5F5F5;
+  border-width: 1px;
+  border-color: #CDCDCD;
+}
+
+
+.backImg {
+  background-image: url("./assets/Images/Rectangle 86.png");
+  min-width: 1440px;
+  min-height: 1024px;
+  background-repeat: no-repeat; 
+  background-size: cover;
+}
+
+@media (max-width: 375px) {
+  .backImg {
+    background-color: #F3F0EE;
+    background-image: none;
+  }
+
+  .box-style {
+    background-color: transparent; 
+    border-width: 0;
+    border-color: transparent;
+  }
+}
+
+.errorHeaderImg {
+  background-image: url("./assets/Images/errorHeader.png");
+  min-width: 1440px;
+  min-height: 240px;
+  background-repeat: no-repeat; 
+  background-size: cover;
+}
+
+.errorRightImg {
+  background-image: url("./assets/Images/errorRight.png");
+  min-width: 352px;
+  min-height: 80px;
+  background-repeat: no-repeat; 
+}
+
+.errorLeftImg {
+  background-image: url("./assets/Images/errorLeft.png");
+  min-width: 291px;
+  min-height: 113px;
+  background-repeat: no-repeat; 
+}
+
+.errorBackColor {
+  width: 1440px;
+  height: 1024px;
+  background-color: #F5F5F5;
+}
+
+
+.rahnema-logo {
+  background-image: url("./assets/Images/rahnema-college-logo-far 1.png");
+  width: 100px;
+  height: 60.58px;
+}
