@@ -8,7 +8,7 @@ interface BoxProps {
 const Box: React.FC<BoxProps> = ({ height, children }) => {
   return (
     <div
-      className={`relative box-width box-style rounded-3xl py-16 px-0  flex items-center justify-center`}
+      className={`relative w-[485px] box-style shadow-main rounded-3xl py-16 px-0 flex flex-row items-center justify-center`}
       style={{ height: `${height}` }}
     >
       {children}
