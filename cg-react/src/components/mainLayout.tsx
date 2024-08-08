@@ -1,14 +1,17 @@
-import rcLogo from "./assets/icons/rclogo.svg";
-
+import rcLogo from "../assets/icons/rclogo.svg";
+import ProfilePageComponent from "./ProfilePageComponent";
+import ShowPostsComponent from "./ShowPostsComponent";
 interface MainLayoutProps {
   mainComponents?: JSX.Element
   navBar?:JSX.Element
 }
 
+
 export default function MainLayout({mainComponents,navBar}:MainLayoutProps) {
+  mainComponents = ProfilePageComponent()
   return (
     <div className="flex min-h-screen bg-khakeshtari-100">
-      <div className=" w-3/4">
+      <div className=" w-3/4 max-sm:w-full">
         <header className="justify-start">
           <img
             src={rcLogo}
@@ -16,7 +19,7 @@ export default function MainLayout({mainComponents,navBar}:MainLayoutProps) {
             className="ml-20 mt-16 block max-sm:hidden"
           />
         </header>
-        <main>{mainComponents}</main>
+        <main className="flex-col h-full">{mainComponents}</main>
       </div>
       <div className=" w-1/4 block max-sm:hidden">
         {navBar}

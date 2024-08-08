@@ -7,7 +7,7 @@ interface ButtonProps {
   handleOnClick?:React.FC
 
 }
-const CustomButtonH52: React.FC<ButtonProps> = ({ text, iconsrc, styling,handleOnClick }) => {
+const CustomButtonH52 = ({ text, iconsrc, styling,handleOnClick }:ButtonProps) => {
   console.log('here', iconsrc)
   return (
     <button onClick={handleOnClick}
