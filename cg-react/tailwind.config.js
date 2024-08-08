@@ -19,6 +19,8 @@ module.exports = {
         100:'#F5F5F5',
         200:'#E1E1E1',
         300:'#F3F0EE',
+        400:'#CDCDCD',
+        500:'#A5A5A5',
         400: '#CDCDCD'
       },
       sabz: {
@@ -26,6 +28,8 @@ module.exports = {
         200: "#17494D",
         300: "#C3F9C2"
       },
+      gray: "#CDCDCD",
+      tala:'#C19008',
       ghahvei: "#604A4A",
       darkBlue: "#17494D",
     },
