@@ -1,13 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-// import CustomButtonH36 from './components/ButtonComponentH36';
-// import CustomButtonH52 from './components/ButtonComponentH52';
 import reportWebVitals from './reportWebVitals';
-import MainLayout from './mainLayout';
+import successSvg from "./assets/icons/check-circle.svg"
+import Banner from './components/BannerComponent';
 import App from './App';
-// import addposticon from './assets/icons/addposticon.svg'
-// import rclogo from './assets/icons/rclogo.svg'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,6 +13,7 @@ root.render(
   <React.StrictMode>
     {/* <MainLayout></MainLayout> */}
     <App></App>
+    {/* <Banner text={'با موفقیت وارد شدید'} iconsrc={successSvg} styling={"bg-sabz-300"}></Banner> */}
   </React.StrictMode>
 );
 
