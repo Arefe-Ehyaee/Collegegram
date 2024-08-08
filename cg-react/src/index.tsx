@@ -5,6 +5,7 @@ import './index.css';
 // import CustomButtonH52 from './components/ButtonComponentH52';
 import reportWebVitals from './reportWebVitals';
 import MainLayout from './mainLayout';
+import App from './App';
 // import addposticon from './assets/icons/addposticon.svg'
 // import rclogo from './assets/icons/rclogo.svg'
 
@@ -13,7 +14,8 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <MainLayout></MainLayout>
+    {/* <MainLayout></MainLayout> */}
+    <App></App>
   </React.StrictMode>
 );
 

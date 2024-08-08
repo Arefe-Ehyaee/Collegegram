@@ -23,9 +23,9 @@
   left: -15px; 
 }
 
-.box-width {
+/* .box-width {
   width: 485px;
-}
+} */
 
 
 .box-style {
@@ -53,6 +53,7 @@
     background-color: transparent; 
     border-width: 0;
     border-color: transparent;
+    box-shadow: 0 0 #0000;
   }
 }
 

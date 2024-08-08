@@ -13,7 +13,7 @@ import { NavLink } from 'react-router-dom';
 
 export default function Login() {
   return (
-        <div className='flex items-center justify-center min-h-screen backImg'>
+        <div className='flex flex-col items-center justify-center min-h-screen backImg'>
           <Box height="636.58px">
             <div className="rahnema-logo absolute top-10"></div>
             <EnterSignup />
