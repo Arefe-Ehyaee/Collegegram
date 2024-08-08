@@ -18,27 +18,9 @@ const loginSchema = z.object({
   password: z.string({ required_error: 'رمز عبور مورد نیاز است' }).min(3, { message: "رمز عبور باید حداقل 3 کاراکتر باشد" })
 });
 
-export default function Login() {
-  return (
-        <div className='flex flex-col items-center justify-center min-h-screen backImg'>
-          <Box height="636.58px">
-            <div className="rahnema-logo absolute top-10"></div>
-            <EnterSignup />
-            <div className='mt-14'>
-              <Label text={'به کالج گرام خوش آمدید. برای ورود کافیه نام کاربری/ایمیل و رمز عبور خودتون رو وارد کنید'}></Label>
-              <InputField type="text" placeholder="نام کاربری یا ایمیل" name="username" iconsrc={UserSvg} />
-              <InputField type="text" placeholder="رمز عبور" name="password" iconsrc={keySvg} />
-              <RememberMe></RememberMe>
-              <CustomButtonH36 text={'ورود'} styling='bg-okhra-200 mt-12 text-sm'></CustomButtonH36>
-
-              <NavLink to='/retrievePass'>
-                <ArrowLink text={'فراموشی رمز عبور'}></ArrowLink>
-              </NavLink>  
-              <ArrowLink text={'ثبت نام در کالج گرام'}></ArrowLink>
-            </div>           
-          </Box>
-        </div>
-  )
+interface LoginFormData{
+  username: string;
+  password: string;
 }
 
 const Login: React.FC = () => {
