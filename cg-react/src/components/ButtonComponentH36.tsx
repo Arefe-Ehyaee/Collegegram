@@ -4,7 +4,7 @@ interface ButtonProps {
   text: string;
   iconsrc?: string;
   styling?: string;
-  handleOnClick?:React.FC
+  handleOnClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 const CustomButtonH36: React.FC<ButtonProps> = ({ text, iconsrc, styling,handleOnClick }) => {
   return (

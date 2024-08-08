@@ -10,9 +10,11 @@ module.exports = {
       okhra: {
         100:'#FFEBEB',
         200:"#EA5A69",
-        300:'#F02D41'
+        300:'#F02D41',
+        400: '#CC0000'
       },
       siah: "#262626",
+      mashki: "#191919",
       khakeshtari: {
         100:'#F5F5F5',
         200:'#E1E1E1',
@@ -22,6 +24,7 @@ module.exports = {
       sabz: {
         100: "#587052",
         200: "#17494D",
+        300: "#C3F9C2"
       },
       ghahvei: "#604A4A",
       darkBlue: "#17494D",
