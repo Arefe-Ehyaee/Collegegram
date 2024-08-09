@@ -21,7 +21,8 @@ module.exports = {
         300:'#F3F0EE',
         400:'#CDCDCD',
         500:'#A5A5A5',
-        400: '#CDCDCD'
+        400: '#CDCDCD',
+        500:'#f2f2f2',
       },
       sabz: {
         100: "#587052",

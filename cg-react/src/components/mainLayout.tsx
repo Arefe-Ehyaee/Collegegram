@@ -1,6 +1,4 @@
 import rcLogo from "../assets/icons/rclogo.svg";
-import ProfilePageComponent from "./ProfilePageComponent";
-import ShowPostsComponent from "./ShowPostsComponent";
 interface MainLayoutProps {
   mainComponents?: JSX.Element
   navBar?:JSX.Element
@@ -8,7 +6,7 @@ interface MainLayoutProps {
 
 
 export default function MainLayout({mainComponents,navBar}:MainLayoutProps) {
-  mainComponents = ProfilePageComponent()
+
   return (
     <div className="flex min-h-screen bg-khakeshtari-100">
       <div className=" w-3/4 max-sm:w-full">

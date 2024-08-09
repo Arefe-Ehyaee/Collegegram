@@ -25,7 +25,7 @@ export default function ProfilePageComponent() {
             <img
               src={avatar}
               alt="avatar"
-              className="h-[8.5rem] w-[8.5rem] rounded-full border-2 border-khakeshtari-400 max-sm:h-[56px] max-sm:w-[56px]  max-sm:self-baseline"
+              className="h-[136px] w-[136px] rounded-full border-2 border-khakeshtari-400 max-sm:h-[56px] max-sm:w-[56px]  max-sm:self-baseline"
             />
             <div className="ml-4 ">
               <p className="text-right  text-sm text-tala" dir="ltr">
