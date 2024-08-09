@@ -4,7 +4,7 @@ interface ButtonProps {
   text?: string;
   iconsrc?: string;
   styling?: string;
-  handleOnClick?:React.FC
+  handleOnClick?:()=>void
 
 }
 const CustomButtonH52 = ({ text, iconsrc, styling,handleOnClick }:ButtonProps) => {
