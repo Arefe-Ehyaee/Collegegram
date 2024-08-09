@@ -18,26 +18,32 @@ export default function ProfilePageComponent() {
 
   return (
     <div dir="rtl">
-      <div className="border-b border-khakeshtari-400 py-9 ml-16 max-sm:ml-8 max-sm:mr-8">
-        <h2 className="mb-9 block font-bold text-xl font-isf max-sm:hidden ">صفحه من</h2>
+      <div className="ml-16 border-b border-khakeshtari-400 py-9 max-sm:ml-8 max-sm:mr-8">
+        <h2 className="mb-9 block font-isf text-xl font-bold max-sm:hidden">
+          صفحه من
+        </h2>
         <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
           <div className="flex items-center gap-8">
             <img
               src={avatar}
               alt="avatar"
-              className="h-[136px] w-[136px] rounded-full border-2 border-khakeshtari-400 max-sm:h-[56px] max-sm:w-[56px]  max-sm:self-baseline"
+              className="h-[136px] w-[136px] rounded-full border-2 border-khakeshtari-400 max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
             />
-            <div className="ml-4 ">
-              <p className="text-right  text-sm text-tala" dir="ltr">
+            <div className="ml-4">
+              <p className="text-right text-sm text-tala" dir="ltr">
                 {userId}
               </p>
-              <h3 className="text-xl mt-4 font-bold text-sabz-100">{userName}</h3>
-              <div className="flex mt-4 gap-x-3 text-sm font-normal text-sabz-200">
+              <h3 className="mt-4 text-xl font-bold text-sabz-100">
+                {userName}
+              </h3>
+              <div className="mt-4 flex gap-x-3 text-sm font-normal text-sabz-200">
                 <span className="border-l pl-3">{followers} دنبال کننده</span>
                 <span className="border-l pl-3">{followings} دنبال شونده</span>
-                <span className=" pl-3">{postCount} پست</span>
+                <span className="pl-3">{postCount} پست</span>
               </div>
-              <p className="mt-4 text-sm text-khakeshtari-500 max-sm:justify-self-center" >{bio}</p>
+              <p className="mt-4 text-sm text-khakeshtari-500 max-sm:justify-self-center">
+                {bio}
+              </p>
             </div>
           </div>
           <CustomButtonH52 text="ویرایش پروفایل" styling="bg-okhra-200" />

@@ -1,4 +1,4 @@
-import MainLayout from "../components/mainLayout"
+import MainLayout from "../components/MainLayout"
 import NavBarComponent from "../components/NavBarComponent"
 import ProfilePageComponent from "../components/ProfilePageComponent"
 

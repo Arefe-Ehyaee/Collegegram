@@ -5,7 +5,7 @@ interface MainLayoutProps {
 }
 
 
-export default function MainLayout({mainComponents,navBar}:MainLayoutProps) {
+ const MainLayout = ({mainComponents,navBar}:MainLayoutProps) => {
 
   return (
     <div className="flex min-h-screen bg-khakeshtari-100">
@@ -25,3 +25,5 @@ export default function MainLayout({mainComponents,navBar}:MainLayoutProps) {
     </div>
   );
 }
+
+export default MainLayout
