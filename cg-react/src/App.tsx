@@ -5,7 +5,7 @@ import RetrievePassword from "./components/RetrievePassword";
 import SetNewPassword from "./components/SetNewPassword";
 import ErrorLayout from "./components/Error";
 import CheckYourEmail from "./components/CheckYourEmail";
-import ProfilePage from "./pages/ProfilePage";
+import ProfilePage from "./components/ProfilePage";
 
 export default function App() {
   return (
