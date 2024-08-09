@@ -1,9 +1,9 @@
-import CustomButtonH36 from "./ButtonComponentH36";
 import CustomButtonH52 from "./ButtonComponentH52";
 import ShowPostsComponent from "./ShowPostsComponent";
 import defaultAvatar from "../assets/icons/defaultavatar.svg";
 import { useState } from "react";
 import React from "react";
+import EditProfileModal from "./EditProfileModal";
 
 export default function ProfilePageComponent() {
   const [userId, setUserId] = useState("@defaultID");
@@ -15,6 +15,10 @@ export default function ProfilePageComponent() {
   const [bio, setBio] = useState(
     "برای شخصی سازی این متن با ویرایش پروفایل بایو خود را تغییر دهید",
   );
+  const [showModal,setShowModal] = useState(false)
+  const closeModal = () => {
+    setShowModal(false)
+  }
 
   return (
     <div dir="rtl">
@@ -41,15 +45,16 @@ export default function ProfilePageComponent() {
                 <span className="border-l pl-3">{followings} دنبال شونده</span>
                 <span className="pl-3">{postCount} پست</span>
               </div>
-              <p className="mt-4 text-sm text-khakeshtari-500 max-sm:justify-self-center">
+              <p className="mt-4 text-sm text-khakeshtari-400 max-sm:justify-self-center">
                 {bio}
               </p>
             </div>
           </div>
-          <CustomButtonH52 text="ویرایش پروفایل" styling="bg-okhra-200" />
+          <CustomButtonH52 text="ویرایش پروفایل" styling="bg-okhra-200" handleOnClick={() => setShowModal(true)}/>
         </div>
       </div>
       <ShowPostsComponent />
+      {showModal && <EditProfileModal closeModal={closeModal} profileImage={avatar} />}
     </div>
   );
 }
