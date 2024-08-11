@@ -1,18 +1,16 @@
 import rcLogo from "../assets/icons/rclogo.svg";
-import hamMenu from "../assets/icons/Auto Layout Horizontal.svg"
-import user from "../assets/icons/Frame 108.svg"
+import NavbarMobile from "./NavbarMobile";
+import BottomNavbarMobile from "./BottonNavbarMobile";
 
 interface MainLayoutProps {
-  mainComponents?: JSX.Element
-  navBar?:JSX.Element
+  mainComponents?: JSX.Element;
+  navBar?: JSX.Element;
 }
 
-
- const MainLayout = ({mainComponents,navBar}:MainLayoutProps) => {
-
+const MainLayout = ({ mainComponents, navBar }: MainLayoutProps) => {
   return (
     <div className="flex min-h-screen bg-khakeshtari-100">
-      <div className=" w-3/4 max-md:w-full max-md:mt-[67px]">
+      <div className="w-3/4 max-md:mt-[67px] max-md:w-full">
         <header className="justify-start">
           <img
             src={rcLogo}
@@ -20,22 +18,15 @@ interface MainLayoutProps {
             className="ml-20 mt-16 block max-md:hidden"
           />
         </header>
-        <main className="flex-col h-full">{mainComponents}</main>
+        <main className="h-full flex-col">{mainComponents}</main>
       </div>
-      <div className=" w-1/4 block max-md:hidden">
-        {navBar}
-      </div>
-      <div className="md:hidden w-full fixed bg-okhra-200 top-0">
-        <div className="flex justify-between px-6 py-3">
-        <img src={hamMenu} alt="menu" />
-        <img src={user} alt="user" />
-        </div>
-      </div>
-    
-        <div className="min-md:hidden max-md:w-full fixed h-[56px] bg-okhra-200 bottom-0 rounded-full"></div>
-       
-       </div> 
-  );
-}
+      <div className="block w-1/4 max-md:hidden">{navBar}</div>
 
-export default MainLayout
+      <NavbarMobile></NavbarMobile>
+      <BottomNavbarMobile></BottomNavbarMobile>
+
+    </div>
+  );
+};
+
+export default MainLayout;
