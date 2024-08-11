@@ -10,7 +10,7 @@ import explore from "../assets/icons/explore.svg";
 import search from "../assets/icons/search.svg";
 import addPostIcon from "../assets/icons/addposticon.svg";
 
-export default function NavBarComponent() {
+export default function SideNavbarComponent() {
     const [userId, setUserId] = useState("defaultID");
     const [avatar, setAvatar] = useState(defaultAvatar);
   
