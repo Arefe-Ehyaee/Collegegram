@@ -75,7 +75,6 @@ const EditProfileModal = ({ closeModal, profileImage }: ModalProps) => {
         <h3 className="pt-2 mb-12 text-sabz-200 text-sm">عکس پروفایل</h3>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <TextInputComponent
-          styling="pr-[30px]"
             type="text"
             name="name"
             placeholder="نام"
@@ -84,7 +83,6 @@ const EditProfileModal = ({ closeModal, profileImage }: ModalProps) => {
             error={errors.name?.message}
           ></TextInputComponent>
           <TextInputComponent
-          styling="pr-[30px]"
             type="text"
             name="surname"
             placeholder="نام خانوادگی"
@@ -93,7 +91,6 @@ const EditProfileModal = ({ closeModal, profileImage }: ModalProps) => {
             error={errors.surname?.message}
           ></TextInputComponent>
           <TextInputComponent
-          styling="pr-[30px]"
             type="email"
             name="email"
             placeholder="ایمیل"
@@ -102,15 +99,13 @@ const EditProfileModal = ({ closeModal, profileImage }: ModalProps) => {
             error={errors.email?.message}
           ></TextInputComponent>
           <TextInputComponent
-          styling="pr-[30px]"
             type="password"
             name="password"
-            placeholder="ٰمز عبور"
+            placeholder="رمز عبور"
             iconsrc={key}
             register={register}
           ></TextInputComponent>
           <TextInputComponent
-          styling="pr-[30px]"
             type="password"
             name="confirmPassword"
             placeholder="تکرار رمز عبور"

@@ -37,16 +37,17 @@
 
 .backImg {
   background-image: url("./assets/Images/Rectangle 86.png");
-  min-width: 1440px;
-  min-height: 1024px;
+  /* min-width: 1440px;
+  min-height: 1024px; */
   background-repeat: no-repeat; 
   background-size: cover;
 }
 
-@media (max-width: 375px) {
+@media (max-width: 640px) {
   .backImg {
     background-color: #F3F0EE;
     background-image: none;
+    height: 100%;
   }
 
   .box-style {
@@ -80,10 +81,11 @@
 }
 
 .errorBackColor {
-  width: 1440px;
+  width: 100%;
   height: 1024px;
   background-color: #F5F5F5;
 }
+
 
 
 .rahnema-logo {
