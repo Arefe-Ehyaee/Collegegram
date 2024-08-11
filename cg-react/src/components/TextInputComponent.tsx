@@ -18,7 +18,7 @@ const InputField: React.FC<InputProps> = ({ name, placeholder, type, register, s
         type={type}
         id={name}
         name={name}
-        className={`flex flex-col items-center w-80 h-12 border border-khakeshtari-400 px-4 py-2 rounded-2xl text-xs font-normal placeholder-gray font-isf ${styling} placeholder-start ${error ? "border-red-500" : ""}`}
+        className={`flex flex-col items-center w-80 h-12 border border-khakeshtari-400 px-4 py-2 rounded-2xl text-xs font-normal placeholder-gray font-isf pr-[30px] ${styling} placeholder-start ${error ? "border-red-500" : ""}`}
         dir="rtl"
         placeholder={placeholder}
         {...register(name)}  

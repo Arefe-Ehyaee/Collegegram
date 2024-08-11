@@ -40,7 +40,7 @@ const SetNewPassword: React.FC = () => {
 
   return (
         <div className='flex items-center justify-center min-h-screen backImg'>
-          <Box height="485px">
+          <Box height="w-full">
             <div className="rahnema-logo absolute top-10"></div>
             <div className='mt-14'>
               <BoxTitle text={'تنظیم رمز عبور جدید'}></BoxTitle>

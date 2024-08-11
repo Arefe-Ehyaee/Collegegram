@@ -2,6 +2,7 @@ import React from 'react';
 
 interface BoxProps {
   height: string;
+  styling?: string;
   children?: React.ReactNode;
 }
 

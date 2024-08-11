@@ -33,7 +33,7 @@ const RetrievePassword: React.FC = () => {
   };
   return (
     <div className="backImg flex min-h-screen items-center justify-center">
-      <Box height="485px">
+      <Box height="w-full">
         <div className="rahnema-logo absolute top-10"></div>
         <div className="mt-14">
           <BoxTitle text={"بازیابی رمز عبور"}></BoxTitle>

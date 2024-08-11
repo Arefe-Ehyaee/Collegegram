@@ -7,15 +7,14 @@ interface ErrorLayoutProps {
 
 const ErrorLayout: React.FC<ErrorLayoutProps> = ({ children }) => {
   return (
-    <div className="flex flex-col errorBackColor relateive items-center justify-center">
+    <div className="flex flex-col min-h-screen w-full errorBackColor relateive items-center justify-center">
       <header className="bg-cover bg-center h-32">
         <div className="flex items-center justify-center h-full errorHeaderImg">
         </div>
       </header>
       
-
       <main className="flex-grow items-center justify-center">
-        <div className={"w-[485px] h-[450px] bg-khakeshtari-100 rounded-3xl border border-khakeshtari-400 py-16 px-0 absolute top-[287px] left-[460px] items-center justify-center"}>
+        <div className={"box-style w-[485px] h-[450px] bg-khakeshtari-100 rounded-3xl border border-khakeshtari-400 py-16 px-0 absolute top-[287px] left-[460px] items-center justify-center"}>
             <div className="items-center justify-center">
                 <div className={"text-[40px] text-darkBlue text-center font-bold w-80 mx-auto"}>
                 وای اینجا چه خبره؟

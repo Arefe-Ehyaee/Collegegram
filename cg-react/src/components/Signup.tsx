@@ -9,6 +9,8 @@ import Label from "./Label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const signupSchema = z.object({
   username: z
@@ -23,6 +25,15 @@ const signupSchema = z.object({
   repeatpassword: z
     .string({ required_error: "رمز عبور مورد نیاز است" })
     .min(3, { message: "رمز عبور باید حداقل 3 کاراکتر باشد" }),
+})
+.superRefine(({ repeatpassword, password }, ctx) => {
+  if (repeatpassword !== password) {
+    ctx.addIssue({
+      code: "custom",
+      message: "پسورد‌ها باید یکسان باشند",
+      path: ["repeatpassword"],
+    });
+  }
 });
 
 interface SignupFormData {
@@ -41,12 +52,26 @@ const SignUp: React.FC = () => {
     resolver: zodResolver(signupSchema),
   });
 
-  const onSubmit = (data: SignupFormData) => {
-    console.log(data);
+
+  const onSubmit = async (data: SignupFormData) => {
+    try{
+      console.log(data);
+      axios.post('http://5.34.194.155:3000/auth/sign-up',{
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        confirmPassword:data.repeatpassword,
+      }).then(res=>{
+        const result = res;
+        console.log(result,res.status,res.data)
+      })
+    } catch(error) {
+      console.error("There was an error!", error);
+    }  
   };
   return (
     <div className="backImg flex min-h-screen items-center justify-center">
-      <Box height="636.58px">
+      <Box height="w-full">
         <div className="rahnema-logo absolute top-10"></div>
         <EnterSignup />
         <form
@@ -75,7 +100,7 @@ const SignUp: React.FC = () => {
             register={register}
           />
           <InputField
-            type="text"
+            type="password"
             placeholder="رمز عبور"
             name="password"
             iconsrc={keySvg}
@@ -83,7 +108,7 @@ const SignUp: React.FC = () => {
             register={register}
           />
           <InputField
-            type="text"
+            type="password"
             placeholder="تکرار رمز عبور"
             name="repeatpassword"
             iconsrc={keySvg}
