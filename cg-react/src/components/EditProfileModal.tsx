@@ -33,8 +33,8 @@ const EditProfileSchema = z
     }
   });
 
-interface ModalProps {
-  closeModal: Function;
+interface EditProfileProps {
+  onClose: Function;
   profileImage: string;
 }
 interface ProfileFormProps {
@@ -46,7 +46,7 @@ interface ProfileFormProps {
   confirmPassword: string;
 }
 
-const EditProfileModal = ({ closeModal, profileImage }: ModalProps) => {
+const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
   const {
     register,
     handleSubmit,
@@ -57,78 +57,80 @@ const EditProfileModal = ({ closeModal, profileImage }: ModalProps) => {
 
   const onSubmit = (data: ProfileFormProps) => {
     console.log(data);
-    closeModal()
+    onClose();
   };
 
-
-
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-siah/40">
-      <div className="flex w-[500px] flex-col items-center justify-center rounded-3xl border-khakeshtari-400 bg-khakeshtari-100">
-        <div className="px-[90px] py-[64px] flex flex-col items-center">
-        <h2 className="pb-8 font-bold text-sabz-400 text-xl">ویرایش حساب</h2>
-        <img
-          src={profileImage}
-          alt="profile image edit/upload"
-          className="h-[91px] w-[91px] rounded-full border-2 border-tala"
-        />
-        <h3 className="pt-2 mb-12 text-sabz-200 text-sm">عکس پروفایل</h3>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <TextInputComponent
-            type="text"
-            name="name"
-            placeholder="نام"
-            iconsrc={usericon}
-            register={register}
-            error={errors.name?.message}
-          ></TextInputComponent>
-          <TextInputComponent
-            type="text"
-            name="surname"
-            placeholder="نام خانوادگی"
-            iconsrc={usericon}
-            register={register}
-            error={errors.surname?.message}
-          ></TextInputComponent>
-          <TextInputComponent
-            type="email"
-            name="email"
-            placeholder="ایمیل"
-            iconsrc={GmailSvg}
-            register={register}
-            error={errors.email?.message}
-          ></TextInputComponent>
-          <TextInputComponent
-            type="password"
-            name="password"
-            placeholder="رمز عبور"
-            iconsrc={key}
-            register={register}
-          ></TextInputComponent>
-          <TextInputComponent
-            type="password"
-            name="confirmPassword"
-            placeholder="تکرار رمز عبور"
-            iconsrc={key}
-            register={register}
-            error={errors.confirmPassword?.message}
-          ></TextInputComponent>
-          <ToggleSwitch label="پیج خصوصی باشه"></ToggleSwitch>
-          <div>
-          <label className="block !pt-8 !pb-4" >بایو</label>
+    <div className="flex flex-col items-center">
+      <h2 className="pb-8 text-xl font-bold text-sabz-400">ویرایش حساب</h2>
+      <img
+        src={profileImage}
+        alt="profile image edit/upload"
+        className="h-[91px] w-[91px] rounded-full border-2 border-tala"
+      />
+      <h3 className="mb-12 pt-2 text-sm text-sabz-200">عکس پروفایل</h3>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <TextInputComponent
+          type="text"
+          name="name"
+          placeholder="نام"
+          iconsrc={usericon}
+          register={register}
+          error={errors.name?.message}
+        ></TextInputComponent>
+        <TextInputComponent
+          type="text"
+          name="surname"
+          placeholder="نام خانوادگی"
+          iconsrc={usericon}
+          register={register}
+          error={errors.surname?.message}
+        ></TextInputComponent>
+        <TextInputComponent
+          type="email"
+          name="email"
+          placeholder="ایمیل"
+          iconsrc={GmailSvg}
+          register={register}
+          error={errors.email?.message}
+        ></TextInputComponent>
+        <TextInputComponent
+          type="password"
+          name="password"
+          placeholder="رمز عبور"
+          iconsrc={key}
+          register={register}
+        ></TextInputComponent>
+        <TextInputComponent
+          type="password"
+          name="confirmPassword"
+          placeholder="تکرار رمز عبور"
+          iconsrc={key}
+          register={register}
+          error={errors.confirmPassword?.message}
+        ></TextInputComponent>
+        <ToggleSwitch label="پیج خصوصی باشه"></ToggleSwitch>
+        <div>
+          <label className="block !pb-4 !pt-2">بایو</label>
           <textarea
             name="bio"
             id="bio"
             className="h-[88px] w-[320px] resize-none rounded-[32px] border border-sabz-200 p-4"
           ></textarea>
-          </div>
-          <div className="flex flex-row justify-end items-center">
-          <CustomButtonH36 text="پشیمون شدم" styling="!text-siah ml-4" handleOnClick={()=>closeModal()}/>
-          <CustomButtonH36 text="ثبت تغییرات" styling="bg-okhra-200" handleOnClick={handleSubmit(onSubmit)}/>
-          </div>
-        </form>
         </div>
-      </div>
+        <div className="flex flex-row items-center justify-end">
+          <CustomButtonH36
+            text="پشیمون شدم"
+            styling="!text-siah ml-4"
+            handleOnClick={() => onClose()}
+          />
+          <CustomButtonH36
+            text="ثبت تغییرات"
+            styling="bg-okhra-200"
+            handleOnClick={handleSubmit(onSubmit)}
+          />
+        </div>
+      </form>
     </div>
   );
 };
