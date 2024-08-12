@@ -6,6 +6,7 @@ import SetNewPassword from "./components/SetNewPassword";
 import ErrorLayout from "./components/Error";
 import CheckYourEmail from "./components/CheckYourEmail";
 import ProfilePage from "./components/ProfilePage";
+import PostsPage from "./components/PostsPage";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/error" element={<ErrorLayout />} />
           <Route path="/checkYourEmail" element={<CheckYourEmail />} />
           <Route path="/userprofile" element={<ProfilePage />} />
+          <Route path="/posts" element={<PostsPage />} />
         </Routes>
       </BrowserRouter>
     </div>
