@@ -21,7 +21,9 @@ const signupSchema = z.object({
     .min(3, { message: "ایمیل نامعتبر است" }),
   password: z
     .string({ required_error: "رمز عبور مورد نیاز است" })
-    .min(3, { message: "رمز عبور باید حداقل 3 کاراکتر باشد" }),
+    .min(3, { message: "رمز عبور باید حداقل 3 کاراکتر باشد" })
+    .regex(/[A-Z]/, { message: "رمز عبور باید شامل حداقل یک حرف بزرگ باشد" })
+    .regex(/[0-9]/, { message: "رمز عبور باید شامل حداقل یک عدد باشد" }),
   repeatpassword: z
     .string({ required_error: "رمز عبور مورد نیاز است" })
     .min(3, { message: "رمز عبور باید حداقل 3 کاراکتر باشد" }),

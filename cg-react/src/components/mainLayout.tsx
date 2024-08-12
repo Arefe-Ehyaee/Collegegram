@@ -5,9 +5,10 @@ import BottomNavbarMobile from "./BottonNavbarMobile";
 interface MainLayoutProps {
   mainComponents?: JSX.Element;
   navBar?: JSX.Element;
+  children?: React.ReactNode;
 }
 
-const MainLayout = ({ mainComponents, navBar }: MainLayoutProps) => {
+const MainLayout: React.FC<MainLayoutProps>  = ({ mainComponents, navBar, children }) => {
   return (
     <div className="flex min-h-screen bg-khakeshtari-100">
       <div className="w-3/4 max-md:mt-[67px] max-md:w-full">
@@ -21,7 +22,7 @@ const MainLayout = ({ mainComponents, navBar }: MainLayoutProps) => {
         <main className="h-full flex-col">{mainComponents}</main>
       </div>
       <div className="block w-1/4 max-md:hidden">{navBar}</div>
-
+      {children}
       <NavbarMobile></NavbarMobile>
       <BottomNavbarMobile></BottomNavbarMobile>
 
