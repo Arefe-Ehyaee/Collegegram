@@ -1,3 +1,5 @@
+
+import NavBarComponent from "./NavBarComponent"
 import MainLayout from "./MainLayout"
 import ProfilePageComponent from "./ProfilePageComponent"
 import SideNavbarComponent from "./SideNavbarComponent"
