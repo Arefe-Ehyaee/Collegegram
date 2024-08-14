@@ -7,10 +7,18 @@ import DesktopCaption from "./DesktopCaption";
 import BottomNavbarMobile from "../BottonNavbarMobile";
 
 interface PostsPageProps {
+  imageSrc?: string;
+  date?: string;
+  caption?: string;
   children?: React.ReactNode;
 }
 
-const PostComponent: React.FC<PostsPageProps> = ({ children }) => {
+const PostComponent: React.FC<PostsPageProps> = ({ children,
+ imageSrc=post,
+ caption=
+  "ترس یکی از مهمترین عوامل #قدرت است؛ کسی که بتواند در #جامعه سمت و سوی ترس را معین کند #قدرت زیادی بر آن جامعه پیدا می‌کند. شاید بتوان هم صدا با جورجو آگامبنِ فیلسوف گفت که ما امروزه همیشه در یک حالت اضطراری زندگی می‌کنیم ",
+ date= "2 ماه پیش"
+ }) => {
   return (
     <div>
       <div className="mx-auto h-[720px] w-[520px] max-md:h-full max-md:w-full mt-4">
@@ -26,12 +34,10 @@ const PostComponent: React.FC<PostsPageProps> = ({ children }) => {
           ></CustomButtonH36>
           <img src={redPen} alt="edit" className="pl-6 md:hidden" />
         </div>
-        <img src={post} alt="post" className="py-2" />
+        <img src={imageSrc} alt="post" className="py-2" />
         <DesktopCaption
-          date={"2 ماه پیش"}
-          caption={
-            "ترس یکی از مهمترین عوامل #قدرت است؛ کسی که بتواند در #جامعه سمت و سوی ترس را معین کند #قدرت زیادی بر آن جامعه پیدا می‌کند. شاید بتوان هم صدا با جورجو آگامبنِ فیلسوف گفت که ما امروزه همیشه در یک حالت اضطراری زندگی می‌کنیم "
-          }
+          date={date}
+          caption={caption}
         ></DesktopCaption>
         {children}
         <BottomNavbarMobile></BottomNavbarMobile>
