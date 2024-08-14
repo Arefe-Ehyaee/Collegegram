@@ -10,7 +10,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 
 const signupSchema = z.object({
   username: z

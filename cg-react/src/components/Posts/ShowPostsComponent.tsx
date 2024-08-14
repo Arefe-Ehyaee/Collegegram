@@ -63,16 +63,10 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
           onClose={() => setPostShowModal(false)}
           showModal={showPostModal}
         >
-         {/* {isMobile ? (
-            <PostComponent>
-              {selectedPhoto && <img src={selectedPhoto.src} alt={selectedPhoto.alt} />}
-            </PostComponent>
-          ) : ( */}
-            <ShowPostModal
-              onClose={() => setPostShowModal(false)}
-              photo={selectedPhoto!} 
-            />
-          {/* )} */}
+          <ShowPostModal
+            onClose={() => setPostShowModal(false)}
+            photo={selectedPhoto!} 
+          />
         </ModalTemplate>
       )}
     </div>
