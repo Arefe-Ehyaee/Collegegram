@@ -8,7 +8,6 @@ interface ButtonProps {
 
 }
 const CustomButtonH52 = ({ text, iconsrc, styling,handleOnClick }:ButtonProps) => {
-  console.log('here', iconsrc)
   return (
     <button onClick={handleOnClick}
       className={`flex h-52 items-center gap-2 rounded-3xl px-12 py-4 text-sm text-white font-isf subpixel-antialiased ${styling}`}

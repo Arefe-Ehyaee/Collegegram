@@ -58,7 +58,7 @@ const SignUp: React.FC = () => {
   const onSubmit = async (data: SignupFormData) => {
     try{
       console.log(data);
-      axios.post('http://5.34.194.155:3000/auth/sign-up',{
+      axios.post('http://5.34.194.155:4000/auth/sign-up',{
         username: data.username,
         email: data.email,
         password: data.password,
