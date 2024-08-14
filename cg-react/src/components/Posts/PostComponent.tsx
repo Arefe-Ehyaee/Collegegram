@@ -1,24 +1,24 @@
-import AvatarName from "./AvatarName";
-import whitePen from "../assets/icons/whitePen.svg";
-import CustomButtonH36 from "./ButtonComponentH36";
-import post from "../assets/Images/post.png";
+import whitePen from "../../assets/icons/whitePen.svg";
+import post from "../../assets/Images/post.png";
+import redPen from "../../assets/icons/redPen.svg";
+import AvatarName from "../AvatarName";
+import CustomButtonH36 from "../ButtonComponentH36";
 import DesktopCaption from "./DesktopCaption";
-import BottomNavbarMobile from "./BottonNavbarMobile";
-import redPen from "../assets/icons/redPen.svg";
+import BottomNavbarMobile from "../BottonNavbarMobile";
 
 interface PostsPageProps {
   children?: React.ReactNode;
 }
 
-const PostsPageComponent: React.FC<PostsPageProps> = ({ children }) => {
+const PostComponent: React.FC<PostsPageProps> = ({ children }) => {
   return (
     <div>
-      <div className="mx-auto h-[720px] w-[520px]">
+      <div className="mx-auto h-[720px] w-[520px] max-md:h-full max-md:w-full mt-4">
         <div
-          className="flex items-center justify-between max-md:mt-[52px]"
+          className="flex items-center justify-between max-md:mt-0"
           dir="rtl"
         >
-          <AvatarName name={"mahmz"}></AvatarName>
+          <AvatarName name={"mahmz"} styling="py-4 pr-1"></AvatarName>
           <CustomButtonH36
             text={"ویرایش پست"}
             iconsrc={whitePen}
@@ -26,7 +26,7 @@ const PostsPageComponent: React.FC<PostsPageProps> = ({ children }) => {
           ></CustomButtonH36>
           <img src={redPen} alt="edit" className="pl-6 md:hidden" />
         </div>
-        <img src={post} alt="post" />
+        <img src={post} alt="post" className="py-2" />
         <DesktopCaption
           date={"2 ماه پیش"}
           caption={
@@ -40,4 +40,4 @@ const PostsPageComponent: React.FC<PostsPageProps> = ({ children }) => {
   );
 };
 
-export default PostsPageComponent;
+export default PostComponent;

@@ -1,10 +1,10 @@
 import CustomButtonH52 from "./ButtonComponentH52";
-import ShowPostsComponent from "./ShowPostsComponent";
+import ShowPostsComponent from "./Posts/ShowPostsComponent";
 import defaultAvatar from "../assets/icons/defaultavatar.svg";
 import { useState } from "react";
-import React from "react";
 import EditProfileModal from "./EditProfileModal";
 import ModalTemplate from "./ModalTemplate";
+import PostComponent from "./Posts/PostComponent";
 
 export default function ProfilePageComponent() {
   const [userId, setUserId] = useState("@defaultID");
@@ -16,7 +16,7 @@ export default function ProfilePageComponent() {
   const [bio, setBio] = useState(
     "برای شخصی سازی این متن با ویرایش پروفایل بایو خود را تغییر دهید",
   );
-  const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   return (
     <div dir="rtl">
@@ -51,23 +51,25 @@ export default function ProfilePageComponent() {
           <CustomButtonH52
             text="ویرایش پروفایل"
             styling="bg-okhra-200"
-            handleOnClick={() => setShowModal(true)}
+            handleOnClick={() => setShowEditModal(true)}
           />
         </div>
       </div>
-      <ShowPostsComponent />
-      {showModal && (
+      <ShowPostsComponent/>
+      {showEditModal && (
         <ModalTemplate
-          onClose={() => setShowModal(false)}
+          onClose={() => setShowEditModal(false)}
           mainComponent={
             <EditProfileModal
-              onClose={() => setShowModal(false)}
+              onClose={() => setShowEditModal(false)}
               profileImage={avatar}
             />
           }
-          showModal={showModal}
+          showModal={showEditModal}
         />
       )}{" "}
+
+
     </div>
   );
 }

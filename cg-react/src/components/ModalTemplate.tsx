@@ -1,10 +1,13 @@
 //you probably need to use [modal,setModal] to open and close the modal in whatever file you use it on
 
+import { Children } from "react";
+
 interface ModalProps {
   showModal: boolean;
   onClose: () => void;
   styling?: string;
-  mainComponent: JSX.Element;
+  mainComponent?: JSX.Element;
+  children?:React.ReactNode
 }
 
 const ModalTemplate = ({
@@ -12,6 +15,7 @@ const ModalTemplate = ({
   onClose,
   styling,
   mainComponent,
+  children
 }: ModalProps) => {
   return (
     <div
@@ -22,7 +26,7 @@ const ModalTemplate = ({
         className="flex flex-col items-center justify-center rounded-3xl border-khakeshtari-400 bg-khakeshtari-100 px-[90px] py-16"
         onClick={(e) => e.stopPropagation()}
       >
-        {mainComponent}
+        {mainComponent}{children}
       </div>
     </div>
   );
