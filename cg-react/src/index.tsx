@@ -5,15 +5,17 @@ import reportWebVitals from './reportWebVitals';
 import successSvg from "./assets/icons/check-circle.svg"
 import Banner from './components/BannerComponent';
 import App from './App';
+import { RecoilRoot } from 'recoil';
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    {/* <MainLayout></MainLayout> */}
+    <RecoilRoot>
     <App></App>
-    {/* <Banner text={'با موفقیت وارد شدید'} iconsrc={successSvg} styling={"bg-sabz-300"}></Banner> */}
+    </RecoilRoot>
   </React.StrictMode>
 );
 

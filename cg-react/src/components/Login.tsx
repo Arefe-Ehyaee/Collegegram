@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -8,10 +8,13 @@ import Box from "./BoxComponent";
 import EnterSignup from "./EnterSignup";
 import Label from "./Label";
 import RememberMe from "./RememberMe";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import ArrowLink from "./ArrowLink";
 import UserSvg from "../assets/icons/user.svg";
 import keySvg from "../assets/icons/key.svg";
+import { useSetRecoilState } from "recoil";
+import { useFetchWrapper } from "../user-actions/fetch-wrapper";
+import { authAtom, userProfileAtom } from "../user-actions/atoms";
 
 const loginSchema = z.object({
   username: z
@@ -19,7 +22,7 @@ const loginSchema = z.object({
     .min(3, { message: "نام کاربری باید حداقل 3 کاراکتر باشد" }),
   password: z
     .string({ required_error: "رمز عبور مورد نیاز است" })
-    .min(3, { message: "رمز عبور باید حداقل 3 کاراکتر باشد" }),
+    .min(8, { message: "رمز عبور باید حداقل 8 کاراکتر باشد" }),
 });
 
 interface LoginFormData {
@@ -28,6 +31,8 @@ interface LoginFormData {
 }
 
 const Login: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -36,12 +41,39 @@ const Login: React.FC = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log(data);
+  const fetchWrapper = useFetchWrapper();
+  const setAuth = useSetRecoilState(authAtom);
+  const setUserProfile = useSetRecoilState(userProfileAtom);
+  const onSubmit = async (data: LoginFormData) => {
+    setIsLoading(true);
+    try {
+      const response = await fetchWrapper.post(
+        "http://5.34.194.155:4000/auth/login",
+        {
+          username: data.username,
+          password: data.password,
+        },
+      );
+
+      const token = response.data.token;
+
+      if (response.ok) {
+        setAuth({ token });
+        navigate("/userprofile");
+
+        // toast.success('Login successful!');
+      }
+    } catch (error) {
+      // toast.error(`Error: ${error}`);
+      console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
+
   return (
-    <div className="backImg flex min-h-screen items-center justify-center relative">
+    <div className="backImg relative flex min-h-screen items-center justify-center">
       <Box height="w-full">
         <div className="rahnema-logo absolute top-10"></div>
         <EnterSignup />

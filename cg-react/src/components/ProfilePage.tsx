@@ -12,3 +12,5 @@ export default function ProfilePage () {
         <MainLayout mainComponents={ProfilePageComponent()} navBar={SideNavbarComponent()}/>
     )
 }
+
+//leaving this comment here to test something

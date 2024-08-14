@@ -9,11 +9,14 @@ import tags from "../assets/icons/tag.svg";
 import explore from "../assets/icons/explore.svg";
 import search from "../assets/icons/search.svg";
 import addPostIcon from "../assets/icons/addposticon.svg";
+import {  userProfileAtom } from "../user-actions/atoms";
+import { useRecoilValue } from "recoil";
+
 
 export default function SideNavbarComponent() {
-    const [userId, setUserId] = useState("defaultID");
-    const [avatar, setAvatar] = useState(defaultAvatar);
-  
+  const userProfile = useRecoilValue(userProfileAtom)  
+  const avatar = userProfile.avatar
+  const userId = userProfile.userId
     return (
       <div dir="rtl" className="min-h-screen flex flex-col items-center mt-16">
         <CustomButtonH52

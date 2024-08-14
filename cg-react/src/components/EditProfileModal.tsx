@@ -8,20 +8,38 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import CustomButtonH36 from "./ButtonComponentH36";
 import ToggleSwitch from "./ToggleButton";
+import { useFetchWrapper } from "../user-actions/fetch-wrapper";
+import { useSetRecoilState } from "recoil";
+import { userProfileAtom } from "../user-actions/atoms";
 
 const EditProfileSchema = z
   .object({
-    name: z.string().min(3, { message: "نام باید حداقل 3 کاراکتر باشد" }),
-    surname: z
+    first_name: z
       .string()
-      .min(3, { message: "نام خانوادگی باید حداقل 3 کاراکتر باشد" }),
-    email: z.string().email({ message: "ایمیل نامعتبر است" }),
+      .min(3, { message: "نام باید حداقل 3 کاراکتر باشد" })
+      .optional()
+      .or(z.literal("")),
+    last_name: z
+      .string()
+      .min(3, { message: "نام خانوادگی باید حداقل 3 کاراکتر باشد" })
+      .optional()
+      .or(z.literal("")),
+    email: z
+      .string()
+      .email({ message: "ایمیل نامعتبر است" })
+      .optional()
+      .or(z.literal("")),
     password: z
-      .string({ required_error: "رمز عبور مورد نیاز است" })
-      .min(5, { message: "رمز عبور باید حداقل 5 کاراکتر باشد" }),
+      .string()
+      .min(5, { message: "رمز عبور باید حداقل 5 کاراکتر باشد" })
+      .optional()
+      .or(z.literal("")),
     confirmPassword: z
-      .string({ required_error: "رمز عبور مورد نیاز است" })
-      .min(5, { message: "رمز عبور باید حداقل 5 کاراکتر باشد" }),
+      .string()
+      .min(5, { message: "رمز عبور باید حداقل 5 کاراکتر باشد" })
+      .optional()
+      .or(z.literal("")),
+    bio: z.string().optional().or(z.literal("")),
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
@@ -38,12 +56,13 @@ interface EditProfileProps {
   profileImage: string;
 }
 interface ProfileFormProps {
-  name: string;
-  surname: string;
+  first_name: string;
+  last_name: string;
   password: string;
   email: string;
   bio: string;
   confirmPassword: string;
+  avatar:string
 }
 
 const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
@@ -55,9 +74,34 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
     resolver: zodResolver(EditProfileSchema),
   });
 
-  const onSubmit = (data: ProfileFormProps) => {
-    console.log(data);
-    onClose();
+  const fetchWrapper = useFetchWrapper();
+  const setUserProfile = useSetRecoilState(userProfileAtom);
+  const onSubmit = async (data: ProfileFormProps) => {
+    console.log("Raw form data:", data);
+    const filteredData = Object.fromEntries(
+      Object.entries(data).filter(([_, value]) => value !== ""),
+    );
+
+    try {
+      const response = await fetchWrapper.patch(
+        "http://5.34.194.155:4000/users/profile",
+        filteredData,
+      );
+      console.log(filteredData);
+
+      if (response.ok) {
+        setUserProfile((prevProfile) => ({
+          ...prevProfile,
+          ...filteredData,
+        }));
+      } else {
+        console.error("Failed to update profile", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    } finally {
+      onClose();
+    }
   };
 
   return (
@@ -72,19 +116,19 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <TextInputComponent
           type="text"
-          name="name"
+          name="first_name"
           placeholder="نام"
           iconsrc={usericon}
           register={register}
-          error={errors.name?.message}
+          error={errors.first_name?.message}
         ></TextInputComponent>
         <TextInputComponent
           type="text"
-          name="surname"
+          name="last_name"
           placeholder="نام خانوادگی"
           iconsrc={usericon}
           register={register}
-          error={errors.surname?.message}
+          error={errors.last_name?.message}
         ></TextInputComponent>
         <TextInputComponent
           type="email"
@@ -113,9 +157,9 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
         <div>
           <label className="block !pb-4 !pt-2">بایو</label>
           <textarea
-            name="bio"
             id="bio"
             className="h-[88px] w-[320px] resize-none rounded-[32px] border border-sabz-200 p-4"
+            {...register("bio", { max: 64 })}
           ></textarea>
         </div>
         <div className="flex flex-row items-center justify-end">
