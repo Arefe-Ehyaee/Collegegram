@@ -6,7 +6,7 @@ import SetNewPassword from "./components/SetNewPassword";
 import ErrorLayout from "./components/Error";
 import CheckYourEmail from "./components/CheckYourEmail";
 import ProfilePage from "./components/ProfilePage";
-import PostsPage from "./components/PostsPage";
+import PostsPage from "./components/Posts/PostsPage";
 
 export default function App() {
   return (

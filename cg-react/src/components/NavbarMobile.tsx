@@ -1,4 +1,4 @@
-import hamMenu from "../assets/icons/Auto Layout Horizontal.svg";
+import hamMenu from "../assets/icons/hamMenu.svg";
 import user from "../assets/icons/Frame 108.svg";
 
 const NavbarMobile: React.FC = () => {

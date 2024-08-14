@@ -11,7 +11,7 @@ const DesktopCaption: React.FC<DesktopCaptionProps> = ({ date, caption }) => {
             <div className="font-isf font-normal text-[11px] max-md:px-6" dir="rtl">
                 {date}
             </div>
-            <div className="font-isf text-sm font-normal text-justify mt-4 max-md:px-6" dir="rtl">
+            <div className="font-isf text-sm font-normal text-wrap mt-4 max-md:px-6" dir="rtl">
                 {caption}
             </div>
             <div className="mt-4 max-md:px-6">
