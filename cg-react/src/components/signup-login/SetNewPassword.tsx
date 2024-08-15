@@ -7,18 +7,39 @@ import BoxTitle from './BoxTitle';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+
 
 const SetNewPassSchema = z.object({
-  username: z
-    .string({ required_error: "نام کاربری مورد نیاز است" })
-    .min(3, { message: "نام کاربری باید حداقل 3 کاراکتر باشد" }),
+  password: z
+    .string({ required_error: "رمز عبور مورد نیاز است" })
+    .min(3, { message: "رمز عبور باید حداقل 3 کاراکتر باشد" })
+    .regex(/[A-Z]/, { message: "رمز عبور باید شامل حداقل یک حرف بزرگ باشد" })
+    .regex(/[0-9]/, { message: "رمز عبور باید شامل حداقل یک عدد باشد" }),
+    confirmPassword: z
+    .string({ required_error: "رمز عبور مورد نیاز است" })
+    .min(3, { message: "رمز عبور باید حداقل 3 کاراکتر باشد" }),
+})
+.superRefine(({ confirmPassword, password }, ctx) => {
+  if (confirmPassword !== password) {
+    ctx.addIssue({
+      code: "custom",
+      message: "پسورد‌ها باید یکسان باشند",
+      path: ["confirmPassword"],
+    });
+  }
 });
-
 interface SetNewPassFormData {
-  username: string;
+  password: string;
+  confirmPassword: string;
 }
 
 const SetNewPassword: React.FC = () => {
+  const { search } = useLocation(); 
+  const query = new URLSearchParams(search);
+  const token = query.get('token'); 
+
   const {
     register,
     handleSubmit,
@@ -27,9 +48,50 @@ const SetNewPassword: React.FC = () => {
     resolver: zodResolver(SetNewPassSchema),
   });
 
-  const onSubmit = (data: SetNewPassFormData) => {
-    console.log(data);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+
+
+  const onSubmit = async (data: SetNewPassFormData) => {
+    setLoading(true);
+    setMessage(null); 
+
+    if (!token) {
+      setMessage('Token is missing. Please check the link you received.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://5.34.194.155:4000/auth/reset-password?token=${token}`, { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data), 
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to reset password');
+      }
+
+      const result = await response.json();
+      setMessage(result.message || 'Password reset successfully');
+    } catch (error) {
+      if (error instanceof Error) {
+        setMessage(error.message || 'An error occurred');
+      } else {
+        setMessage('An unexpected error occurred');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (!token) {
+    return <div>Token is missing. Please check the link you received.</div>;
+  }
+
 
   return (
         <div className='flex items-center justify-center min-h-screen backImg'>
@@ -43,19 +105,19 @@ const SetNewPassword: React.FC = () => {
               >
               <Label text={'لطفا رمز جدیدی برای حساب خود انتخاب کنید'}></Label>
               <InputField 
-                type="text" 
+                type="password" 
                 placeholder="رمز عبور" 
                 name="password" 
-                error={errors.username?.message}
+                error={errors.password?.message}
                 iconsrc={keySvg} 
                 register={register}
               />
 
               <InputField 
-                type="text" 
+                type="password" 
                 placeholder="تکرار رمز عبور" 
-                name="password" 
-                error={errors.username?.message}
+                name="confirmPassword" 
+                error={errors.confirmPassword?.message}
                 iconsrc={keySvg} 
                 register={register}
               />

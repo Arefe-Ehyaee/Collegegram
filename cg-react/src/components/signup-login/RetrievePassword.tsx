@@ -8,6 +8,7 @@ import BoxTitle from "./BoxTitle";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useState } from "react";
 
 const RetrievePassSchema = z.object({
   username: z
@@ -28,9 +29,40 @@ const RetrievePassword: React.FC = () => {
     resolver: zodResolver(RetrievePassSchema),
   });
 
-  const onSubmit = (data: RetrievePassFormData) => {
-    console.log(data);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+
+  const onSubmit = async (data: RetrievePassFormData) => {
+    setLoading(true);
+    setMessage(null); 
+
+    try {
+      const response = await fetch('http://5.34.194.155:4000/auth/forgot-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send password reset link');
+      }
+
+      const result = await response.json();
+      setMessage(result.message || 'Password reset link sent successfully');
+    } catch (error) {
+      if (error instanceof Error) {
+        setMessage(error.message || 'An error occurred');
+      } else {
+        setMessage('An unexpected error occurred');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
+
+  
   return (
     <div className="backImg flex min-h-screen items-center justify-center">
       <Box height="w-full">
