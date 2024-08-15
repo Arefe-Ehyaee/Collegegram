@@ -1,16 +1,16 @@
 import React from "react";
-import TextInputComponent from "./TextInputComponent";
-import usericon from "../assets/icons/user.svg";
-import GmailSvg from "../assets/icons/gmail.svg";
-import key from "../assets/icons/key.svg";
+import TextInputComponent from "../TextInputComponent";
+import usericon from "../../assets/icons/user.svg";
+import GmailSvg from "../../assets/icons/gmail.svg";
+import key from "../../assets/icons/key.svg";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import CustomButtonH36 from "./ButtonComponentH36";
-import ToggleSwitch from "./ToggleButton";
-import { useFetchWrapper } from "../user-actions/fetch-wrapper";
+import CustomButtonH36 from "../ButtonComponentH36";
+import ToggleSwitch from "../ToggleButton";
+import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 import { useSetRecoilState } from "recoil";
-import { userProfileAtom } from "../user-actions/atoms";
+import { userProfileAtom } from "../../user-actions/atoms";
 
 const EditProfileSchema = z
   .object({

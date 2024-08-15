@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import CustomButtonH52 from "./ButtonComponentH52";
-import ShowPostsComponent from "./ShowPostsComponent";
+import { useEffect, useState } from "react";
+import CustomButtonH52 from "../ButtonComponentH52";
+import ShowPostsComponent from "../Posts/ShowPostsComponent";
 import EditProfileModal from "./EditProfileModal";
-import ModalTemplate from "./ModalTemplate";
+import ModalTemplate from "../ModalTemplate";
 import { useRecoilState } from "recoil";
-import { userProfileAtom, UserProfile } from "../user-actions/atoms";
-import { useFetchWrapper } from "../user-actions/fetch-wrapper";
+import { userProfileAtom } from "../../user-actions/atoms";
+import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 
 export default function ProfilePageComponent() {
-  const [showModal, setShowModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
   const fetchWrapper = useFetchWrapper();
 
@@ -19,19 +19,19 @@ export default function ProfilePageComponent() {
         const profileData = response.data
         setUserProfile((prevProfile) => ({
           ...prevProfile,
-          userId:
+          username:
             profileData.username !== null && profileData.username !== undefined
               ? profileData.username
-              : prevProfile.userId,
+              : prevProfile.username,
           avatar:
             profileData.avatar_url !== null && profileData.avatar_url !== undefined
               ? profileData.avatar_url
               : prevProfile.avatar,
-          userName:
+          first_name:
             profileData.first_name !== null && profileData.first_name !== undefined
               ? profileData.first_name
               : prevProfile.first_name,
-          userSurName:
+          last_name:
             profileData.last_name !== null && profileData.last_name !== undefined
               ? profileData.last_name
               : prevProfile.last_name,
@@ -47,7 +47,7 @@ export default function ProfilePageComponent() {
     }
 
     fetchUserProfile();
-  }, [setUserProfile,setShowModal]);
+  }, [setUserProfile,showEditModal]);
   return (
     <div dir="rtl">
       <div className="ml-16 border-b border-khakeshtari-400 py-9 max-sm:ml-8 max-sm:mr-8">
@@ -63,7 +63,7 @@ export default function ProfilePageComponent() {
             />
             <div className="ml-4">
               <p className="text-right text-sm text-tala" dir="ltr">
-                {`@${userProfile.userId}`}
+                {`@${userProfile.username}`}
               </p>
               <h3 className="mt-4 text-xl font-bold text-sabz-100">
                 {`${userProfile.first_name} ${userProfile.last_name}`}
@@ -95,7 +95,7 @@ export default function ProfilePageComponent() {
           onClose={() => setShowEditModal(false)}
           mainComponent={
             <EditProfileModal
-              onClose={() => setShowModal(false)}
+              onClose={() => setShowEditModal(false)}
               profileImage={userProfile.avatar}
             />
           }

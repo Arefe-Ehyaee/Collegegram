@@ -1,7 +1,7 @@
 
-import MainLayout from "./MainLayout"
+import MainLayout from "../MainLayout"
 import ProfilePageComponent from "./ProfilePageComponent"
-import SideNavbarComponent from "./SideNavbarComponent"
+import SideNavbarComponent from "../SideNavbarComponent"
 
 
 

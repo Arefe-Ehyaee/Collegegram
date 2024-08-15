@@ -2,19 +2,19 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import InputField from "./TextInputComponent";
-import CustomButtonH36 from "./ButtonComponentH36";
+import InputField from "../TextInputComponent";
+import CustomButtonH36 from "../ButtonComponentH36";
 import Box from "./BoxComponent";
 import EnterSignup from "./EnterSignup";
-import Label from "./Label";
+import Label from "../Label";
 import RememberMe from "./RememberMe";
 import { NavLink, useNavigate } from "react-router-dom";
 import ArrowLink from "./ArrowLink";
-import UserSvg from "../assets/icons/user.svg";
-import keySvg from "../assets/icons/key.svg";
+import UserSvg from "../../assets/icons/user.svg";
+import keySvg from "../../assets/icons/key.svg";
 import { useSetRecoilState } from "recoil";
-import { useFetchWrapper } from "../user-actions/fetch-wrapper";
-import { authAtom, userProfileAtom } from "../user-actions/atoms";
+import { authAtom,userProfileAtom } from "../../user-actions/atoms";
+import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 
 const loginSchema = z.object({
   username: z

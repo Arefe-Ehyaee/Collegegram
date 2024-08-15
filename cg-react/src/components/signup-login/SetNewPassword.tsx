@@ -1,16 +1,9 @@
 import Box from './BoxComponent';
-import EnterSignup from './EnterSignup';
-import InputField from './TextInputComponent';
-import UserSvg from "../assets/icons/user.svg"
-import GmailSvg from "../assets/icons/gmail.svg"
-import keySvg from "../assets/icons/key.svg"
-import CustomButtonH36 from './ButtonComponentH36';
-import Label from './Label';
-import RememberMe from './RememberMe';
-import ArrowLink from './ArrowLink';
-import { NavLink } from 'react-router-dom';
+import InputField from '../TextInputComponent';
+import keySvg from "../../assets/icons/key.svg"
+import CustomButtonH36 from '../ButtonComponentH36';
+import Label from '../Label';
 import BoxTitle from './BoxTitle';
-import ToggleSwitch from './ToggleButton';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
