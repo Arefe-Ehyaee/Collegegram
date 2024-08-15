@@ -47,11 +47,11 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
         text="ایجاد پست جدید"
         styling="bg-okhra-200 self-center"
       ></CustomButtonH36> */}
-      <div className="grid grid-cols-3 gap-14 gap-y-[32px] max-md:grid-cols-2 max-md:gap-y-2 max-md:gap-4">
+      <div className="grid grid-cols-3 gap-x-8 gap-y-6 max-md:grid-cols-2 max-md:gap-y-2 max-md:gap-4">
       {photos.map((photo) => (
           <img
           key={photo.id}
-          className="aspect-square w-full cursor-pointer"
+          className="aspect-square w-full cursor-pointer h-[304px]"
           src={photo.src}
           alt={photo.alt}
           onClick={() => handleOnClick(photo)}
