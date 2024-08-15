@@ -12,8 +12,7 @@ import addPostIcon from "../assets/icons/addposticon.svg";
 import {  userProfileAtom } from "../user-actions/atoms";
 import { useRecoilValue } from "recoil";
 import ModalTemplate from "./ModalTemplate";
-import ProgressStepper from "./ProgressStepper";
-
+import UploadPostsModal from "./upload-edit-posts/UploadPostsModal";
 
 export default function SideNavbarComponent() {
   const userProfile = useRecoilValue(userProfileAtom)  
@@ -77,7 +76,7 @@ export default function SideNavbarComponent() {
             </li>
           </ul>
         </nav>
-        {uploadModal && <ModalTemplate showModal={uploadModal} onClose={() => setUploadModal(false)}> <ProgressStepper currentStep={2}></ProgressStepper>
+        {uploadModal && <ModalTemplate showModal={uploadModal} onClose={() => setUploadModal(false)}> <UploadPostsModal/>
           </ModalTemplate>}
       </div>
     );
