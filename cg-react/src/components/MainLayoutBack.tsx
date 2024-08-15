@@ -2,13 +2,13 @@ import rcLogo from "../assets/icons/rclogo.svg";
 import BottomNavbarMobile from "./BottonNavbarMobile";
 import NavbarMobileBack from "./NavbarMobileBack";
 
-interface MainLayoutProps {
+interface MainLayoutBackProps {
   mainComponents?: JSX.Element;
   navBar?: JSX.Element;
   children?: React.ReactNode;
 }
 
-const MainLayout: React.FC<MainLayoutProps>  = ({ mainComponents, navBar, children }) => {
+const MainLayoutBack: React.FC<MainLayoutBackProps>  = ({ mainComponents, navBar, children }) => {
   return (
     <div className="flex min-h-screen bg-khakeshtari-100">
       <div className="w-3/4 max-md:mt-[67px] max-md:w-full">
@@ -30,4 +30,4 @@ const MainLayout: React.FC<MainLayoutProps>  = ({ mainComponents, navBar, childr
   );
 };
 
-export default MainLayout;
+export default MainLayoutBack;

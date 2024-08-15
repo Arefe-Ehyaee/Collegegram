@@ -1,11 +1,11 @@
 import Box from "./BoxComponent";
 import EnterSignup from "./EnterSignup";
-import InputField from "./TextInputComponent";
-import UserSvg from "../assets/icons/user.svg";
-import GmailSvg from "../assets/icons/gmail.svg";
-import keySvg from "../assets/icons/key.svg";
-import CustomButtonH36 from "./ButtonComponentH36";
-import Label from "./Label";
+import InputField from "../TextInputComponent";
+import UserSvg from "../../assets/icons/user.svg";
+import GmailSvg from "../../assets/icons/gmail.svg";
+import keySvg from "../../assets/icons/key.svg";
+import CustomButtonH36 from "../ButtonComponentH36";
+import Label from "../Label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";

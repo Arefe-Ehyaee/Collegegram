@@ -1,4 +1,4 @@
-import arrow from "../assets/icons/arrow.svg"
+import arrow from "../../assets/icons/arrow.svg"
 import React from 'react';
 
 interface ArrowLinkProps {

@@ -1,8 +1,8 @@
 import Box from "./BoxComponent";
-import InputField from "./TextInputComponent";
-import UserSvg from "../assets/icons/user.svg";
-import CustomButtonH36 from "./ButtonComponentH36";
-import Label from "./Label";
+import InputField from "../TextInputComponent";
+import UserSvg from "../../assets/icons/user.svg";
+import CustomButtonH36 from "../ButtonComponentH36";
+import Label from "../Label";
 import { NavLink } from "react-router-dom";
 import BoxTitle from "./BoxTitle";
 import { useForm } from "react-hook-form";

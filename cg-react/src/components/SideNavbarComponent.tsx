@@ -16,7 +16,7 @@ import { useRecoilValue } from "recoil";
 export default function SideNavbarComponent() {
   const userProfile = useRecoilValue(userProfileAtom)  
   const avatar = userProfile.avatar
-  const userId = userProfile.userId
+  const username = userProfile.username
     return (
       <div dir="rtl" className="min-h-screen flex flex-col items-center mt-16">
         <CustomButtonH52
@@ -32,7 +32,7 @@ export default function SideNavbarComponent() {
               alt="avatar"
               className="h-[56px] w-[56px] rounded-full border border-khakeshtari-400"
             />
-            <p className="mr-4">{userId}</p>
+            <p className="mr-4">{username}</p>
           </div>
           
           <ul >

@@ -1,11 +1,11 @@
 import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
-import Login from "./components/Login";
-import SignUp from "./components/Signup";
-import RetrievePassword from "./components/RetrievePassword";
-import SetNewPassword from "./components/SetNewPassword";
+import Login from "./components/signup-login/Login";
+import SignUp from "./components/signup-login/Signup";
+import RetrievePassword from "./components/signup-login/RetrievePassword";
+import SetNewPassword from "./components/signup-login/SetNewPassword";
 import ErrorLayout from "./components/Error";
-import CheckYourEmail from "./components/CheckYourEmail";
-import ProfilePage from "./components/ProfilePage";
+import CheckYourEmail from "./components/signup-login/CheckYourEmail";
+import ProfilePage from "./components/profile-page/ProfilePage";
 import PostsPage from "./components/Posts/PostsPage";
 
 export default function App() {

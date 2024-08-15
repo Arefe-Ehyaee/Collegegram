@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import successSvg from "./assets/icons/check-circle.svg"
-import Banner from './components/BannerComponent';
 import App from './App';
 import { RecoilRoot } from 'recoil';
 
