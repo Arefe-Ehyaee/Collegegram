@@ -7,6 +7,8 @@ import ErrorLayout from "./components/Error";
 import CheckYourEmail from "./components/signup-login/CheckYourEmail";
 import ProfilePage from "./components/profile-page/ProfilePage";
 import PostsPage from "./components/Posts/PostsPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   return (
@@ -23,6 +25,8 @@ export default function App() {
           <Route path="/userprofile" element={<ProfilePage />} />
           <Route path="/posts" element={<PostsPage />} />
         </Routes>
+
+        <ToastContainer bodyClassName="toastBody" />
       </BrowserRouter>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -15,6 +15,8 @@ import keySvg from "../../assets/icons/key.svg";
 import { useSetRecoilState } from "recoil";
 import { authAtom,userProfileAtom } from "../../user-actions/atoms";
 import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
+import { toast } from "react-toastify";
+
 
 const loginSchema = z.object({
   username: z
@@ -59,11 +61,11 @@ const Login: React.FC = () => {
       if (response.ok) {
         setAuth({ token });
         navigate("/userprofile");
+        toast.success("با موفقیت وارد شدید!");
 
-        // toast.success('Login successful!');
       }
     } catch (error) {
-      // toast.error(`Error: ${error}`);
+      toast.error("نام کاربری یا رمز عبور اشتباهه!");
       console.error("Login error:", error);
     } finally {
       setIsLoading(false);
@@ -104,7 +106,9 @@ const Login: React.FC = () => {
             <NavLink to="/retrievePass">
               <ArrowLink text="فراموشی رمز عبور" />
             </NavLink>
-            <ArrowLink text="ثبت نام در کالج گرام" />
+            <NavLink to="/signup">
+              <ArrowLink text="ثبت نام در کالج گرام" />
+            </NavLink>
           </div>
         </form>
 
