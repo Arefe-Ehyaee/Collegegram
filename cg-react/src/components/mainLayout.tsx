@@ -1,6 +1,7 @@
 import rcLogo from "../assets/icons/rclogo.svg";
 import NavbarMobile from "./NavbarMobile";
 import BottomNavbarMobile from "./BottonNavbarMobile";
+import { useState } from "react";
 
 interface MainLayoutProps {
   mainComponents?: JSX.Element;
@@ -9,6 +10,12 @@ interface MainLayoutProps {
 }
 
 const MainLayout: React.FC<MainLayoutProps>  = ({ mainComponents, navBar, children }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(prevState => !prevState);
+  };
+  
   return (
     <div className="flex min-h-screen bg-khakeshtari-100">
       <div className="w-3/4 max-md:mt-[67px] max-md:w-full">
@@ -23,8 +30,8 @@ const MainLayout: React.FC<MainLayoutProps>  = ({ mainComponents, navBar, childr
       </div>
       <div className="block w-1/4 max-md:hidden">{navBar}</div>
       {children}
-      <NavbarMobile></NavbarMobile>
-      <BottomNavbarMobile></BottomNavbarMobile>
+      <NavbarMobile isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
+      {!isMenuOpen && <BottomNavbarMobile />}
 
     </div>
   );

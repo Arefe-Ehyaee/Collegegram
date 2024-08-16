@@ -8,17 +8,21 @@ import tags from "../assets/icons/tag.svg"
 import { useState } from "react";
 import MobileHamMenu from "./MobileHamMenu";
 
+interface NavbarMobileProps {
+  isMenuOpen: boolean;
+  toggleMenu: () => void;
+}
 
-const NavbarMobile: React.FC = () => {
+const NavbarMobile: React.FC<NavbarMobileProps> = ({ isMenuOpen, toggleMenu }) => {
   
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(prevState => !prevState);
-  };
+  // const toggleMenu = () => {
+  //   setIsMenuOpen(prevState => !prevState);
+  // };
 
   return (
-    <div className="fixed top-0 w-full bg-okhra-200 md:hidden">
+    <div className="fixed top-0 w-full bg-khakeshtari-100 border-b border-khakeshtari-400 md:hidden">
       <div className="flex justify-between px-6 py-3">
         <button onClick={toggleMenu}>
           <img src={hamMenu} alt="menu" />

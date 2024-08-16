@@ -1,23 +1,35 @@
 import AvatarName from "../AvatarName";
 import CustomButtonH36 from "../ButtonComponentH36";
 import whitePen from "../../assets/icons/whitePen.svg";
-import post from "../../assets/Images/post.png";
 import DesktopCaption from "./DesktopCaption";
-
-interface ShowPostModalProps {
-  onClose: Function;
-  children?: React.ReactNode;
-  photo: {
-    src: string;
-    alt: string;
-  };
+import ImageCarousel from './ImageCarousel';
+import rect4 from "../../assets/Images/Rectangle 70.png"
+import rect5 from "../../assets/Images/Rectangle 71.png"
+import rect6 from "../../assets/Images/Rectangle 72.png"
+interface Image {
+  src: string;
+  alt: string;
 }
 
-const ShowPostModal = ({ photo, onClose, children }: ShowPostModalProps) => {
+interface ShowPostModalProps {
+  onClose: () => void; 
+  children?: React.ReactNode;
+  photo: Image; 
+}
+
+const ShowPostModal: React.FC<ShowPostModalProps> = ({ photo, onClose, children }) => {
+  const images: Image[] = [
+    { src: rect4, alt: "Description of Rectangle 70" },
+    { src: rect5, alt: "Description of Rectangle 71" },
+    { src: rect6, alt: "Description of Rectangle 72" }
+  ];
+
   return (
     <div className="max-w-[1200px]" dir="rtl">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        <img src={photo.src} alt="post" className="rounded-lg w-full h-auto md:w-[520px] md:h-[376px]" />
+        <div className="w-full h-auto md:w-[520px] md:h-[376px]">
+          <ImageCarousel images={images} />
+        </div>
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between gap-12">
             <div>
