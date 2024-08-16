@@ -93,3 +93,19 @@
   width: 100px;
   height: 60.58px;
 }
+
+.Toastify__toast-container {
+  direction: rtl; 
+}
+
+
+.Toastify__toast {
+  direction: rtl; 
+}
+
+
+.Toastify__toast-body {
+  font-family: 'IRANSansWeb', sans-serif; 
+  font-size: 0.875rem !important; 
+  direction: rtl;
+}
