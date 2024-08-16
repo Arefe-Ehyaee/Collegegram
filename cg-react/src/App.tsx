@@ -9,6 +9,8 @@ import ProfilePage from "./components/profile-page/ProfilePage";
 import PostsPage from "./components/Posts/PostsPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UsersProfilePage from "./components/Users/UsersProfilePage";
+
 
 export default function App() {
   return (
@@ -24,6 +26,7 @@ export default function App() {
           <Route path="/checkYourEmail" element={<CheckYourEmail />} />
           <Route path="/userprofile" element={<ProfilePage />} />
           <Route path="/posts" element={<PostsPage />} />
+          <Route path="/users" element={<UsersProfilePage />} />
         </Routes>
 
         <ToastContainer bodyClassName="toastBody" />
