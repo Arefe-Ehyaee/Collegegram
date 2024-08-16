@@ -82,7 +82,7 @@ export default function SideNavbarComponent() {
           onClose={() => setUploadModal(false)}
         >
           {" "}
-          <UploadPostsModal/>
+          <UploadPostsModal onClose={() => setUploadModal(false)}/>
         </ModalTemplate>
       )}
     </div>
