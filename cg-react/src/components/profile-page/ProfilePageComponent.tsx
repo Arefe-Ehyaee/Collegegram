@@ -24,8 +24,8 @@ export default function ProfilePageComponent() {
               ? profileData.username
               : prevProfile.username,
           avatar:
-            profileData.avatar_url !== null && profileData.avatar_url !== undefined
-              ? profileData.avatar_url
+            profileData.avatar !== null && profileData.avatar !== undefined
+              ? profileData.avatar
               : prevProfile.avatar,
           first_name:
             profileData.first_name !== null && profileData.first_name !== undefined

@@ -14,6 +14,17 @@ import { userProfileAtom } from "../../user-actions/atoms";
 
 const EditProfileSchema = z
   .object({
+    avatar: z
+      .any()
+      .optional()
+      .refine(
+        (file) => !file || file.length === 0 || (file[0]?.type.startsWith("image/")),
+        "Only image files are allowed"
+      )
+      .refine(
+        (file) => !file || file.length === 0 || (file[0]?.size <= 5 * 1024 * 1024),
+        "File size should be less than 5MB"
+      ),
     first_name: z
       .string()
       .min(3, { message: "نام باید حداقل 3 کاراکتر باشد" })
@@ -62,7 +73,7 @@ interface ProfileFormProps {
   email: string;
   bio: string;
   confirmPassword: string;
-  avatar:string
+  avatar: FileList;
 }
 
 const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
@@ -76,23 +87,36 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
 
   const fetchWrapper = useFetchWrapper();
   const setUserProfile = useSetRecoilState(userProfileAtom);
+
   const onSubmit = async (data: ProfileFormProps) => {
     console.log("Raw form data:", data);
-    const filteredData = Object.fromEntries(
-      Object.entries(data).filter(([_, value]) => value !== ""),
-    );
-
+  
+    const filteredData = new FormData();
+  
+    Object.entries(data).forEach(([key, value]) => {
+      if (value && value !== "") {
+        if (key === "avatar" && value.length > 0) {
+          filteredData.append(key, value[0]); 
+        } else {
+          filteredData.append(key, value as string); 
+        }
+      }
+    });
+  
     try {
       const response = await fetchWrapper.patch(
         "http://5.34.194.155:4000/users/profile",
-        filteredData,
+        filteredData 
       );
-      console.log(filteredData);
-
+  
       if (response.ok) {
+        console.log(response.data);
         setUserProfile((prevProfile) => ({
           ...prevProfile,
-          ...filteredData,
+          ...Object.fromEntries(filteredData),
+          avatar: filteredData.get("avatar")
+            ? URL.createObjectURL(filteredData.get("avatar") as File)
+            : prevProfile.avatar,
         }));
       } else {
         console.error("Failed to update profile", response.statusText);
@@ -103,15 +127,27 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
       onClose();
     }
   };
+  
 
   return (
     <div className="flex flex-col items-center">
       <h2 className="pb-8 text-xl font-bold text-sabz-400">ویرایش حساب</h2>
-      <img
-        src={profileImage}
-        alt="profile image edit/upload"
-        className="h-[91px] w-[91px] rounded-full border-2 border-tala"
+      <label htmlFor="avatar" className="cursor-pointer">
+        <img
+          src={profileImage}
+          alt="profile image edit/upload"
+          className="h-[91px] w-[91px] rounded-full border-2 border-tala"
+        />
+      </label>
+      <input
+        type="file"
+        id="avatar"
+        className="hidden"
+        {...register("avatar")}
       />
+      {errors.avatar && (
+        <p className="text-red-500">{errors.avatar.message as string}</p>
+      )}
       <h3 className="mb-12 pt-2 text-sm text-sabz-200">عکس پروفایل</h3>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <TextInputComponent
@@ -159,7 +195,7 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
           <textarea
             id="bio"
             className="h-[88px] w-[320px] resize-none rounded-[32px] border border-sabz-200 p-4"
-            {...register("bio", { max: 64 })}
+            {...register("bio")}
           ></textarea>
         </div>
         <div className="flex flex-row items-center justify-end">

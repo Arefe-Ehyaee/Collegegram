@@ -4,7 +4,7 @@ import { Children } from "react";
 
 interface ModalProps {
   showModal: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   styling?: string;
   mainComponent?: JSX.Element;
   children?:React.ReactNode

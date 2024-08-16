@@ -31,7 +31,6 @@ const TextAreaWithEmojiComponent: React.FC<InputProps> = ({
 
   return (
     <div className="relative">
-      {/* Label Positioned Above and Right with 8px Gap */}
       {label && (
         <label
           htmlFor={name}
@@ -41,7 +40,6 @@ const TextAreaWithEmojiComponent: React.FC<InputProps> = ({
         </label>
       )}
       
-      {/* Emoji Picker Button Positioned Above and Left with 8px Gap */}
       <div className="absolute left-0 top-[-30px] ml-2">
         <button onClick={() => setShowPicker(!showPicker)}>
           <img src={addEmojiIcon} alt="Add Emoji" className="h-6 w-6" />
@@ -59,6 +57,8 @@ const TextAreaWithEmojiComponent: React.FC<InputProps> = ({
         placeholder={placeholder}
         className={`h-[88px] w-[320px] resize-none rounded-[32px] border border-sabz-200 ${styling} p-4`}
         {...register(name)}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
       ></textarea>
 
       {error && (
