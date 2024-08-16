@@ -43,7 +43,6 @@ const Login: React.FC = () => {
 
   const fetchWrapper = useFetchWrapper();
   const setAuth = useSetRecoilState(authAtom);
-  const setUserProfile = useSetRecoilState(userProfileAtom);
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     try {
