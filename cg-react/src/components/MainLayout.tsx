@@ -18,8 +18,8 @@ const MainLayout: React.FC<MainLayoutProps>  = ({ mainComponents, navBar, childr
   
   return (
     <div className="flex min-h-screen bg-khakeshtari-100">
-      <div className="w-3/4 max-md:mt-[67px] max-md:w-full">
-        <header className="justify-start">
+      <div className="w-3/4 md:w-full">
+        <header className="flex justify-start">
           <img
             src={rcLogo}
             alt="collegeGram Logo"

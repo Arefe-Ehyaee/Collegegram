@@ -61,7 +61,7 @@ export default function ProfilePageComponent() {
     fetchUserProfile();
   }, [setUserProfile, showEditModal]);
   return (
-    <div dir="rtl">
+    <div dir="rtl" className="px-16">
       <div className="ml-16 border-b border-khakeshtari-400 py-9 max-sm:ml-8 max-sm:mr-8">
         <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
           <div className="flex items-center gap-8">
