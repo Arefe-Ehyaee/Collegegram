@@ -6,9 +6,8 @@ import rect4 from "../../assets/Images/Rectangle 70.png"
 import rect5 from "../../assets/Images/Rectangle 71.png"
 import rect6 from "../../assets/Images/Rectangle 72.png"
 import { useState } from "react";
-import ModalTemplate from "../ModalTemplate";
 import ShowPostModal from "./ShowPostModal";
-import PostComponent from "./PostComponent";
+import ModalTemplatePost from "./ModalTemplatePost";
 
 
 interface ShowPostsProps {
@@ -57,7 +56,7 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
         ))}
       </div>
       {showPostModal && (
-        <ModalTemplate
+        <ModalTemplatePost
           onClose={() => setPostShowModal(false)}
           showModal={showPostModal}
         >
@@ -65,7 +64,7 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
             onClose={() => setPostShowModal(false)}
             photo={selectedPhoto!} 
           />
-        </ModalTemplate>
+        </ModalTemplatePost>
       )}
     </div>
   );
