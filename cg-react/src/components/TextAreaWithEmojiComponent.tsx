@@ -41,9 +41,12 @@ const TextAreaWithEmojiComponent: React.FC<InputProps> = ({
       )}
       
       <div className="absolute left-0 top-[-30px] ml-2">
-        <button onClick={() => setShowPicker(!showPicker)}>
-          <img src={addEmojiIcon} alt="Add Emoji" className="h-6 w-6" />
-        </button>
+      <img
+          src={addEmojiIcon}
+          alt="Add Emoji"
+          className="h-6 w-6"
+          onClick={() => setShowPicker(!showPicker)}
+        />
         {showPicker && (
           <div className="absolute top-[30px] z-10">
             <Picker data={data} onEmojiSelect={addEmoji} theme="light" />
