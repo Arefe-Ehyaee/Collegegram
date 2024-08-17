@@ -27,7 +27,7 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({ photo, onClose, children 
   return (
     <div className="max-w-[1200px]" dir="rtl">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-14">
-        <div className="w-full h-auto md:w-[520px] md:h-[376px]">
+        <div className="w-full h-auto md:max-w-[520px] md:max-h-[376px]">
           <ImageCarousel images={images} />
         </div>
         <div className="flex flex-col gap-3">

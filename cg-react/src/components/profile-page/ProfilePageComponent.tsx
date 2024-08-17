@@ -49,8 +49,8 @@ export default function ProfilePageComponent() {
     fetchUserProfile();
   }, [setUserProfile,showEditModal]);
   return (
-    <div dir="rtl">
-      <div className="ml-16 border-b border-khakeshtari-400 py-9 max-sm:ml-8 max-sm:mr-8">
+    <div dir="rtl" className="px-16">
+      <div className="border-b border-khakeshtari-400 py-9">
         <h2 className="mb-9 block font-isf text-xl font-bold max-sm:hidden">
           صفحه من
         </h2>

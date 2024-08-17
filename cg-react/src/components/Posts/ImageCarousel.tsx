@@ -17,7 +17,7 @@ interface ImageCarouselProps {
         slidesPerView={1}
         navigation
         pagination={{ clickable: true }}
-        className=" md:w-[520px] md:h-[376px]"
+        // className=" md:w-[520px] md:h-[376px]"
       >
         {images.map((image, index) => (
           <SwiperSlide key={index}>

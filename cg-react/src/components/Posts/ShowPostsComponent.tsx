@@ -39,22 +39,23 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
   }
 
   return (
-    <div className="ml-16 mt-8 flex min-h-[580px] justify-center rounded-t-3xl border border-khakeshtari-400 align-middle max-sm:ml-8 max-sm:mr-8">
+    <div className="my-8 grid rounded-3xl border border-khakeshtari-400">
       {/* <CustomButtonH36
         text="ایجاد پست جدید"
         styling="bg-okhra-200 self-center"
       ></CustomButtonH36> */}
-      <div className="grid grid-cols-3 gap-x-8 gap-y-6 max-md:grid-cols-2 max-md:gap-y-2 max-md:gap-4">
+      <div className="grid grid-cols-2 gap-8 md:grid-cols-3 md:gap-8">
       {photos.map((photo) => (
           <img
           key={photo.id}
-          className="aspect-square w-full cursor-pointer h-[304px]"
+          className="aspect-square w-full cursor-pointer max-h-[304px]"
           src={photo.src}
           alt={photo.alt}
           onClick={() => handleOnClick(photo)}
         />
         ))}
       </div>
+
       {showPostModal && (
         <ModalTemplatePost
           onClose={() => setPostShowModal(false)}
