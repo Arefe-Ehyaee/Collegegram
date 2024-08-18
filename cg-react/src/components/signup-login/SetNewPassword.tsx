@@ -8,7 +8,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 
 const SetNewPassSchema = z.object({
@@ -76,7 +76,9 @@ const SetNewPassword: React.FC = () => {
       }
 
       const result = await response.json();
+      
       setMessage(result.message || 'Password reset successfully');
+      
     } catch (error) {
       if (error instanceof Error) {
         setMessage(error.message || 'An error occurred');

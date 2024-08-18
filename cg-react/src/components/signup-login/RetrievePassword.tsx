@@ -3,7 +3,7 @@ import InputField from "../TextInputComponent";
 import UserSvg from "../../assets/icons/user.svg";
 import CustomButtonH36 from "../ButtonComponentH36";
 import Label from "../Label";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import BoxTitle from "./BoxTitle";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -32,6 +32,8 @@ const RetrievePassword: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
+  const navigate = useNavigate();
+
   const onSubmit = async (data: RetrievePassFormData) => {
     setLoading(true);
     setMessage(null); 
@@ -51,6 +53,7 @@ const RetrievePassword: React.FC = () => {
 
       const result = await response.json();
       setMessage(result.message || 'Password reset link sent successfully');
+      navigate("/checkYourEmail");
     } catch (error) {
       if (error instanceof Error) {
         setMessage(error.message || 'An error occurred');

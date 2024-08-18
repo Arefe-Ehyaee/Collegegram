@@ -45,6 +45,8 @@ const Login: React.FC = () => {
 
   const fetchWrapper = useFetchWrapper();
   const setAuth = useSetRecoilState(authAtom);
+
+  
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     try {
@@ -55,10 +57,11 @@ const Login: React.FC = () => {
           password: data.password,
         },
       );
-
-      const token = response.data.token;
+      const { token } = response.data;
+      // const token = response.data.token;
 
       if (response.ok) {
+        localStorage.setItem('token', token);
         setAuth({ token });
         navigate("/userprofile");
         toast.success("با موفقیت وارد شدید!");

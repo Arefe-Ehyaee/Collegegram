@@ -33,7 +33,7 @@ export function useFetchWrapper() {
   }
 
   function authHeader(): Record<string, string> {
-    const token = auth?.token;
+    const token = localStorage.getItem('token');
     const isLoggedIn = !!token;
     if (isLoggedIn) {
       return { Authorization: `Bearer ${token}` };
