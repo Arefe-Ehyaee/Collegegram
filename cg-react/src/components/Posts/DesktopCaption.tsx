@@ -1,13 +1,13 @@
 import Hashtag from "./HashtagsComponent";
 
-interface DesktopCaptionProps {
+interface CaptionProps {
     date: string;
     caption: string;
 }
 
-const DesktopCaption: React.FC<DesktopCaptionProps> = ({ date, caption }) => {
+const Caption: React.FC<CaptionProps> = ({ date, caption }) => {
     return (
-        <div className="mt-14" dir="rtl">
+        <div className="mt-5" dir="rtl">
             <div className="font-isf font-normal text-[11px] max-md:px-6" dir="rtl">
                 {date}
             </div>
@@ -24,4 +24,4 @@ const DesktopCaption: React.FC<DesktopCaptionProps> = ({ date, caption }) => {
     );
 }
 
-export default DesktopCaption;
+export default Caption;

@@ -5,6 +5,7 @@ import AvatarName from "../AvatarName";
 import CustomButtonH36 from "../ButtonComponentH36";
 import DesktopCaption from "./DesktopCaption";
 import BottomNavbarMobile from "../BottonNavbarMobile";
+import CommentingComponent from "../CommentingComponent";
 
 interface PostsPageProps {
   imageSrc?: string;
@@ -20,28 +21,28 @@ const PostComponent: React.FC<PostsPageProps> = ({ children,
  date= "2 ماه پیش"
  }) => {
   return (
-    <div>
-      <div className="mx-auto h-[720px] w-[520px] max-md:h-full max-md:w-full mt-4">
-        <div
-          className="flex items-center justify-between max-md:mt-0"
-          dir="rtl"
-        >
-          <AvatarName name={"mahmz"} styling="py-4 pr-1"></AvatarName>
-          <CustomButtonH36
-            text={"ویرایش پست"}
-            iconsrc={whitePen}
-            styling="bg-okhra-200 ml-1 max-md:hidden"
-          ></CustomButtonH36>
-          <img src={redPen} alt="edit" className="pl-6 md:hidden" />
-        </div>
-        <img src={imageSrc} alt="post" className="py-2" />
-        <DesktopCaption
-          date={date}
-          caption={caption}
-        ></DesktopCaption>
-        {children}
-        <BottomNavbarMobile></BottomNavbarMobile>
+    <div className="mx-auto h-[720px] w-[520px] max-md:h-full max-md:w-full mt-4">
+      <div
+        className="flex items-center justify-between max-md:mt-0"
+        dir="rtl"
+      >
+        <AvatarName name={"mahmz"} styling="py-4 pr-1"></AvatarName>
+        <CustomButtonH36
+          text={"ویرایش پست"}
+          iconsrc={whitePen}
+          styling="bg-okhra-200 ml-1 max-md:hidden"
+        ></CustomButtonH36>
+        <img src={redPen} alt="edit" className="pl-6 md:hidden" />
       </div>
+      <img src={imageSrc} alt="post" className="py-3" />
+      <DesktopCaption
+        date={date}
+        caption={caption}
+      ></DesktopCaption>
+      {children}
+      <CommentingComponent name={"coment"} type={"text"} placeholder={"نظر خود را بنویسید..."}></CommentingComponent>
+
+      <BottomNavbarMobile></BottomNavbarMobile>
     </div>
   );
 };
