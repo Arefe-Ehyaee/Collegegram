@@ -10,7 +10,7 @@ import PostsPage from "./components/Posts/PostsPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UsersProfilePage from "./components/Users/UsersProfilePage";
-
+import PrivateRoute from "./components/signup-login/PrivateRoute";
 
 export default function App() {
   return (
@@ -20,12 +20,46 @@ export default function App() {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/retrievePass" element={<RetrievePassword />} />
-          <Route path="/reset-password" element={<SetNewPassword />} />
-          <Route path="/error" element={<ErrorLayout />} />
-          <Route path="/checkYourEmail" element={<CheckYourEmail />} />
-          <Route path="/userprofile" element={<ProfilePage />} />
-          <Route path="/posts" element={<PostsPage />} />
+          <Route
+            path="/retrievePass"
+            element={
+                <RetrievePassword />
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+                <SetNewPassword />
+            }
+          />
+          <Route
+            path="/error"
+            element={
+                <ErrorLayout />
+            }
+          />
+          <Route
+            path="/checkYourEmail"
+            element={
+                <CheckYourEmail />
+            }
+          />
+          <Route
+            path="/userprofile"
+            element={
+              <PrivateRoute>
+                <ProfilePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/posts"
+            element={
+              <PrivateRoute>
+                <PostsPage />
+              </PrivateRoute>
+            }
+          />
           <Route path="/users" element={<UsersProfilePage />} />
         </Routes>
 
