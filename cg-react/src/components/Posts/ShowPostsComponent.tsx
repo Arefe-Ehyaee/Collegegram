@@ -52,7 +52,8 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
           src={photo.src}
           alt={photo.alt}
           onClick={() => handleOnClick(photo)}
-        />
+          />
+        
         ))}
       </div>
 

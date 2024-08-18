@@ -6,6 +6,7 @@ import ImageCarousel from './ImageCarousel';
 import rect4 from "../../assets/Images/Rectangle 70.png"
 import rect5 from "../../assets/Images/Rectangle 71.png"
 import rect6 from "../../assets/Images/Rectangle 72.png"
+import CommentingComponent from "../CommentingComponent";
 interface Image {
   src: string;
   alt: string;
