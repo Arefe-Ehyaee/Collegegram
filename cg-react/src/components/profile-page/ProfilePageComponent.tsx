@@ -40,6 +40,10 @@ export default function ProfilePageComponent() {
             profileData.bio !== null && profileData.bio !== undefined
               ? profileData.bio
               : prevProfile.bio,
+              email:
+              profileData.email !== null && profileData.email !== undefined
+                ? profileData.email
+                : prevProfile.email,
         }));
       } catch (error) {
         console.error("Error fetching user profile:", error);

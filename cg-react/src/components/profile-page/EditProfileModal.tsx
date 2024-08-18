@@ -9,7 +9,7 @@ import { z } from "zod";
 import CustomButtonH36 from "../ButtonComponentH36";
 import ToggleSwitch from "../ToggleButton";
 import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { userProfileAtom } from "../../user-actions/atoms";
 
 const EditProfileSchema = z
@@ -18,12 +18,14 @@ const EditProfileSchema = z
       .any()
       .optional()
       .refine(
-        (file) => !file || file.length === 0 || (file[0]?.type.startsWith("image/")),
-        "Only image files are allowed"
+        (file) =>
+          !file || file.length === 0 || file[0]?.type.startsWith("image/"),
+        "Only image files are allowed",
       )
       .refine(
-        (file) => !file || file.length === 0 || (file[0]?.size <= 5 * 1024 * 1024),
-        "File size should be less than 5MB"
+        (file) =>
+          !file || file.length === 0 || file[0]?.size <= 5 * 1024 * 1024,
+        "File size should be less than 5MB",
       ),
     first_name: z
       .string()
@@ -77,38 +79,45 @@ interface ProfileFormProps {
 }
 
 const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
+  const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<ProfileFormProps>({
     resolver: zodResolver(EditProfileSchema),
+    defaultValues: {
+      first_name: userProfile.first_name,
+      last_name: userProfile.last_name,
+      email: userProfile.email,
+      bio: userProfile.bio,
+    },
   });
 
   const fetchWrapper = useFetchWrapper();
-  const setUserProfile = useSetRecoilState(userProfileAtom);
 
   const onSubmit = async (data: ProfileFormProps) => {
     console.log("Raw form data:", data);
-  
+
     const filteredData = new FormData();
-  
+
     Object.entries(data).forEach(([key, value]) => {
       if (value && value !== "") {
         if (key === "avatar" && value.length > 0) {
-          filteredData.append(key, value[0]); 
+          filteredData.append(key, value[0]);
         } else {
-          filteredData.append(key, value as string); 
+          filteredData.append(key, value as string);
         }
       }
     });
-  
+
     try {
       const response = await fetchWrapper.patch(
         "http://5.34.194.155:4000/users/profile",
-        filteredData 
+        filteredData,
       );
-  
+
       if (response.ok) {
         console.log(response.data);
         setUserProfile((prevProfile) => ({
@@ -127,7 +136,6 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
       onClose();
     }
   };
-  
 
   return (
     <div className="flex flex-col items-center">
