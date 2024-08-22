@@ -1,17 +1,15 @@
-import ShowComment from "./Posts/ShowComment";
+import PostInteractions from "./Posts/PostInteractions";
+
 
 const defaultProps = {
-  accountName: 'متین',
-  commentTime: "۱ هفته پیش",
-  commentMessage: 'خیلی عکس قشنگ و جالبیه. جایی رو می‌شناسی که این دکور رو بسازن؟',
-  parentID: '123qwsdad',
-  postID: '123htjrn',
+comments:50,
+bookmarks:3,
   likes: 337,
 };
 
 const TestPage = () => {
   return (
-    <ShowComment {...defaultProps} /> 
+    <PostInteractions {...defaultProps}/>
   );
 };
 
