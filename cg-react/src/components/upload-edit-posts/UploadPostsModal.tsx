@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import CustomButtonH36 from "../ButtonComponentH36";
 import InputField from "../TextInputComponent";
+import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 
 interface UploadModalProps {
   onClose: Function;
@@ -17,7 +18,7 @@ interface UploadModalProps {
 interface UploadPostProps {
   pictures: File[];
   caption?: string;
-  mention?: string;
+  mentions?: string;
 }
 
 const UploadPostSchema = z.object({
@@ -32,7 +33,7 @@ const UploadPostSchema = z.object({
       (file) => file && file[0]?.size <= 5 * 1024 * 1024,
       "حجم عکس‌ها باید کمتر از ۵ مگابایت باشد",
     ),
-  mention: z.string().optional(),
+  mentions: z.string().optional(),
 });
 
 const UploadPostsModal = ({ onClose }: UploadModalProps) => {
@@ -46,11 +47,46 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
   });
 
   const [selectedPhotos, setSelectedPhotos] = useState<File[]>([]);
-  const [currentStep, setCurrentStep] = useState(1); // State to track the current step
+  const [currentStep, setCurrentStep] = useState(1);
+  const fetchWrapper = useFetchWrapper();
 
   const onSubmit = async (data: UploadPostProps) => {
-    console.log(data);
-    onClose(); // Close modal after submission
+    const formData = new FormData();
+    if (data.pictures) {
+      data.pictures.forEach((file) => {
+        formData.append("pictures", file);
+      });
+    }
+  
+
+    if (data.caption) {
+      formData.append("caption", data.caption);
+    }
+
+    if (data.mentions) {
+      formData.append("mentions", data.mentions);
+    }
+
+   for (let [key, value] of formData.entries()) {
+    console.log(`${key}:`, value);}
+
+    try {
+      const response = await fetchWrapper.post(
+        "http://5.34.194.155:4000/posts",
+        formData,
+      );
+      if (response.ok) {
+        console.log(response);
+      }
+
+      else {
+        console.error("Failed to upload", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error uploading:", error);
+    } finally {
+      onClose();
+    }
   };
 
   return (
@@ -95,8 +131,16 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
               ))}
             </div>
             <div className="mt-8 flex flex-row self-end">
-              <CustomButtonH36 text="پشیمون شدم" styling="!text-siah ml-4" handleOnClick={() => onClose()} />
-              <CustomButtonH36 text="بعدی" styling="bg-okhra-200" handleOnClick={() => setCurrentStep(2)} />
+              <CustomButtonH36
+                text="پشیمون شدم"
+                styling="!text-siah ml-4"
+                handleOnClick={() => onClose()}
+              />
+              <CustomButtonH36
+                text="بعدی"
+                styling="bg-okhra-200"
+                handleOnClick={() => setCurrentStep(2)}
+              />
             </div>
           </div>
         )}
@@ -113,8 +157,16 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
               error={errors.caption?.message}
             />
             <div className="mt-8 flex flex-row self-end">
-              <CustomButtonH36 text="پشیمون شدم" styling="!text-siah ml-4" handleOnClick={() => setCurrentStep(1)} />
-              <CustomButtonH36 text="بعدی" styling="bg-okhra-200" handleOnClick={() => setCurrentStep(3)} />
+              <CustomButtonH36
+                text="پشیمون شدم"
+                styling="!text-siah ml-4"
+                handleOnClick={() => setCurrentStep(1)}
+              />
+              <CustomButtonH36
+                text="بعدی"
+                styling="bg-okhra-200"
+                handleOnClick={() => setCurrentStep(3)}
+              />
             </div>
           </div>
         )}
@@ -122,17 +174,27 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
         {currentStep === 3 && (
           <div className="flex flex-col items-center">
             <img src={stepper3} alt="progress stepper" className="mb-8" />
-            <h3 className="mb-16 text-lg">اینجا می‌تونی دوستانت رو منشن کنی:</h3>
+            <h3 className="mb-16 text-lg">
+              اینجا می‌تونی دوستانت رو منشن کنی:
+            </h3>
             <InputField
               type="text"
-              name="mention"
+              name="mentions"
               placeholder=""
               register={register}
-              error={errors.mention?.message}
+              error={errors.mentions?.message}
             />
             <div className="mt-8 flex flex-row self-end">
-              <CustomButtonH36 text="پشیمون شدم" styling="!text-siah ml-4" handleOnClick={() => setCurrentStep(2)} />
-              <CustomButtonH36 text="ثبت و انتشار پست" styling="bg-okhra-200" handleOnClick={handleSubmit(onSubmit)} />
+              <CustomButtonH36
+                text="پشیمون شدم"
+                styling="!text-siah ml-4"
+                handleOnClick={() => setCurrentStep(2)}
+              />
+              <CustomButtonH36
+                text="ثبت و انتشار پست"
+                styling="bg-okhra-200"
+                handleOnClick={handleSubmit(onSubmit)}
+              />
             </div>
           </div>
         )}
