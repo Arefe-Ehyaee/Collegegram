@@ -5,9 +5,11 @@ import AvatarName from "../AvatarName";
 import CustomButtonH36 from "../ButtonComponentH36";
 import DesktopCaption from "./DesktopCaption";
 import BottomNavbarMobile from "../BottonNavbarMobile";
-import CommentingComponent from "../CommentingComponent";
-import { useRecoilValue } from "recoil";
 import { userProfileAtom } from "../../user-actions/atoms";
+import { useRecoilState } from "recoil";
+import CommentSection from "./CommentSection";
+import mockData from './mockCommentData.json'
+import { useRecoilValue } from "recoil";
 
 interface PostsPageProps {
   imageSrc?: string;
@@ -23,10 +25,23 @@ const PostComponent: React.FC<PostsPageProps> = ({ children,
   "ترس یکی از مهمترین عوامل #قدرت است؛ کسی که بتواند در #جامعه سمت و سوی ترس را معین کند #قدرت زیادی بر آن جامعه پیدا می‌کند. شاید بتوان هم صدا با جورجو آگامبنِ فیلسوف گفت که ما امروزه همیشه در یک حالت اضطراری زندگی می‌کنیم ",
  date= "2 ماه پیش"
  }) => {
-
   const userProfile = useRecoilValue(userProfileAtom);
+const mockCommentData = mockData.data
+ 
+   const commentingProps = {
+      avatar : userProfile.avatar,
+    }
+
+  
+ 
+
   const avatar = userProfile.avatar;
   const username = userProfile.username;
+ 
+
+
+  
+ 
   return (
     <div className="mx-auto h-[720px] w-[520px] max-md:h-full max-md:w-full mt-4">
       <div
@@ -47,8 +62,7 @@ const PostComponent: React.FC<PostsPageProps> = ({ children,
         caption={caption}
       ></DesktopCaption>
       {children}
-      <CommentingComponent name={"coment"} type={"text"} placeholder={"نظر خود را بنویسید..."}></CommentingComponent>
-
+      <CommentSection showProps={mockCommentData} commentingProps={commentingProps}  ></CommentSection>
       <BottomNavbarMobile></BottomNavbarMobile>
     </div>
   );
