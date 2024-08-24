@@ -21,14 +21,14 @@ interface Photo {
   alt: string;
 }
 
-// const photoList: Photo[] = [
-//   { id: '1', src: rect1, alt: 'Rectangle 67' },
-//   { id: '2', src: rect2, alt: 'Rectangle 68' },
-//   { id: '3', src: rect3, alt: 'Rectangle 69' },
-//   { id: '4', src: rect4, alt: 'Rectangle 70' },
-//   { id: '5', src: rect5, alt: 'Rectangle 71' },
-//   { id: '6', src: rect6, alt: 'Rectangle 72' }
-// ];
+const photoList: Photo[] = [
+  { id: '1', src: rect1, alt: 'Rectangle 67' },
+  { id: '2', src: rect2, alt: 'Rectangle 68' },
+  { id: '3', src: rect3, alt: 'Rectangle 69' },
+  { id: '4', src: rect4, alt: 'Rectangle 70' },
+  { id: '5', src: rect5, alt: 'Rectangle 71' },
+  { id: '6', src: rect6, alt: 'Rectangle 72' }
+];
 
 
 export default function ShowPostsComponent({ styling }: ShowPostsProps) {
@@ -41,18 +41,18 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
     setPostShowModal(true);
   }
 
-  const {data, error, isPending, isError } = useQuery({
-    queryKey: ['posts'],
-    queryFn: () => FetchPosts(token || ""),
-  })
+  // const {data, error, isPending, isError } = useQuery({
+  //   queryKey: ['posts'],
+  //   queryFn: () => FetchPosts(token || ""),
+  // })
 
-  if(isPending){
-    return <span>Loading...</span>
-  }
+  // if(isPending){
+  //   return <span>Loading...</span>
+  // }
 
-  if(isError){
-    return <span>Error: {error.message}</span>
-  }
+  // if(isError){
+  //   return <span>Error: {error.message}</span>
+  // }
 
 
   return (
@@ -62,7 +62,7 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
         styling="bg-okhra-200 self-center"
       ></CustomButtonH36> */}
       <div className="grid grid-cols-2 gap-8 md:grid-cols-3 md:gap-8">
-      {data.map((photo: Photo) => (
+      {photos.map((photo: Photo) => (
           <img
           key={photo.id}
           className="aspect-square w-full cursor-pointer max-h-[304px]"
