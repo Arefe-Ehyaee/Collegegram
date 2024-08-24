@@ -1,7 +1,9 @@
 import axios from "axios";
+import { UserProfile } from "../../user-actions/atoms";
+import { Follower } from "./ProfilePageComponent";
 
 
-export const FetchFollowers = async (userId: string, token: string) => {
+export const FetchFollowers = async (userId: string, token: string): Promise<Follower[]> => {
 
     if(!userId) {
         throw new Error("User ID is required.")
@@ -11,5 +13,6 @@ export const FetchFollowers = async (userId: string, token: string) => {
             Authorization: `Bearer ${token}`
         }
     });
-    return response.data.data;
+
+    return response.data.data.followers;
 }

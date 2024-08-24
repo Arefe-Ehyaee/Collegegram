@@ -1,3 +1,5 @@
+import AvatarName from "./AvatarName";
+import FollowerFollowing from "./FollowerFollowing";
 import PostInteractions from "./Posts/PostInteractions";
 
 
