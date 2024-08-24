@@ -32,7 +32,6 @@ const photoList: Photo[] = [
 
 
 export default function ShowPostsComponent({ styling }: ShowPostsProps) {
-  const [photos, setPhotos] = useState<Photo[]>(photoList);
   const [showPostModal, setPostShowModal] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   
