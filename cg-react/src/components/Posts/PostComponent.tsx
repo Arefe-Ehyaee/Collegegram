@@ -43,7 +43,7 @@ const mockCommentData = mockData.data
   
  
   return (
-    <div className="mx-auto h-[720px] w-[520px] max-md:h-full max-md:w-full mt-4">
+    <div className="mx-auto  w-[520px] max-md:h-full max-md:w-full mt-4">
       <div
         className="flex items-center justify-between max-md:mt-0"
         dir="rtl"
