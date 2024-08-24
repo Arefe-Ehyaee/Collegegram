@@ -32,7 +32,6 @@ interface Photo {
 
 
 export default function ShowPostsComponent({ styling }: ShowPostsProps) {
-  const [photos, setPhotos] = useState<Photo[]>(photoList);
   const [showPostModal, setPostShowModal] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   
@@ -43,7 +42,6 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
 
   const {data, error, isPending, isError } = useQuery({
     queryKey: ['posts'],
-    queryFn: () => FetchPosts(token || ""),
   })
 
   if(isPending){
@@ -62,16 +60,7 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
         styling="bg-okhra-200 self-center"
       ></CustomButtonH36> */}
       <div className="grid grid-cols-2 gap-8 md:grid-cols-3 md:gap-8">
-      {data.map((photo: Photo) => (
-          <img
-          key={photo.id}
-          className="aspect-square w-full cursor-pointer max-h-[304px]"
-          src={photo.src}
-          alt={photo.alt}
-          onClick={() => handleOnClick(photo)}
-          />
-        
-        ))}
+      
       </div>
 
       {showPostModal && (

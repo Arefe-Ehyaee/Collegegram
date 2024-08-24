@@ -1,6 +1,5 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useQuery } from "@tanstack/react-query";
-import { FetchPost } from "./FetchPosts";
 
 import 'swiper/css';
 interface Image {
