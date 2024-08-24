@@ -61,7 +61,7 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
         styling="bg-okhra-200 self-center"
       ></CustomButtonH36> */}
       <div className="grid grid-cols-2 gap-8 md:grid-cols-3 md:gap-8">
-      {photos.map((photo: Photo) => (
+      {photoList.map((photo: Photo) => (
           <img
           key={photo.id}
           className="aspect-square w-full cursor-pointer max-h-[304px]"
