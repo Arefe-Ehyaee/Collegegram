@@ -8,6 +8,8 @@ import rect6 from "../../assets/Images/Rectangle 72.png"
 import { useState } from "react";
 import ShowPostModal from "./ShowPostModal";
 import ModalTemplatePost from "./ModalTemplatePost";
+import { useMediaQuery } from "react-responsive";
+import PostsPage from "./PostsPage";
 
 
 interface ShowPostsProps {
@@ -38,6 +40,8 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
     setPostShowModal(true);
   }
 
+  // const isMobile = useMediaQuery({query:"(max-width: 768px)"})
+
   return (
     <div className="my-8 grid rounded-3xl border border-khakeshtari-400">
       {/* <CustomButtonH36
@@ -58,7 +62,7 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
       </div>
 
       {showPostModal && (
-        <ModalTemplatePost
+          <ModalTemplatePost
           onClose={() => setPostShowModal(false)}
           showModal={showPostModal}
         >
@@ -67,7 +71,8 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
             photo={selectedPhoto!} 
           />
         </ModalTemplatePost>
-      )}
+        )
+      }
     </div>
   );
 }

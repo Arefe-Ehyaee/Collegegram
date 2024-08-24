@@ -13,12 +13,15 @@ import { userProfileAtom } from "../user-actions/atoms";
 import { useRecoilValue } from "recoil";
 import ModalTemplate from "./ModalTemplate";
 import UploadPostsModal from "./upload-edit-posts/UploadPostsModal";
+import { useNavigate } from "react-router-dom";
 
 export default function SideNavbarComponent() {
   const userProfile = useRecoilValue(userProfileAtom);
   const avatar = userProfile.avatar;
   const username = userProfile.username;
   const [uploadModal, setUploadModal] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleCreatePostClick = () => {
     setUploadModal(true);
@@ -45,7 +48,7 @@ export default function SideNavbarComponent() {
         <ul>
           <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
             <img src={angledpin} alt="my page icon" className="ml-2" />
-            <a href="#">صفحه من</a>
+            <button onClick={()=>navigate("/userprofile")}>صفحه من</button>
           </li>
           <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
             <img src={bookmark} alt="bookmarks icon" className="ml-2" />

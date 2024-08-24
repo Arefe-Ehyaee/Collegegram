@@ -8,7 +8,8 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
 
 
 const SetNewPassSchema = z.object({
@@ -51,6 +52,8 @@ const SetNewPassword: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
+  const navigate = useNavigate();
+
 
   const onSubmit = async (data: SetNewPassFormData) => {
     setLoading(true);
@@ -78,10 +81,13 @@ const SetNewPassword: React.FC = () => {
       const result = await response.json();
       
       setMessage(result.message || 'Password reset successfully');
+      toast.success('رمز عبور با موفقیت تغییر یافت!');
+      navigate("/login");
       
     } catch (error) {
       if (error instanceof Error) {
         setMessage(error.message || 'An error occurred');
+        toast.error("لینک منقضی شده، لطفا دوباره تلاش کنید!")
       } else {
         setMessage('An unexpected error occurred');
       }

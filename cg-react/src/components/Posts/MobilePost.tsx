@@ -5,12 +5,19 @@ import AvatarName from "../AvatarName";
 import CustomButtonH36 from "../ButtonComponentH36";
 import DesktopCaption from "./DesktopCaption";
 import BottomNavbarMobile from "../BottonNavbarMobile";
+import { useRecoilValue } from "recoil";
+import { userProfileAtom } from "../../user-actions/atoms";
 
 interface MobilePostProps {
   children?: React.ReactNode;
 }
 
 const MobilePost: React.FC<MobilePostProps> = ({ children }) => {
+
+  const userProfile = useRecoilValue(userProfileAtom);
+  const avatar = userProfile.avatar;
+  const username = userProfile.username;
+  
   return (
 
     <div className="mx-auto h-[720px] w-[520px]">
@@ -18,7 +25,7 @@ const MobilePost: React.FC<MobilePostProps> = ({ children }) => {
         className="flex items-center justify-between max-md:mt-[52px]"
         dir="rtl"
       >
-        <AvatarName name={"mahmz"} styling="py-4 pr-1"></AvatarName>
+        <AvatarName name={username} avatar={avatar} styling="py-4 pr-1"></AvatarName>
         <CustomButtonH36
           text={"ویرایش پست"}
           iconsrc={whitePen}
