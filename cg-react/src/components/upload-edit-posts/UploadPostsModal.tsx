@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import CustomButtonH36 from "../ButtonComponentH36";
 import InputField from "../TextInputComponent";
 import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface UploadModalProps {
   onClose: Function;
@@ -45,6 +46,8 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
   } = useForm<UploadPostProps>({
     resolver: zodResolver(UploadPostSchema),
   });
+
+  const queryClient = useQueryClient()
 
   const [selectedPhotos, setSelectedPhotos] = useState<File[]>([]);
   const [currentStep, setCurrentStep] = useState(1);
@@ -85,6 +88,7 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
     } catch (error) {
       console.error("Error uploading:", error);
     } finally {
+      queryClient.invalidateQueries({ queryKey: ['posts']})
       onClose();
     }
   };

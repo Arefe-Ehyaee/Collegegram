@@ -13,7 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import { FetchFollowers } from "./FetchFollowers";
 import { FetchFollowings } from "./FetchFollowings";
 
-interface Follower {
+export interface Follower {
   id?: string,
   avatar?: string,
   username?: string,
@@ -23,7 +23,7 @@ interface Follower {
   followersCount?: number
 }
 
-interface Following {
+export interface Following {
   id?: string,
   avatar?: string,
   username?: string,
@@ -112,7 +112,7 @@ export default function ProfilePageComponent() {
     refetch: refetchFollowers
   } = useQuery({
     queryKey: ['followers', userId],
-    queryFn: () => FetchFollowers(userId || " ", token || ""),
+    queryFn: () => FetchFollowers(userId || "", token || ""),
     enabled: false 
   });
 
@@ -120,13 +120,15 @@ export default function ProfilePageComponent() {
     data: followingsData,
     error: followingsError,
     isFetching: isFetchingFollowings,
-    refetch: refetchFollowings
+    refetch: refetchFollowings,
   } = useQuery({
     queryKey: ['followings', userId],
-    queryFn: () => FetchFollowings(userId || " ", token || ""),
+    queryFn: () => FetchFollowings(userId || "", token || ""),
     enabled: false 
   });
 
+  console.log(followersData)
+  console.log(followingsData)
 
   const handleShowFollowers = () => {
     setFollowerListModal(prevState => !prevState);
@@ -216,8 +218,8 @@ export default function ProfilePageComponent() {
         <ModalTemplate onClose={() => setFollowerListModal(false)} showModal={FollowerListModal} >
           <div className="font-bold text-xl pb-8">دنبال کننده ها</div>
           <div className="max-h-[450px] overflow-y-scroll">
-            {followingsData?.map((follower: Follower) => {
-              <FollowerFollowing key={follower.id} name={follower.username} followersNumber={follower.followersCount} avatar={follower.avatar}></FollowerFollowing>
+            {followingsData && !isFetchingFollowings && followingsData.map((follower: Follower) => {
+              return <FollowerFollowing key={follower.id} name={follower.username} followersNumber={follower.followersCount} avatar={follower.avatar} />
             })}
           </div>
 
@@ -229,8 +231,8 @@ export default function ProfilePageComponent() {
       <ModalTemplate onClose={() => setFollowingListModal(false)} showModal={FollowingListModal} >
         <div className="font-bold text-xl pb-8">دنبال شونده ها</div>
         <div className="max-h-[450px] overflow-y-scroll">
-          {followersData?.map((following: Following) => {
-              <FollowerFollowing key={following.id} name={following.username} followersNumber={following.followersCount} avatar={following.avatar}></FollowerFollowing>
+          {followersData && !isFetchingFollowers && followersData.map((following: Following) => {
+              return <FollowerFollowing key={following.id} name={following.username} followersNumber={following.followersCount} avatar={following.avatar}></FollowerFollowing>
           })}
         </div>
         <CustomButtonH36 text={"بستن"} styling="bg-okhra-200 mt-[34px]" handleOnClick={() => setFollowingListModal(false)}></CustomButtonH36>
