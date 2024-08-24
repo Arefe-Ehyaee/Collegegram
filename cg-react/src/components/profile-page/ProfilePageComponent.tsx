@@ -9,11 +9,37 @@ import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 import FollowerFollowing from "../FollowerFollowing";
 import CustomButtonH36 from "../ButtonComponentH36";
 import avatar107 from "../../assets/Images/Frame 107.png"
+import { useQuery } from "@tanstack/react-query";
+import { FetchFollowers } from "./FetchFollowers";
+import { FetchFollowings } from "./FetchFollowings";
+
+interface Follower {
+  id?: string,
+  avatar?: string,
+  username?: string,
+  first_name?: string,
+  last_name?: string,
+  bio?: string,
+  followersCount?: number
+}
+
+interface Following {
+  id?: string,
+  avatar?: string,
+  username?: string,
+  first_name?: string,
+  last_name?: string,
+  bio?: string,
+  followersCount?: number
+}
 
 export default function ProfilePageComponent() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
   const fetchWrapper = useFetchWrapper();
+
+  const [userId, setuserId] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
   const [FollowerListModal, setFollowerListModal] = useState(false);
   const [FollowingListModal, setFollowingListModal] = useState(false);
@@ -30,7 +56,13 @@ export default function ProfilePageComponent() {
     async function fetchUserProfile() {
       try {
         const response = await fetchWrapper.get("http://5.34.194.155:4000/users/profile");
-        const profileData = response.data
+        const profileData = response.data;
+
+        setuserId(profileData.id);
+
+        const storedToken = localStorage.getItem('token');
+        setToken(storedToken || " ");
+
         setUserProfile((prevProfile) => ({
           ...prevProfile,
           username:
@@ -54,10 +86,14 @@ export default function ProfilePageComponent() {
             profileData.bio !== null && profileData.bio !== undefined
               ? profileData.bio
               : prevProfile.bio,
-              email:
-              profileData.email !== null && profileData.email !== undefined
-                ? profileData.email
-                : prevProfile.email,
+          email:
+            profileData.email !== null && profileData.email !== undefined
+              ? profileData.email
+              : prevProfile.email,
+          id:
+            profileData.id !== null && profileData.id !== undefined
+              ? profileData.id
+              : prevProfile.id,
         }));
       } catch (error) {
         console.error("Error fetching user profile:", error);
@@ -66,6 +102,60 @@ export default function ProfilePageComponent() {
 
     fetchUserProfile();
   }, [setUserProfile,showEditModal]);
+
+  const {
+    data: followersData,
+    error: followersError,
+    isFetching: isFetchingFollowers,
+    refetch: refetchFollowers
+  } = useQuery({
+    queryKey: ['followers', userId],
+    queryFn: () => FetchFollowers(userId || " ", token || ""),
+    enabled: false 
+  });
+
+  const {
+    data: followingsData,
+    error: followingsError,
+    isFetching: isFetchingFollowings,
+    refetch: refetchFollowings
+  } = useQuery({
+    queryKey: ['followings', userId],
+    queryFn: () => FetchFollowings(userId || " ", token || ""),
+    enabled: false 
+  });
+
+
+  const handleShowFollowers = () => {
+    setFollowerListModal(prevState => !prevState);
+    if (!FollowerListModal){
+      refetchFollowers();
+    }
+  }
+
+  if (isFetchingFollowers) {
+    return <span>Loading...</span>
+  }
+
+  if (followersError) {
+    return <span>Error: {followersError.message}</span>
+  }
+
+  const handleShowFollowings = () => {
+    setFollowingListModal(prevState => !prevState);
+    if (!FollowingListModal){
+      refetchFollowings();
+    }
+  }
+
+  if (isFetchingFollowings) {
+    return <span>Loading...</span>
+  }
+
+  if (followingsError) {
+    return <span>Error: {followingsError.message}</span>
+  }
+  
   return (
     <div dir="rtl" className="px-16">
       <div className="border-b border-khakeshtari-400 py-9">
@@ -87,10 +177,10 @@ export default function ProfilePageComponent() {
                 {`${userProfile.first_name} ${userProfile.last_name}`}
               </h3>
               <div className="mt-4 flex gap-x-3 text-sm font-normal text-sabz-200">
-                <button className="border-l pl-3" onClick={() => setFollowerListModal(prevState => !prevState)}>
+                <button className="border-l pl-3" onClick={handleShowFollowers}>
                   {userProfile.followers} دنبال کننده
                 </button>
-                <button className="border-l pl-3" onClick={() => setFollowingListModal(prevState => !prevState)}>
+                <button className="border-l pl-3" onClick={handleShowFollowings}>
                   {userProfile.followings} دنبال شونده
                 </button>
                 <span className="pl-3">{userProfile.postCount} پست</span>
@@ -124,16 +214,9 @@ export default function ProfilePageComponent() {
         <ModalTemplate onClose={() => setFollowerListModal(false)} showModal={FollowerListModal} >
           <div className="font-bold text-xl pb-8">دنبال کننده ها</div>
           <div className="max-h-[450px] overflow-y-scroll">
-              <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
-              <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
-              <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
-              <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
-              <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
-              <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
-              <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
-              <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
-              <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
-              <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
+            {followingsData?.map((follower: Follower) => {
+              <FollowerFollowing key={follower.id} name={follower.username} followersNumber={follower.followersCount} avatar={follower.avatar}></FollowerFollowing>
+            })}
           </div>
 
           <CustomButtonH36 text={"بستن"} styling="bg-okhra-200 mt-[34px]" handleOnClick={() => setFollowerListModal(false)}></CustomButtonH36>
@@ -144,12 +227,9 @@ export default function ProfilePageComponent() {
       <ModalTemplate onClose={() => setFollowingListModal(false)} showModal={FollowingListModal} >
         <div className="font-bold text-xl pb-8">دنبال شونده ها</div>
         <div className="max-h-[450px] overflow-y-scroll">
-          <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
-          <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
-          <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
-          <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
-          <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
-          <FollowerFollowing name={"متین دهقان"} followersNumber={54} avatar={avatar107}></FollowerFollowing>
+          {followersData?.map((following: Following) => {
+              <FollowerFollowing key={following.id} name={following.username} followersNumber={following.followersCount} avatar={following.avatar}></FollowerFollowing>
+          })}
         </div>
         <CustomButtonH36 text={"بستن"} styling="bg-okhra-200 mt-[34px]" handleOnClick={() => setFollowingListModal(false)}></CustomButtonH36>
       </ModalTemplate>  
