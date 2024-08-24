@@ -6,6 +6,8 @@ import CustomButtonH36 from "../ButtonComponentH36";
 import DesktopCaption from "./DesktopCaption";
 import BottomNavbarMobile from "../BottonNavbarMobile";
 import CommentingComponent from "../CommentingComponent";
+import { useRecoilValue } from "recoil";
+import { userProfileAtom } from "../../user-actions/atoms";
 
 interface PostsPageProps {
   imageSrc?: string;
@@ -14,19 +16,24 @@ interface PostsPageProps {
   children?: React.ReactNode;
 }
 
+
 const PostComponent: React.FC<PostsPageProps> = ({ children,
  imageSrc=post,
  caption=
   "ترس یکی از مهمترین عوامل #قدرت است؛ کسی که بتواند در #جامعه سمت و سوی ترس را معین کند #قدرت زیادی بر آن جامعه پیدا می‌کند. شاید بتوان هم صدا با جورجو آگامبنِ فیلسوف گفت که ما امروزه همیشه در یک حالت اضطراری زندگی می‌کنیم ",
  date= "2 ماه پیش"
  }) => {
+
+  const userProfile = useRecoilValue(userProfileAtom);
+  const avatar = userProfile.avatar;
+  const username = userProfile.username;
   return (
     <div className="mx-auto h-[720px] w-[520px] max-md:h-full max-md:w-full mt-4">
       <div
         className="flex items-center justify-between max-md:mt-0"
         dir="rtl"
       >
-        <AvatarName name={"mahmz"} styling="py-4 pr-1"></AvatarName>
+        <AvatarName name={username} avatar={avatar} styling="py-4 pr-1"></AvatarName>
         <CustomButtonH36
           text={"ویرایش پست"}
           iconsrc={whitePen}

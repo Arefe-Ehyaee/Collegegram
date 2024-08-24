@@ -7,6 +7,8 @@ import rect4 from "../../assets/Images/Rectangle 70.png"
 import rect5 from "../../assets/Images/Rectangle 71.png"
 import rect6 from "../../assets/Images/Rectangle 72.png"
 import CommentingComponent from "../CommentingComponent";
+import { useRecoilValue } from "recoil";
+import { userProfileAtom } from "../../user-actions/atoms";
 interface Image {
   src: string;
   alt: string;
@@ -19,6 +21,12 @@ interface ShowPostModalProps {
 }
 
 const ShowPostModal: React.FC<ShowPostModalProps> = ({ photo, onClose, children }) => {
+
+  const userProfile = useRecoilValue(userProfileAtom);
+  const avatar = userProfile.avatar;
+  const username = userProfile.username;
+
+
   const images: Image[] = [
     { src: rect4, alt: "Description of Rectangle 70" },
     { src: rect5, alt: "Description of Rectangle 71" },
@@ -34,7 +42,7 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({ photo, onClose, children 
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between gap-12">
             <div>
-              <AvatarName name={"mahmz"} />
+              <AvatarName name={username} avatar={avatar} />
             </div>
             <div className="hidden md:block">
               <CustomButtonH36

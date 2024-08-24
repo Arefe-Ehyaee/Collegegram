@@ -1,14 +1,14 @@
-import avatar107 from "../assets/Images/Frame 107.png"
 
 interface AvatarNameProps {
     name: string;
     styling?: string;
+    avatar?: string;
 }
 
-const AvatarName: React.FC<AvatarNameProps> = ({ name, styling }) => {
+const AvatarName: React.FC<AvatarNameProps> = ({ name, styling, avatar }) => {
     return (
-        <div className="flex gap-4 items-center max-md:pr-6" dir="rtl">
-            <img src={avatar107} alt="avatar" />
+        <div className={`flex gap-4 items-center max-md:pr-6 ${styling}`} dir="rtl">
+            <img src={avatar} alt="avatar" className="h-[48px] w-[48px]  rounded-full border border-khakeshtari-400"/>
             <div>{name}</div>
         </div>
     );
