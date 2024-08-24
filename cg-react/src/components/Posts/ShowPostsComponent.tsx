@@ -8,8 +8,8 @@ import rect6 from "../../assets/Images/Rectangle 72.png"
 import { useState } from "react";
 import ShowPostModal from "./ShowPostModal";
 import ModalTemplatePost from "./ModalTemplatePost";
-import { useMediaQuery } from "react-responsive";
-import PostsPage from "./PostsPage";
+import { useQuery } from "@tanstack/react-query";
+import { FetchPosts } from "./FetchPosts";
 
 
 interface ShowPostsProps {
@@ -21,14 +21,15 @@ interface Photo {
   alt: string;
 }
 
-const photoList: Photo[] = [
-  { id: '1', src: rect1, alt: 'Rectangle 67' },
-  { id: '2', src: rect2, alt: 'Rectangle 68' },
-  { id: '3', src: rect3, alt: 'Rectangle 69' },
-  { id: '4', src: rect4, alt: 'Rectangle 70' },
-  { id: '5', src: rect5, alt: 'Rectangle 71' },
-  { id: '6', src: rect6, alt: 'Rectangle 72' }
-];
+// const photoList: Photo[] = [
+//   { id: '1', src: rect1, alt: 'Rectangle 67' },
+//   { id: '2', src: rect2, alt: 'Rectangle 68' },
+//   { id: '3', src: rect3, alt: 'Rectangle 69' },
+//   { id: '4', src: rect4, alt: 'Rectangle 70' },
+//   { id: '5', src: rect5, alt: 'Rectangle 71' },
+//   { id: '6', src: rect6, alt: 'Rectangle 72' }
+// ];
+
 
 export default function ShowPostsComponent({ styling }: ShowPostsProps) {
   const [photos, setPhotos] = useState<Photo[]>(photoList);
@@ -40,7 +41,19 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
     setPostShowModal(true);
   }
 
-  // const isMobile = useMediaQuery({query:"(max-width: 768px)"})
+  const {data, error, isPending, isError } = useQuery({
+    queryKey: ['posts'],
+    queryFn: () => FetchPosts(token || ""),
+  })
+
+  if(isPending){
+    return <span>Loading...</span>
+  }
+
+  if(isError){
+    return <span>Error: {error.message}</span>
+  }
+
 
   return (
     <div className="my-8 grid rounded-3xl border border-khakeshtari-400">
@@ -49,7 +62,7 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
         styling="bg-okhra-200 self-center"
       ></CustomButtonH36> */}
       <div className="grid grid-cols-2 gap-8 md:grid-cols-3 md:gap-8">
-      {photos.map((photo) => (
+      {data.map((photo: Photo) => (
           <img
           key={photo.id}
           className="aspect-square w-full cursor-pointer max-h-[304px]"
