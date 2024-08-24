@@ -17,6 +17,7 @@ export { authAtom };
 //user atom:
 
 export interface UserProfile {
+    id: string;
     username: string;
     avatar: string;
     first_name: string;
@@ -29,6 +30,7 @@ export interface UserProfile {
 }
 
 const defaultProfile: UserProfile = {
+    id: 'defaultID',
     username: 'defaultID',
     avatar: defaultAvatar, 
     first_name: 'نام',

@@ -1,8 +1,8 @@
 import dots from "../assets/icons/ellipsis.svg"
 
 interface FollowerFollowingProps {
-    name: string;
-    followersNumber: number;
+    name?: string;
+    followersNumber?: number;
     avatar?: string;
 }
 

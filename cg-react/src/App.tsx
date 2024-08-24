@@ -12,10 +12,14 @@ import "react-toastify/dist/ReactToastify.css";
 import UsersProfilePage from "./components/Users/UsersProfilePage";
 import PrivateRoute from "./components/signup-login/PrivateRoute";
 import  TestPage  from "./components/TestPage";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export default function App() {
   return (
     <div className="App">
+      <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
@@ -67,6 +71,7 @@ export default function App() {
 
         <ToastContainer bodyClassName="toastBody" />
       </BrowserRouter>
+      </QueryClientProvider>
     </div>
   );
 }
