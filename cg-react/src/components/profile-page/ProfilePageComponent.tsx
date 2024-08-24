@@ -63,6 +63,8 @@ export default function ProfilePageComponent() {
         const storedToken = localStorage.getItem('token');
         setToken(storedToken || " ");
 
+        const baseURL = 'http://5.34.194.155:4000/'
+        const avatarURL = `${baseURL}${profileData.avatar.path}`
         setUserProfile((prevProfile) => ({
           ...prevProfile,
           username:
@@ -71,7 +73,7 @@ export default function ProfilePageComponent() {
               : prevProfile.username,
           avatar:
             profileData.avatar !== null && profileData.avatar !== undefined
-              ? profileData.avatar
+              ? avatarURL
               : prevProfile.avatar,
           first_name:
             profileData.first_name !== null && profileData.first_name !== undefined
