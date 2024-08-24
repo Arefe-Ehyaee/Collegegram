@@ -68,9 +68,7 @@ const SignUp: React.FC = () => {
       }).then(res=>{
         const result = res;
         console.log(result,res.status,res.data);
-        if(result.data === 'ok') {
-          navigate('/login');
-        }
+        navigate('/login');
       })
     } catch(error) {
       console.error("There was an error!", error);
