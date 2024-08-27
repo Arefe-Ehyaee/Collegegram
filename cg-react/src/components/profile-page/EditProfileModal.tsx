@@ -11,6 +11,7 @@ import ToggleSwitch from "../ToggleButton";
 import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { userProfileAtom } from "../../user-actions/atoms";
+import { useQueryClient } from "@tanstack/react-query";
 
 const EditProfileSchema = z
   .object({
@@ -95,6 +96,8 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
     },
   });
 
+  const queryClient = useQueryClient()
+
   const fetchWrapper = useFetchWrapper();
 
   const onSubmit = async (data: ProfileFormProps) => {
@@ -133,6 +136,7 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
     } catch (error) {
       console.error("Error updating profile:", error);
     } finally {
+      queryClient.invalidateQueries({ queryKey: ['profileData']})
       onClose();
     }
   };

@@ -52,58 +52,7 @@ export default function ProfilePageComponent() {
     }
   }, [FollowerListModal, FollowingListModal])
 
-  useEffect(() => {
-    async function fetchUserProfile() {
-      try {
-        const response = await fetchWrapper.get("http://5.34.194.155:4000/users/profile");
-        const profileData = response.data;
-
-        setuserId(profileData.id);
-
-        const storedToken = localStorage.getItem('token');
-        setToken(storedToken || " ");
-
-        const baseURL = 'http://5.34.194.155:4000/'
-        const avatarURL = `${baseURL}${profileData.avatar.path}`
-        setUserProfile((prevProfile) => ({
-          ...prevProfile,
-          username:
-            profileData.username !== null && profileData.username !== undefined
-              ? profileData.username
-              : prevProfile.username,
-          avatar:
-            profileData.avatar !== null && profileData.avatar !== undefined
-              ? avatarURL
-              : prevProfile.avatar,
-          first_name:
-            profileData.first_name !== null && profileData.first_name !== undefined
-              ? profileData.first_name
-              : prevProfile.first_name,
-          last_name:
-            profileData.last_name !== null && profileData.last_name !== undefined
-              ? profileData.last_name
-              : prevProfile.last_name,
-
-          bio:
-            profileData.bio !== null && profileData.bio !== undefined
-              ? profileData.bio
-              : prevProfile.bio,
-          email:
-            profileData.email !== null && profileData.email !== undefined
-              ? profileData.email
-              : prevProfile.email,
-          id:
-            profileData.id !== null && profileData.id !== undefined
-              ? profileData.id
-              : prevProfile.id,
-        }));
-      } catch (error) {
-        console.error("Error fetching user profile:", error);
-      }
-    }
-
-    fetchUserProfile();
-  }, [setUserProfile,showEditModal]);
+  
 
   const {
     data: followersData,
@@ -201,7 +150,7 @@ export default function ProfilePageComponent() {
           />
         </div>
       </div>
-      <ShowPostsComponent/>
+    
       {showEditModal && (
         <ModalTemplate
           onClose={() => setShowEditModal(false)}

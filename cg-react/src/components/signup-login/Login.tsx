@@ -16,6 +16,7 @@ import { useSetRecoilState } from "recoil";
 import { authAtom,userProfileAtom } from "../../user-actions/atoms";
 import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 import { toast } from "react-toastify";
+import { useQueryClient } from "@tanstack/react-query";
 
 
 const loginSchema = z.object({
@@ -32,6 +33,7 @@ interface LoginFormData {
   password: string;
 }
 
+
 const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -42,7 +44,7 @@ const Login: React.FC = () => {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
-
+  const queryClient = useQueryClient()
   const fetchWrapper = useFetchWrapper();
   const setAuth = useSetRecoilState(authAtom);
 
@@ -71,6 +73,7 @@ const Login: React.FC = () => {
       toast.error("نام کاربری یا رمز عبور اشتباهه!");
       console.error("Login error:", error);
     } finally {
+      queryClient.invalidateQueries({ queryKey: ['profileData']})
       setIsLoading(false);
     }
   };
