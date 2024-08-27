@@ -1,11 +1,12 @@
-import Hashtag from "./HashtagsComponent";
+import Mention from "./MentionComponent";
 
 interface CaptionProps {
     date: string;
     caption: string;
+    mentions?: string[]
 }
 
-const Caption: React.FC<CaptionProps> = ({ date, caption }) => {
+const Caption: React.FC<CaptionProps> = ({ date, caption, mentions }) => {
     return (
         <div className="mt-5" dir="rtl">
             <div className="font-isf font-normal text-[11px] max-md:px-6" dir="rtl">
@@ -15,9 +16,9 @@ const Caption: React.FC<CaptionProps> = ({ date, caption }) => {
                 {caption}
             </div>
             <div className="mt-4 max-md:px-6">
-                <Hashtag text={"سفر"}></Hashtag>
-                <Hashtag text={"بومگردی"}></Hashtag>
-                <Hashtag text={"دریا"}></Hashtag>
+                {mentions?.map((mention:string) => (
+                    <Mention text={mention}></Mention>
+                ))}
             </div>
             
         </div>

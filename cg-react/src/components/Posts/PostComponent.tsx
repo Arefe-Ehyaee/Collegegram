@@ -1,15 +1,19 @@
 import whitePen from "../../assets/icons/whitePen.svg";
-import post from "../../assets/Images/post.png";
 import redPen from "../../assets/icons/redPen.svg";
 import AvatarName from "../AvatarName";
 import CustomButtonH36 from "../ButtonComponentH36";
 import DesktopCaption from "./DesktopCaption";
 import BottomNavbarMobile from "../BottonNavbarMobile";
 import { userProfileAtom } from "../../user-actions/atoms";
-import { useRecoilState } from "recoil";
 import CommentSection from "./CommentSection";
-import mockData from './mockCommentData.json'
+import mockData from "./mockCommentData.json";
 import { useRecoilValue } from "recoil";
+import { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { useLocation } from "react-router-dom";
 
 interface PostsPageProps {
   imageSrc?: string;
@@ -18,37 +22,52 @@ interface PostsPageProps {
   children?: React.ReactNode;
 }
 
+interface Media {
+  id: string;
+  mime: string;
+  name: string;
+  path: string;
+  size: number;
+  children?: React.ReactNode;
+}
 
-const PostComponent: React.FC<PostsPageProps> = ({ children,
- imageSrc=post,
- caption=
-  "ترس یکی از مهمترین عوامل #قدرت است؛ کسی که بتواند در #جامعه سمت و سوی ترس را معین کند #قدرت زیادی بر آن جامعه پیدا می‌کند. شاید بتوان هم صدا با جورجو آگامبنِ فیلسوف گفت که ما امروزه همیشه در یک حالت اضطراری زندگی می‌کنیم ",
- date= "2 ماه پیش"
- }) => {
+
+
+const PostComponent: React.FC<PostsPageProps> = ({
+  children
+}) => {
   const userProfile = useRecoilValue(userProfileAtom);
-const mockCommentData = mockData.data
- 
-   const commentingProps = {
-      avatar : userProfile.avatar,
-    }
+  const mockCommentData = mockData.data;
 
-  
- 
+  const commentingProps = {
+    avatar: userProfile.avatar,
+  };
 
   const avatar = userProfile.avatar;
   const username = userProfile.username;
- 
 
+  const [token, setToken] = useState<string | null>(null);
 
-  
- 
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken || " ");
+  }, []);
+
+  const location = useLocation();
+  const data = location.state?.post;
+
+  const pageBaseURL = 'http://5.34.194.155:4000/'
+
+  console.log(data.data.media);
+
   return (
-    <div className="mx-auto  w-[520px] max-md:h-full max-md:w-full mt-4">
-      <div
-        className="flex items-center justify-between max-md:mt-0"
-        dir="rtl"
-      >
-        <AvatarName name={username} avatar={avatar} styling="py-4 pr-1"></AvatarName>
+    <div className="max-md:h-full mx-auto mt-4 w-[520px] max-md:w-full" dir="rtl">
+      <div className="flex items-center justify-between max-md:mt-0">
+        <AvatarName
+          name={username}
+          avatar={avatar}
+          styling="py-4 pr-1"
+        ></AvatarName>
         <CustomButtonH36
           text={"ویرایش پست"}
           iconsrc={whitePen}
@@ -56,13 +75,35 @@ const mockCommentData = mockData.data
         ></CustomButtonH36>
         <img src={redPen} alt="edit" className="pl-6 md:hidden" />
       </div>
-      <img src={imageSrc} alt="post" className="py-3" />
-      <DesktopCaption
-        date={date}
-        caption={caption}
-      ></DesktopCaption>
+      <div className="h-auto w-full md:max-w-[520px]">
+        <Swiper
+          spaceBetween={10}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+          className="md:w-full z-10"
+        >
+          {data &&
+            data.data.media.map((post: Media) => (
+              <SwiperSlide key={post.id}>
+                <img
+                  src={`${pageBaseURL}${post.path}`}
+                  className="h-[400px] w-[520px] rounded-3xl object-cover"
+                />
+              </SwiperSlide>
+            ))}
+        </Swiper>
+      </div>
+      <DesktopCaption 
+        date={data.data.createdAt}
+        caption={data.data.caption}
+        mentions={data.data.mentions}
+      />
       {children}
-      <CommentSection showProps={mockCommentData} commentingProps={commentingProps}  ></CommentSection>
+      <CommentSection
+        showProps={mockCommentData}
+        commentingProps={commentingProps}
+      ></CommentSection>
       <BottomNavbarMobile></BottomNavbarMobile>
     </div>
   );

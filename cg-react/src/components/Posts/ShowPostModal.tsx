@@ -2,43 +2,101 @@ import AvatarName from "../AvatarName";
 import CustomButtonH36 from "../ButtonComponentH36";
 import whitePen from "../../assets/icons/whitePen.svg";
 import DesktopCaption from "./DesktopCaption";
-import ImageCarousel from './ImageCarousel';
-import rect4 from "../../assets/Images/Rectangle 70.png"
-import rect5 from "../../assets/Images/Rectangle 71.png"
-import rect6 from "../../assets/Images/Rectangle 72.png"
-import CommentingComponent from "../CommentingComponent";
 import { useRecoilValue } from "recoil";
 import { userProfileAtom } from "../../user-actions/atoms";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { FetchPost } from "./FetchPost";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import PostInteractions from "./PostInteractions";
+import openPostPage from "../../assets/icons/Group 21.svg";
+import { useNavigate } from "react-router-dom";
+
 interface Image {
   src: string;
   alt: string;
 }
 
 interface ShowPostModalProps {
-  onClose: () => void; 
+  onClose: () => void;
   children?: React.ReactNode;
-  photo: Image; 
+  // photo: any;
+  id: string;
 }
 
-const ShowPostModal: React.FC<ShowPostModalProps> = ({ photo, onClose, children }) => {
+const InteractiondefaultProps = {
+  comments: 50,
+  bookmarks: 3,
+  likes: 337,
+};
 
+const ShowPostModal: React.FC<ShowPostModalProps> = ({
+  onClose,
+  id,
+  children,
+}) => {
   const userProfile = useRecoilValue(userProfileAtom);
   const avatar = userProfile.avatar;
   const username = userProfile.username;
 
+  const [token, setToken] = useState<string | null>(null);
+  // const [postId, setPostId] = useState<string | null>(null);
 
-  const images: Image[] = [
-    { src: rect4, alt: "Description of Rectangle 70" },
-    { src: rect5, alt: "Description of Rectangle 71" },
-    { src: rect6, alt: "Description of Rectangle 72" }
-  ];
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken || " ");
+  }, []);
+
+  const { data, error, isPending, isError } = useQuery({
+    queryKey: ["post"],
+    queryFn: () => FetchPost(token || "", id),
+    enabled: !!token,
+  });
+  // console.log(id);
+
+  const handleOnClick = () => {
+    // setPostId(id);
+    if (data) {
+      navigate("/posts", { state: { post: data } });
+    }
+  };
+  // <button onClick={handleOnClick}>
+  //   <img src={openPostPage}></img>
+  // </button>
+
+  const pageBaseURL = "http://5.34.194.155:4000/";
 
   return (
     <div className="max-w-[1200px]" dir="rtl">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-14">
-        <div className="w-full h-auto md:max-w-[520px] md:max-h-[376px]">
-          <ImageCarousel images={images} />
+      <button onClick={handleOnClick}>
+        <img src={openPostPage}></img>
+      </button>
+      <div className="grid grid-cols-1 gap-14 md:grid-cols-2">
+        <div className="h-auto w-full md:max-w-[520px]">
+          <Swiper
+            spaceBetween={10}
+            slidesPerView={1}
+            navigation
+            pagination={{ clickable: true }}
+            className="md:w-full"
+          >
+            {data &&
+              data.data.media.map((post: any) => (
+                <SwiperSlide key={post.id}>
+                  <img
+                    src={`${pageBaseURL}${post.path}`}
+                    className="h-[400px] w-[520px] rounded-3xl object-cover"
+                  />
+                </SwiperSlide>
+              ))}
+          </Swiper>
         </div>
+
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between gap-12">
             <div>
@@ -52,10 +110,16 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({ photo, onClose, children 
               />
             </div>
           </div>
-          <DesktopCaption
-            date={"2 ماه پیش"}
-            caption={"ترس یکی از مهمترین عوامل #قدرت است؛ کسی که بتواند در #جامعه سمت و سوی ترس را معین کند #قدرت زیادی بر آن جامعه پیدا می‌کند. شاید بتوان هم صدا با جورجو آگامبنِ فیلسوف گفت که ما امروزه همیشه در یک حالت اضطراری زندگی می‌کنیم"}
-          />
+          {data && (
+            <DesktopCaption
+              date={data.data.createdAt}
+              caption={data.data.caption}
+              mentions={data.data.mentions}
+            />
+          )}
+          <div className="grid justify-items-end">
+            <PostInteractions {...InteractiondefaultProps} />
+          </div>
         </div>
       </div>
       {children}
