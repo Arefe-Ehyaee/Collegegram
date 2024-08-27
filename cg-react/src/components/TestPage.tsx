@@ -1,6 +1,5 @@
-import AvatarName from "./AvatarName";
-import FollowerFollowing from "./FollowerFollowing";
-import PostInteractions from "./Posts/PostInteractions";
+import timeTranslate from "../utilities/timeTranslationFunction";
+
 
 
 const defaultProps = {
@@ -10,8 +9,9 @@ bookmarks:3,
 };
 
 const TestPage = () => {
+  
   return (
-    <PostInteractions {...defaultProps}/>
+    <div dir="rtl" className="text-4xl">{timeTranslate("2022-07-27 11:43:31.408585")}</div>
   );
 };
 
