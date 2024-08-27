@@ -1,4 +1,4 @@
-import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Login from "./components/signup-login/Login";
 import SignUp from "./components/signup-login/Signup";
 import RetrievePassword from "./components/signup-login/RetrievePassword";
@@ -13,14 +13,18 @@ import UsersProfilePage from "./components/Users/UsersProfilePage";
 import PrivateRoute from "./components/signup-login/PrivateRoute";
 import  TestPage  from "./components/TestPage";
 import {QueryClientProvider, QueryClient} from '@tanstack/react-query'
+import ProfileDataWrapper from "./user-actions/ProfileDataWrapper";
+
 
 const queryClient = new QueryClient() ;
 
 export default function App() {
+  
   return (
     <div className="App">
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
+        <ProfileDataWrapper>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
@@ -68,7 +72,7 @@ export default function App() {
             />
             <Route path="/users" element={<UsersProfilePage />} />
           </Routes>
-
+          </ProfileDataWrapper>
           <ToastContainer bodyClassName="toastBody" />
         </BrowserRouter>
       </QueryClientProvider>

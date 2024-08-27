@@ -19,7 +19,7 @@ export { authAtom };
 export interface UserProfile {
     id: string;
     username: string;
-    avatar: string;
+    avatar: any;
     first_name: string;
     last_name:string;
     email?:string
