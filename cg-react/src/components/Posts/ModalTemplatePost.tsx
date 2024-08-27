@@ -1,6 +1,3 @@
-
-import { Children } from "react";
-
 interface ModalPostProps {
   showModal: boolean;
   onClose?: () => void;
@@ -18,7 +15,7 @@ const ModalTemplatePost = ({
 }: ModalPostProps) => {
   return (
     <div
-      className={`fixed inset-0 flex flex-col items-center justify-center bg-siah/40 ${showModal ? "visible bg-siah/40" : "invisible"}`}
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-siah/40 ${showModal ? "visible bg-siah/40" : "invisible"}`}
       onClick={onClose}
     >
       <div
