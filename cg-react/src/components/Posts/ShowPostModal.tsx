@@ -14,16 +14,11 @@ import "swiper/css/navigation";
 import PostInteractions from "./PostInteractions";
 import openPostPage from "../../assets/icons/Group 21.svg";
 import { useNavigate } from "react-router-dom";
-
-interface Image {
-  src: string;
-  alt: string;
-}
+import timeTranslate from "../../utilities/timeTranslationFunction";
 
 interface ShowPostModalProps {
   onClose: () => void;
   children?: React.ReactNode;
-  // photo: any;
   id: string;
 }
 
@@ -43,7 +38,6 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
   const username = userProfile.username;
 
   const [token, setToken] = useState<string | null>(null);
-  // const [postId, setPostId] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -57,17 +51,13 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
     queryFn: () => FetchPost(token || "", id),
     enabled: !!token,
   });
-  // console.log(id);
+
 
   const handleOnClick = () => {
-    // setPostId(id);
     if (data) {
       navigate("/posts", { state: { post: data } });
     }
   };
-  // <button onClick={handleOnClick}>
-  //   <img src={openPostPage}></img>
-  // </button>
 
   const pageBaseURL = "http://5.34.194.155:4000/";
 
@@ -76,7 +66,7 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
       <button onClick={handleOnClick}>
         <img src={openPostPage}></img>
       </button>
-      <div className="grid grid-cols-1 gap-14 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
         <div className="h-auto w-full md:max-w-[520px]">
           <Swiper
             spaceBetween={10}
@@ -97,7 +87,7 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
           </Swiper>
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 h-[500px] overflow-auto">
           <div className="flex items-center justify-between gap-12">
             <div>
               <AvatarName name={username} avatar={avatar} />
@@ -112,7 +102,7 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
           </div>
           {data && (
             <DesktopCaption
-              date={data.data.createdAt}
+              date={timeTranslate(data.data.createdAt)}
               caption={data.data.caption}
               mentions={data.data.mentions}
             />

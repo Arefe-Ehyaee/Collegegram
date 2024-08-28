@@ -31,11 +31,7 @@ interface Media {
   children?: React.ReactNode;
 }
 
-
-
-const PostComponent: React.FC<PostsPageProps> = ({
-  children
-}) => {
+const PostComponent: React.FC<PostsPageProps> = ({ children }) => {
   const userProfile = useRecoilValue(userProfileAtom);
   const mockCommentData = mockData.data;
 
@@ -56,55 +52,64 @@ const PostComponent: React.FC<PostsPageProps> = ({
   const location = useLocation();
   const data = location.state?.post;
 
-  const pageBaseURL = 'http://5.34.194.155:4000/'
+  const pageBaseURL = "http://5.34.194.155:4000/";
 
   console.log(data.data.media);
 
   return (
-    <div className="max-md:h-full mx-auto mt-4 w-[520px] max-md:w-full" dir="rtl">
-      <div className="flex items-center justify-between max-md:mt-0">
-        <AvatarName
-          name={username}
-          avatar={avatar}
-          styling="py-4 pr-1"
-        ></AvatarName>
-        <CustomButtonH36
-          text={"ویرایش پست"}
-          iconsrc={whitePen}
-          styling="bg-okhra-200 ml-1 max-md:hidden"
-        ></CustomButtonH36>
-        <img src={redPen} alt="edit" className="pl-6 md:hidden" />
+    <div
+      className="max-md:h-full mx-auto mt-4  max-md:w-full"
+      dir="rtl"
+    >
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div>
+          <Swiper
+            spaceBetween={10}
+            slidesPerView={1}
+            navigation
+            pagination={{ clickable: true }}
+            className="z-10 md:w-full"
+          >
+            {data &&
+              data.data.media.map((post: Media) => (
+                <SwiperSlide key={post.id}>
+                  <img
+                    src={`${pageBaseURL}${post.path}`}
+                    className="h-[400px] w-[520px] rounded-3xl object-cover"
+                  />
+                </SwiperSlide>
+              ))}
+          </Swiper>
+        </div>
+        <div className="px-4 h-[600px] overflow-auto">
+          <div className="flex items-center justify-between max-md:mt-0">
+            <AvatarName
+              name={username}
+              avatar={avatar}
+              styling="py-4 pr-1"
+            ></AvatarName>
+            <CustomButtonH36
+              text={"ویرایش پست"}
+              iconsrc={whitePen}
+              styling="bg-okhra-200 ml-1 max-md:hidden"
+            ></CustomButtonH36>
+            <img src={redPen} alt="edit" className="pl-6 md:hidden" />
+          </div>
+          <DesktopCaption
+            date={data.data.createdAt}
+            caption={data.data.caption}
+            mentions={data.data.mentions}
+          />
+            
+
+          {children}
+          <CommentSection
+            showProps={mockCommentData}
+            commentingProps={commentingProps}
+          ></CommentSection>
+          <BottomNavbarMobile></BottomNavbarMobile>
+        </div>
       </div>
-      <div className="h-auto w-full md:max-w-[520px]">
-        <Swiper
-          spaceBetween={10}
-          slidesPerView={1}
-          navigation
-          pagination={{ clickable: true }}
-          className="md:w-full z-10"
-        >
-          {data &&
-            data.data.media.map((post: Media) => (
-              <SwiperSlide key={post.id}>
-                <img
-                  src={`${pageBaseURL}${post.path}`}
-                  className="h-[400px] w-[520px] rounded-3xl object-cover"
-                />
-              </SwiperSlide>
-            ))}
-        </Swiper>
-      </div>
-      <DesktopCaption 
-        date={data.data.createdAt}
-        caption={data.data.caption}
-        mentions={data.data.mentions}
-      />
-      {children}
-      <CommentSection
-        showProps={mockCommentData}
-        commentingProps={commentingProps}
-      ></CommentSection>
-      <BottomNavbarMobile></BottomNavbarMobile>
     </div>
   );
 };

@@ -12,8 +12,8 @@ export interface CommentingComponentProps {
 const CommentingComponent: React.FC<CommentingComponentProps> = ({  styling,avatar}) => {
 
   return (
-    <div className="w-[100%] flex gap-4 pt-8 px-6 max-md:gap-1 items-center" dir="rtl">
-    <img src={avatar} alt="avatar" className="h-[40px] w-[40px]"/>
+    <div className="w-[100%] flex gap-2 pt-8 px-4 max-md:gap-1 items-center" dir="rtl">
+    <img src={avatar} alt="avatar" className="h-[40px] w-[40px] rounded-full border border-khakeshtari-400"/>
       <input
         type='string'
         id='comment'

@@ -9,7 +9,7 @@ export interface CommentSectionProps {
 
 const CommentSection: React.FC<CommentSectionProps> = (commentSectionProps) => {
     return (
-        <div className='flex flex-col justify-end' dir='rtl'>
+        <div className='flex flex-col justify-end px-4' dir='rtl'>
             <CommentingComponent avatar={commentSectionProps.commentingProps.avatar} />
             {commentSectionProps.showProps.map((props, index) => (
                 <ShowComment key={index} {...props} />
