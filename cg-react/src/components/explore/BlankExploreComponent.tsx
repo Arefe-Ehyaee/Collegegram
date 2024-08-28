@@ -1,5 +1,6 @@
 import React from "react";
 import CustomButtonH52 from "../ButtonComponentH52";
+import PosterInfo from "./PosterInfo";
 
 const BlankExploreComponent = () => {
   return (
@@ -14,6 +15,7 @@ const BlankExploreComponent = () => {
           دنبال کنی. آماده‌ای؟
         </h2>
         <CustomButtonH52 text="جستجوی کالج‌گرامی‌ها" styling="bg-okhra-200" />
+        
       </div>
     </div>
   );
