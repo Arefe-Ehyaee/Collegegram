@@ -5,6 +5,11 @@ import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 import CustomButtonH32 from "../ButtonComponentH32";
 import add from "../../assets/icons/add.svg";
 import CustomButtonH36 from "../ButtonComponentH36";
+import Dots from "../../assets/icons/Dots.svg";
+import ModalTemplate from "../ModalTemplate";
+import BlockingModal from "./BlockingModal";
+import ModalTemplatePost from "../Posts/ModalTemplatePost";
+import CloseFriendModal from "./CloseFriendModal";
 
 export default function ProfilePageComponent() {
   const [showEditModal, setShowEditModal] = useState(false);
@@ -13,6 +18,51 @@ export default function ProfilePageComponent() {
 
   const [clickedFollow, setClickedFollow] = useState(false);
   const [iconVisible, setIconVisible] = useState(true);
+
+  const [BlockModal, setBlockModal] = useState(false);
+  const [CloseFriendModalSate, setCloseFriendModalSate] = useState(false);
+  const [NotCloseFriendModalSate, setNotCloseFriendModalSate] = useState(false);
+
+  
+
+  // useEffect(() => {
+  //   if (BlockModal) {
+  //     document.body.style.overflow = "hidden";
+  //   } else {
+  //     document.body.style.overflow = "unset";
+  //   }
+  // }, [BlockModal]);
+
+  // const handleBlockModal = () => {
+  //   setBlockModal((prevState) => !prevState);
+  // };
+
+
+
+  useEffect(() => {
+    if (CloseFriendModalSate) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [CloseFriendModalSate]);
+
+  const handleCloseFriendModal = () => {
+    setCloseFriendModalSate((prevState) => !prevState);
+  };
+
+
+  // useEffect(() => {
+  //   if (NotCloseFriendModalSate) {
+  //     document.body.style.overflow = "hidden";
+  //   } else {
+  //     document.body.style.overflow = "unset";
+  //   }
+  // }, [NotCloseFriendModalSate]);
+
+  // const handleNotCloseFriendModalSate = () => {
+  //   setNotCloseFriendModalSate((prevState) => !prevState);
+  // };
 
   const handleButtonClicked = () => {
     setClickedFollow((prevState) => !prevState);
@@ -64,41 +114,74 @@ export default function ProfilePageComponent() {
     <div dir="rtl" className="px-16">
       <div className="ml-16 border-b border-khakeshtari-400 py-9 max-sm:ml-8 max-sm:mr-8">
         <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
-          <div className="flex items-center gap-8">
+          <div className="flex w-full items-center gap-8">
             <img
               src={userProfile.avatar}
               alt="avatar"
               className="h-[136px] w-[136px] rounded-full border-2 border-khakeshtari-400 max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
             />
-            <div className="ml-4">
+            <div className="w-full ml-4">
               <p className="text-right text-sm text-tala" dir="ltr">
                 {`@${userProfile.username}`}
               </p>
-              <div className="flex gap-x-3 items-center mt-4 ">
+              <div className="mt-4 flex items-center gap-x-3">
                 <h3 className="text-xl font-bold text-sabz-100">
                   {`${userProfile.first_name} ${userProfile.last_name}`}
                 </h3>
                 <CustomButtonH32
                   text={clickedFollow ? "دنبال نکردن" : "دنبال کردن"}
                   iconsrc={iconVisible ? add : null}
-                  styling={clickedFollow ? "bg-khakeshtari-100 ml-1 border border-okhra-200 text-okhra-200" : " bg-okhra-200 ml-1 text-white"}
-                  handleOnClick={handleButtonClicked} 
+                  styling={
+                    clickedFollow
+                      ? "bg-khakeshtari-100 ml-1 border border-okhra-200 text-okhra-200"
+                      : " bg-okhra-200 ml-1 text-white"
+                  }
+                  handleOnClick={handleButtonClicked}
                 ></CustomButtonH32>
               </div>
-              <div className="mt-4 flex gap-x-3 text-sm font-normal text-sabz-200">
-                <span className="border-l pl-3">
-                  {userProfile.followers} دنبال کننده
-                </span>
-                <span className="border-l pl-3">
-                  {userProfile.followings} دنبال شونده
-                </span>
-                <span className="pl-3">{userProfile.postCount} پست</span>
+              <div className="flex items-center justify-between">
+                <div className="mt-4 flex gap-x-3 text-sm font-normal text-sabz-200">
+                  <span className="border-l pl-3">
+                    {userProfile.followers} دنبال کننده
+                  </span>
+                  <span className="border-l pl-3">
+                    {userProfile.followings} دنبال شونده
+                  </span>
+                  <span className="pl-3">{userProfile.postCount} پست</span>
+                </div>
+                <div>
+                  <button onClick={handleCloseFriendModal}>
+                    <img src={Dots} />
+                  </button>
+                </div>
               </div>
               <p className="mt-4 text-sm text-khakeshtari-400 max-sm:justify-self-center">
                 {userProfile.bio}
               </p>
             </div>
           </div>
+
+          {CloseFriendModalSate && (
+            <ModalTemplatePost
+              onClose={() => setCloseFriendModalSate(false)}
+              showModal={CloseFriendModalSate}
+            >
+              {/* <BlockingModal name={"Arefe"}></BlockingModal> */}
+              <CloseFriendModal name={"Arefe"}></CloseFriendModal>
+              <div className="mt-8 flex flex-row self-end">
+                <CustomButtonH36
+                  text="پشیمون شدم"
+                  styling="!text-siah ml-4"
+                  handleOnClick={() => setCloseFriendModalSate(false)}
+                />
+                <CustomButtonH36
+                  text="آره حتما"
+                  styling="bg-okhra-200"
+                  handleOnClick={() => setCloseFriendModalSate(false)}
+                />
+              </div>
+            </ModalTemplatePost>
+          )}
         </div>
       </div>
     </div>
