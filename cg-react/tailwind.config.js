@@ -14,7 +14,7 @@ module.exports = {
         400: '#CC0000'
       },
       siah: "#262626",
-      mashki: "#191919",
+      meshki: "#191919",
       khakeshtari: {
         100:'#F5F5F5',
         200:'#E1E1E1',

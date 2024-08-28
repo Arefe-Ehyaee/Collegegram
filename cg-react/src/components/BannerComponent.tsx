@@ -8,7 +8,7 @@ interface bannerProps {
 const Banner: React.FC<bannerProps> = ({ text, iconsrc, styling }) => {
   return (
     <div
-      className={`text-mashki flex h-[52px] w-[281px] items-center justify-center gap-2 rounded-2xl px-4 py-2 font-isf text-base font-normal subpixel-antialiased ${styling}`}
+      className={`text-meshki flex h-[52px] w-[281px] items-center justify-center gap-2 rounded-2xl px-4 py-2 font-isf text-base font-normal subpixel-antialiased ${styling}`}
       dir="rtl"
     >
       {text}
