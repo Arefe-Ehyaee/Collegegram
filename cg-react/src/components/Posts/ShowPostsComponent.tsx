@@ -3,6 +3,8 @@ import ShowPostModal from "./ShowPostModal";
 import ModalTemplatePost from "./ModalTemplatePost";
 import { useQuery } from "@tanstack/react-query";
 import { FetchPosts } from "./FetchPosts";
+import { useRecoilState } from "recoil";
+import { userProfileAtom } from "../../user-actions/atoms";
 
 
 interface ShowPostsProps {
@@ -32,6 +34,7 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
   const [showPostModal, setPostShowModal] = useState(false);
   const [selectedPhotoId, setSelectedPhotoId] = useState<string>("");
   const [token, setToken] = useState<string | null>(null);
+  const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -45,7 +48,7 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
 
   const {data, error, isPending, isError } = useQuery({
     queryKey: ['posts'],
-    queryFn: () => FetchPosts(token || ""),
+    queryFn: () => FetchPosts(token || "", userProfile.username),
     enabled: !!token,
   })
 
