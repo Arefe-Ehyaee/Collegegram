@@ -8,7 +8,11 @@ interface MainLayoutBackProps {
   children?: React.ReactNode;
 }
 
-const MainLayoutBack: React.FC<MainLayoutBackProps>  = ({ mainComponents, navBar, children }) => {
+const MainLayoutBack: React.FC<MainLayoutBackProps> = ({
+  mainComponents,
+  navBar,
+  children,
+}) => {
   return (
     <div className="flex min-h-screen bg-khakeshtari-100">
       <div className="w-3/4 max-md:mt-[67px] max-md:w-full">
@@ -25,7 +29,6 @@ const MainLayoutBack: React.FC<MainLayoutBackProps>  = ({ mainComponents, navBar
       {children}
       <NavbarMobileBack></NavbarMobileBack>
       <BottomNavbarMobile></BottomNavbarMobile>
-
     </div>
   );
 };

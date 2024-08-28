@@ -9,16 +9,20 @@ interface MainLayoutProps {
   children?: React.ReactNode;
 }
 
-const MainLayout: React.FC<MainLayoutProps>  = ({ mainComponents, navBar, children }) => {
+const MainLayout: React.FC<MainLayoutProps> = ({
+  mainComponents,
+  navBar,
+  children,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
-    setIsMenuOpen(prevState => !prevState);
+    setIsMenuOpen((prevState) => !prevState);
   };
-  
+
   return (
     <div className="flex min-h-screen bg-khakeshtari-100">
-      <div className="w-3/4  max-md:w-full max-md:mt-[67px]">
+      <div className="w-3/4 max-md:mt-[67px] max-md:w-full">
         <header className="flex justify-start">
           <img
             src={rcLogo}
@@ -32,7 +36,6 @@ const MainLayout: React.FC<MainLayoutProps>  = ({ mainComponents, navBar, childr
       {children}
       <NavbarMobile isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
       {!isMenuOpen && <BottomNavbarMobile />}
-
     </div>
   );
 };
