@@ -1,4 +1,7 @@
 import timeTranslate from "../utilities/timeTranslationFunction";
+import BlankExploreComponent from "./explore/BlankExploreComponent";
+import MainLayout from "./MainLayout";
+import SideNavbarComponent from "./SideNavbarComponent";
 
 
 
@@ -11,7 +14,7 @@ bookmarks:3,
 const TestPage = () => {
   
   return (
-    <div dir="rtl" className="text-4xl">{timeTranslate("2022-07-27 11:43:31.408585")}</div>
+    <MainLayout mainComponents={BlankExploreComponent()} navBar={SideNavbarComponent()}/>
   );
 };
 
