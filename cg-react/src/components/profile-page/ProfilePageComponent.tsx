@@ -150,7 +150,7 @@ export default function ProfilePageComponent() {
           />
         </div>
       </div>
-    
+      <ShowPostsComponent/>
       {showEditModal && (
         <ModalTemplate
           onClose={() => setShowEditModal(false)}
