@@ -19,7 +19,7 @@ export { authAtom };
 export interface UserProfile {
     id: string;
     username: string;
-    avatar: any;
+    avatar: string;
     first_name: string;
     last_name:string;
     email?:string
@@ -27,6 +27,7 @@ export interface UserProfile {
     followers: number;
     followings: number;
     bio: string;
+    is_private?:boolean
 }
 
 const defaultProfile: UserProfile = {
@@ -39,6 +40,7 @@ const defaultProfile: UserProfile = {
     followers: 0,
     followings: 0,
     bio: 'برای شخصی سازی این متن با ویرایش پروفایل بایو خود را تغییر دهید',
+    is_private:false
 };
 
 export const userProfileAtom = atom<UserProfile>({

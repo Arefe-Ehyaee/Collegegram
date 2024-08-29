@@ -54,6 +54,7 @@ const EditProfileSchema = z
       .optional()
       .or(z.literal("")),
     bio: z.string().optional().or(z.literal("")),
+    is_private: z.boolean(),
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
@@ -77,6 +78,7 @@ interface ProfileFormProps {
   bio: string;
   confirmPassword: string;
   avatar: FileList;
+  is_private: boolean;
 }
 
 const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
@@ -96,25 +98,27 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
     },
   });
 
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const fetchWrapper = useFetchWrapper();
 
   const onSubmit = async (data: ProfileFormProps) => {
     console.log("Raw form data:", data);
-
+  
     const filteredData = new FormData();
-
+  
     Object.entries(data).forEach(([key, value]) => {
       if (value && value !== "") {
         if (key === "avatar" && value.length > 0) {
           filteredData.append(key, value[0]);
+        } else if (key === "toggleValue") {
+          filteredData.append(key, value ? "true" : "false");
         } else {
           filteredData.append(key, value as string);
         }
       }
     });
-
+ console.log('filteredData',filteredData)
     try {
       const response = await fetchWrapper.patch(
         "http://5.34.194.155:4000/users/profile",
@@ -136,7 +140,7 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
     } catch (error) {
       console.error("Error updating profile:", error);
     } finally {
-      queryClient.invalidateQueries({ queryKey: ['profileData']})
+      queryClient.invalidateQueries({ queryKey: ["profileData"] });
       onClose();
     }
   };
@@ -201,7 +205,11 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
           register={register}
           error={errors.confirmPassword?.message}
         ></TextInputComponent>
-        <ToggleSwitch label="پیج خصوصی باشه"></ToggleSwitch>
+        <ToggleSwitch
+          label="پیج خصوصی باشه"
+          register={register}
+          name="is_private"
+        />
         <div>
           <label className="block !pb-4 !pt-2">بایو</label>
           <textarea
