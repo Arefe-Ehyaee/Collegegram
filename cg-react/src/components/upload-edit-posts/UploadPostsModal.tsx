@@ -11,6 +11,7 @@ import CustomButtonH36 from "../ButtonComponentH36";
 import InputField from "../TextInputComponent";
 import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 import { useQueryClient } from "@tanstack/react-query";
+import Delete from "../../assets/icons/close.svg";
 
 interface UploadModalProps {
   onClose: Function;
@@ -47,11 +48,19 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
     resolver: zodResolver(UploadPostSchema),
   });
 
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const [selectedPhotos, setSelectedPhotos] = useState<File[]>([]);
   const [currentStep, setCurrentStep] = useState(1);
   const fetchWrapper = useFetchWrapper();
+
+  const handleDeleteUploadImage = (index: number) => {
+    setSelectedPhotos((prevState) => {
+      const updatedPhotos = prevState.filter((photo, i) => i !== index);
+      setValue("pictures", updatedPhotos);
+      return updatedPhotos;
+    });
+  };
 
   const onSubmit = async (data: UploadPostProps) => {
     const formData = new FormData();
@@ -60,7 +69,6 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
         formData.append("pictures", file);
       });
     }
-  
 
     if (data.caption) {
       formData.append("caption", data.caption);
@@ -70,8 +78,9 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
       formData.append("mentions", data.mentions);
     }
 
-   for (let [key, value] of formData.entries()) {
-    console.log(`${key}:`, value);}
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
 
     try {
       const response = await fetchWrapper.post(
@@ -80,15 +89,13 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
       );
       if (response.ok) {
         console.log(response);
-      }
-
-      else {
+      } else {
         console.error("Failed to upload", response.statusText);
       }
     } catch (error) {
       console.error("Error uploading:", error);
     } finally {
-      queryClient.invalidateQueries({ queryKey: ['posts']})
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
       onClose();
     }
   };
@@ -118,20 +125,31 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
                     const files = e.target.files;
                     if (files) {
                       const filesArray = Array.from(files) as File[];
-                      setSelectedPhotos(filesArray);
-                      setValue("pictures", filesArray);
+                      setSelectedPhotos((prevState) => {
+                        const updatedPhotos = [...prevState, ...filesArray];
+                        setValue("pictures", updatedPhotos); 
+                        return updatedPhotos;
+                      });
                     }
                   },
                 })}
                 className="hidden"
               />
               {selectedPhotos.map((photo, index) => (
-                <img
-                  key={index}
-                  src={URL.createObjectURL(photo)}
-                  className="h-[112px] w-[112px] rounded-3xl object-cover"
-                  alt={`uploaded ${index}`}
-                />
+                <div key={index} className="relative">
+                  <img
+                    key={index}
+                    src={URL.createObjectURL(photo)}
+                    className="h-[112px] w-[112px] rounded-3xl object-cover"
+                    alt={`uploaded ${index}`}
+                  />
+                  <img
+                    src={Delete}
+                    alt="delete"
+                    className="absolute left-0 top-0"
+                    onClick={() => handleDeleteUploadImage(index)}
+                  />
+                </div>
               ))}
             </div>
             <div className="mt-8 flex flex-row self-end">
