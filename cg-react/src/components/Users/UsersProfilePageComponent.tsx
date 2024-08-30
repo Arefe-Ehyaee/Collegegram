@@ -5,11 +5,12 @@ import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 import CustomButtonH32 from "../ButtonComponentH32";
 import add from "../../assets/icons/add.svg";
 import CustomButtonH36 from "../ButtonComponentH36";
+import ModalTemplatePost from "../Posts/ModalTemplatePost";
+import CloseFriendModal from "./CloseFriendModal";
+import ToggleMenu from "../ToggleMenu";
 import Dots from "../../assets/icons/Dots.svg";
 import ModalTemplate from "../ModalTemplate";
 import BlockingModal from "./BlockingModal";
-import ModalTemplatePost from "../Posts/ModalTemplatePost";
-import CloseFriendModal from "./CloseFriendModal";
 
 export default function ProfilePageComponent() {
   const [showEditModal, setShowEditModal] = useState(false);
@@ -22,8 +23,6 @@ export default function ProfilePageComponent() {
   const [BlockModal, setBlockModal] = useState(false);
   const [CloseFriendModalSate, setCloseFriendModalSate] = useState(false);
   const [NotCloseFriendModalSate, setNotCloseFriendModalSate] = useState(false);
-
-  
 
   // useEffect(() => {
   //   if (BlockModal) {
@@ -38,7 +37,6 @@ export default function ProfilePageComponent() {
   // };
 
 
-
   useEffect(() => {
     if (CloseFriendModalSate) {
       document.body.style.overflow = "hidden";
@@ -46,7 +44,6 @@ export default function ProfilePageComponent() {
       document.body.style.overflow = "unset";
     }
   }, [CloseFriendModalSate]);
-
   const handleCloseFriendModal = () => {
     setCloseFriendModalSate((prevState) => !prevState);
   };
@@ -63,7 +60,6 @@ export default function ProfilePageComponent() {
   // const handleNotCloseFriendModalSate = () => {
   //   setNotCloseFriendModalSate((prevState) => !prevState);
   // };
-
   const handleButtonClicked = () => {
     setClickedFollow((prevState) => !prevState);
     setIconVisible((prevState) => !prevState);
@@ -73,7 +69,7 @@ export default function ProfilePageComponent() {
     async function fetchUserProfile() {
       try {
         const response = await fetchWrapper.get(
-          "http://5.34.194.155:4000/users/profile",
+          "http://5.34.194.155:4000/users/profile"
         );
         const profileData = response.data;
         setUserProfile((prevProfile) => ({
@@ -97,7 +93,6 @@ export default function ProfilePageComponent() {
             profileData.last_name !== undefined
               ? profileData.last_name
               : prevProfile.last_name,
-
           bio:
             profileData.bio !== null && profileData.bio !== undefined
               ? profileData.bio
@@ -110,8 +105,9 @@ export default function ProfilePageComponent() {
 
     fetchUserProfile();
   }, [setUserProfile, showEditModal]);
+
   return (
-    <div dir="rtl" className="px-16">
+    <div dir="rtl" className="md:px-16">
       <div className="ml-16 border-b border-khakeshtari-400 py-9 max-sm:ml-8 max-sm:mr-8">
         <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
           <div className="flex w-full items-center gap-8">
@@ -149,16 +145,25 @@ export default function ProfilePageComponent() {
                   </span>
                   <span className="pl-3">{userProfile.postCount} پست</span>
                 </div>
-                <div>
-                  <button onClick={handleCloseFriendModal}>
-                    <img src={Dots} />
-                  </button>
-                </div>
+                <ToggleMenu imgSrc={Dots}>
+                  <ul>
+                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                      گزینه اول
+                    </li>
+                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                      گزینه دوم
+                    </li>
+                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                      گزینه سوم
+                    </li>
+                  </ul>
+                </ToggleMenu>
               </div>
               <p className="mt-4 text-sm text-khakeshtari-400 max-sm:justify-self-center">
                 {userProfile.bio}
               </p>
             </div>
+            
           </div>
 
           {CloseFriendModalSate && (
