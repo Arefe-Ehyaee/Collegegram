@@ -27,7 +27,7 @@ export default function SideNavbarComponent() {
     setUploadModal(true);
   };
   return (
-    <div dir="rtl" className="mt-16 flex h-full flex-col items-center">
+    <div dir="rtl" className="mt-16 fixed flex h-full flex-col right-16 mr-12 justify-center items-center">
       <CustomButtonH52
         text="ایجاد پست جدید"
         iconsrc={addPostIcon}
@@ -35,7 +35,7 @@ export default function SideNavbarComponent() {
         handleOnClick={handleCreatePostClick}
       ></CustomButtonH52>
 
-      <nav className="w-[70%] flex-grow rounded-t-3xl border border-khakeshtari-400 bg-white p-9">
+      <nav className=" fixed  rounded-t-3xl bottom-0 top-36 border w-72 border-khakeshtari-400 bg-white p-9">
         <div className="mb-8 flex items-center">
           <img
             src={avatar}
