@@ -68,7 +68,8 @@ const PostComponent: React.FC<PostsPageProps> = ({ children }) => {
             slidesPerView={1}
             navigation
             pagination={{ clickable: true }}
-            className="z-10 md:w-full"
+            className="md:w-full"
+            style={{zIndex: 0}}
           >
             {data &&
               data.data.media.map((post: Media) => (
