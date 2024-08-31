@@ -63,7 +63,7 @@ const PostComponent: React.FC<PostsPageProps> = ({ children }) => {
       dir="rtl"
     >
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div>
+        <div className="w-[520px]">
           <Swiper
             spaceBetween={10}
             slidesPerView={1}

@@ -11,6 +11,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import {Navigation} from 'swiper/modules';
 import PostInteractions from "./PostInteractions";
 import openPostPage from "../../assets/icons/Group 21.svg";
 import { useNavigate } from "react-router-dom";
@@ -74,6 +75,7 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
             navigation
             pagination={{ clickable: true }}
             className="md:w-full"
+            modules={[Navigation]}
           >
             {data &&
               data.data.media.map((post: any) => (
