@@ -70,7 +70,7 @@ export default function App() {
                 </PrivateRoute>
               }
             />
-            <Route path="/users" element={<UsersProfilePage />} />
+            <Route path="/users/profile" element={<UsersProfilePage />} />
           </Routes>
           </ProfileDataWrapper>
           <ToastContainer bodyClassName="toastBody" />

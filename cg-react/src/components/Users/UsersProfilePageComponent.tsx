@@ -11,11 +11,19 @@ import ToggleMenu from "../ToggleMenu";
 import Dots from "../../assets/icons/Dots.svg";
 import ModalTemplate from "../ModalTemplate";
 import BlockingModal from "./BlockingModal";
+import { useQuery } from "@tanstack/react-query";
+import { FetchOthersProfile } from "./FetchOthersProfile";
+import { useSearchParams } from "react-router-dom";
 
-export default function ProfilePageComponent() {
+export default function UsersProfilePageComponent() {
+
+  const [token, setToken] = useState<string | null>(null);
+
+  const [searchParams] = useSearchParams();
+  const username = searchParams.get('username');
+
+
   const [showEditModal, setShowEditModal] = useState(false);
-  const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
-  const fetchWrapper = useFetchWrapper();
 
   const [clickedFollow, setClickedFollow] = useState(false);
   const [iconVisible, setIconVisible] = useState(true);
@@ -35,7 +43,7 @@ export default function ProfilePageComponent() {
   // const handleBlockModal = () => {
   //   setBlockModal((prevState) => !prevState);
   // };
-
+  
 
   useEffect(() => {
     if (CloseFriendModalSate) {
@@ -47,7 +55,6 @@ export default function ProfilePageComponent() {
   const handleCloseFriendModal = () => {
     setCloseFriendModalSate((prevState) => !prevState);
   };
-
 
   // useEffect(() => {
   //   if (NotCloseFriendModalSate) {
@@ -65,46 +72,29 @@ export default function ProfilePageComponent() {
     setIconVisible((prevState) => !prevState);
   };
 
-  useEffect(() => {
-    async function fetchUserProfile() {
-      try {
-        const response = await fetchWrapper.get(
-          "http://5.34.194.155:4000/users/profile"
-        );
-        const profileData = response.data;
-        setUserProfile((prevProfile) => ({
-          ...prevProfile,
-          username:
-            profileData.username !== null && profileData.username !== undefined
-              ? profileData.username
-              : prevProfile.username,
-          avatar:
-            profileData.avatar_url !== null &&
-            profileData.avatar_url !== undefined
-              ? profileData.avatar_url
-              : prevProfile.avatar,
-          first_name:
-            profileData.first_name !== null &&
-            profileData.first_name !== undefined
-              ? profileData.first_name
-              : prevProfile.first_name,
-          last_name:
-            profileData.last_name !== null &&
-            profileData.last_name !== undefined
-              ? profileData.last_name
-              : prevProfile.last_name,
-          bio:
-            profileData.bio !== null && profileData.bio !== undefined
-              ? profileData.bio
-              : prevProfile.bio,
-        }));
-      } catch (error) {
-        console.error("Error fetching user profile:", error);
-      }
-    }
 
-    fetchUserProfile();
-  }, [setUserProfile, showEditModal]);
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken || " ");
+  }, []);
+
+  const { data, isError, isPending, error } = useQuery({
+    queryKey: ["othersProfile", username],
+    queryFn: () => FetchOthersProfile(token || "", username as string),
+    enabled: !!username,
+  });
+
+  console.log("data:", data);
+
+  if (isPending) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
+
+  const pageBaseURL = "http://5.34.194.155:4000/";
 
   return (
     <div dir="rtl" className="md:px-16">
@@ -112,17 +102,17 @@ export default function ProfilePageComponent() {
         <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
           <div className="flex w-full items-center gap-8">
             <img
-              src={userProfile.avatar}
+              src={`${pageBaseURL}${data.data.avatar.path}`}
               alt="avatar"
               className="h-[136px] w-[136px] rounded-full border-2 border-khakeshtari-400 max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
             />
-            <div className="w-full ml-4">
+            <div className="ml-4 w-full">
               <p className="text-right text-sm text-tala" dir="ltr">
-                {`@${userProfile.username}`}
+                {`@${data.data.username}`}
               </p>
               <div className="mt-4 flex items-center gap-x-3">
                 <h3 className="text-xl font-bold text-sabz-100">
-                  {`${userProfile.first_name} ${userProfile.last_name}`}
+                  {`${data.data.first_name} ${data.data.last_name}`}
                 </h3>
                 <CustomButtonH32
                   text={clickedFollow ? "دنبال نکردن" : "دنبال کردن"}
@@ -138,32 +128,31 @@ export default function ProfilePageComponent() {
               <div className="flex items-center justify-between">
                 <div className="mt-4 flex gap-x-3 text-sm font-normal text-sabz-200">
                   <span className="border-l pl-3">
-                    {userProfile.followers} دنبال کننده
+                    {data.data.followersCount} دنبال کننده
                   </span>
                   <span className="border-l pl-3">
-                    {userProfile.followings} دنبال شونده
+                    {data.data.followingCount} دنبال شونده
                   </span>
-                  <span className="pl-3">{userProfile.postCount} پست</span>
+                  <span className="pl-3">{data.data.postCount} پست</span>
                 </div>
                 <ToggleMenu imgSrc={Dots}>
                   <ul>
-                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                    <li className="hover:bg-gray-100 cursor-pointer px-4 py-2">
                       گزینه اول
                     </li>
-                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                    <li className="hover:bg-gray-100 cursor-pointer px-4 py-2">
                       گزینه دوم
                     </li>
-                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                    <li className="hover:bg-gray-100 cursor-pointer px-4 py-2">
                       گزینه سوم
                     </li>
                   </ul>
                 </ToggleMenu>
               </div>
               <p className="mt-4 text-sm text-khakeshtari-400 max-sm:justify-self-center">
-                {userProfile.bio}
+                {data.data.bio}
               </p>
             </div>
-            
           </div>
 
           {CloseFriendModalSate && (
