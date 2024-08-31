@@ -9,7 +9,8 @@ import CommentSection from "./CommentSection";
 import mockData from "./mockCommentData.json";
 import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import {Navigation} from 'swiper/modules';
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -66,10 +67,11 @@ const PostComponent: React.FC<PostsPageProps> = ({ children }) => {
           <Swiper
             spaceBetween={10}
             slidesPerView={1}
-            navigation
+            navigation={{enabled: data.data && data.data.media.length > 0}}
             pagination={{ clickable: true }}
             className="md:w-full"
             style={{zIndex: 0}}
+            modules={[Navigation]}
           >
             {data &&
               data.data.media.map((post: Media) => (
