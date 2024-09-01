@@ -1,13 +1,13 @@
 import axios from "axios";
 
 
-export const FetchPosts = async (token: string, username: string, page: number=1, limit: number = 9) => {
+export const FetchPosts = async ({pageParam = 1}, token: string, username: string) => {
 
 
     const response = await axios.get('http://5.34.194.155:4000/posts', {
         params: {
-            page: page,
-            limit: limit,
+            page: pageParam,
+            limit: 9,
             username: username,
         },
         headers: {
