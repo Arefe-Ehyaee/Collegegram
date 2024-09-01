@@ -26,6 +26,7 @@ const ProfileDataWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     if (profileData ) {
+      const baseURL = "http://5.34.194.155:4000/";
       const avatarURL = profileData.data.avatar ? `${profileData.data.avatar.path}` : undefined;
       console.log("profile data in useeffect:", profileData.data)
       setUserProfile(prevProfile => ({
