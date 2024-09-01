@@ -14,6 +14,7 @@ import PrivateRoute from "./components/signup-login/PrivateRoute";
 import  TestPage  from "./components/TestPage";
 import {QueryClientProvider, QueryClient} from '@tanstack/react-query'
 import ProfileDataWrapper from "./user-actions/ProfileDataWrapper";
+import { ParamToQueryNavigate } from "./components/ParamToQueryNavigate";
 
 
 const queryClient = new QueryClient() ;
@@ -71,6 +72,7 @@ export default function App() {
               }
             />
             <Route path="/users/profile" element={<UsersProfilePage />} />
+            <Route path="/users/:username" element={<ParamToQueryNavigate baseUrl="/users/profile" paramKey="username"/>}/>
           </Routes>
           </ProfileDataWrapper>
           <ToastContainer bodyClassName="toastBody" />
