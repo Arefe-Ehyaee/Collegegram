@@ -77,7 +77,7 @@ const PostComponent: React.FC<PostsPageProps> = ({ children }) => {
               data.data.media.map((post: Media) => (
                 <SwiperSlide key={post.id}>
                   <img
-                    src={`${pageBaseURL}${post.path}`}
+                    src={`${post.path}`}
                     className="h-[400px] w-[520px] rounded-3xl object-cover"
                   />
                 </SwiperSlide>

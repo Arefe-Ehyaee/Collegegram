@@ -81,7 +81,7 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
               data.data.media.map((post: any) => (
                 <SwiperSlide key={post.id}>
                   <img
-                    src={`${pageBaseURL}${post.path}`}
+                    src={`${post.path}`}
                     className="h-[400px] w-[520px] rounded-3xl object-cover"
                   />
                 </SwiperSlide>

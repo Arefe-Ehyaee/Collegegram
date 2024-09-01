@@ -74,7 +74,7 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
           <img
           key={post.id}
           className="aspect-square w-full cursor-pointer object-cover rounded-3xl"
-          src={`${pageBaseURL}${post.media[0].path}`}
+          src={`${post.media[0].path}`}
           // alt={photo.alt}
           onClick={() => handleOnClick(post.id)}
           />     
