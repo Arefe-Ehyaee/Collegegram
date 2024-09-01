@@ -38,11 +38,16 @@ export default function ProfilePageComponent() {
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
   const fetchWrapper = useFetchWrapper();
 
-  const [userId, setuserId] = useState<string | null>(null);
+  // const [userId, setuserId] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
   const [FollowerListModal, setFollowerListModal] = useState(false);
   const [FollowingListModal, setFollowingListModal] = useState(false);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken || " ");
+  }, []);
 
   useEffect(() => {
     if(FollowerListModal || FollowingListModal){
@@ -60,8 +65,8 @@ export default function ProfilePageComponent() {
     isFetching: isFetchingFollowers,
     refetch: refetchFollowers
   } = useQuery({
-    queryKey: ['followers', userId],
-    queryFn: () => FetchFollowers(userId || "", token || ""),
+    queryKey: ['followers', userProfile.id],
+    queryFn: () => FetchFollowers(userProfile.id || "", token || ""),
     enabled: false 
   });
 
@@ -71,8 +76,8 @@ export default function ProfilePageComponent() {
     isFetching: isFetchingFollowings,
     refetch: refetchFollowings,
   } = useQuery({
-    queryKey: ['followings', userId],
-    queryFn: () => FetchFollowings(userId || "", token || ""),
+    queryKey: ['followings', userProfile.id],
+    queryFn: () => FetchFollowings(userProfile.id || "", token || ""),
     enabled: false 
   });
 

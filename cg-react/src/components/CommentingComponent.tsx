@@ -15,7 +15,6 @@ const CommentingComponent: React.FC<CommentingComponentProps> = ({ name, placeho
   const userProfile = useRecoilValue(userProfileAtom);
   const avatar = userProfile.avatar;
   const username = userProfile.username;
-
   return (
     <div className="flex gap-4 pt-8 px-6 max-md:gap-1 items-center" dir="rtl">
     <img src={avatar} alt="avatar" className="h-[40px] w-[40px] rounded-full border border-khakeshtari-400"/>
