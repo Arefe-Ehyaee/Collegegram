@@ -95,7 +95,7 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
           page.data?.posts.map((post: Posts) => (
             <img
               key={post.id}
-              className="aspect-square max-h-[304px] w-full cursor-pointer rounded-3xl"
+              className="aspect-square object-cover max-h-[304px] w-full cursor-pointer rounded-3xl"
               src={`${post.media[0].path}`}
               // alt={photo.alt}
               onClick={() => handleOnClick(post.id)}
