@@ -38,6 +38,9 @@ const ProfileDataWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
         bio: profileData.data.bio || prevProfile.bio,
         email: profileData.data.email || prevProfile.email,
         id: profileData.data.id || prevProfile.id,
+        postsCount: profileData.data.postsCount || prevProfile.postsCount,
+        followersCount: profileData.data.followersCount || prevProfile.followersCount,
+        followingCount: profileData.data.followingCount || prevProfile.followingCount
       }));
     }
   }, [profileData]);

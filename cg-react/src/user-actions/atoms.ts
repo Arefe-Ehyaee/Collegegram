@@ -23,9 +23,9 @@ export interface UserProfile {
     first_name: string;
     last_name:string;
     email?:string
-    postCount: number;
-    followers: number;
-    followings: number;
+    postsCount: number;
+    followersCount: number;
+    followingCount: number;
     bio: string;
     is_private?:boolean
 }
@@ -36,9 +36,9 @@ const defaultProfile: UserProfile = {
     avatar: defaultAvatar, 
     first_name: 'نام',
     last_name:'نشان',
-    postCount: 0,
-    followers: 0,
-    followings: 0,
+    postsCount: 0,
+    followersCount: 0,
+    followingCount: 0,
     bio: 'برای شخصی سازی این متن با ویرایش پروفایل بایو خود را تغییر دهید',
     is_private:false
 };

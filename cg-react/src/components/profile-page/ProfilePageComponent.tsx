@@ -5,10 +5,8 @@ import EditProfileModal from "./EditProfileModal";
 import ModalTemplate from "../ModalTemplate";
 import { useRecoilState } from "recoil";
 import { userProfileAtom } from "../../user-actions/atoms";
-import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 import FollowerFollowing from "../FollowerFollowing";
 import CustomButtonH36 from "../ButtonComponentH36";
-import avatar107 from "../../assets/Images/Frame 107.png"
 import { useQuery } from "@tanstack/react-query";
 import { FetchFollowers } from "./FetchFollowers";
 import { FetchFollowings } from "./FetchFollowings";
@@ -36,7 +34,6 @@ export interface Following {
 export default function ProfilePageComponent() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
-  const fetchWrapper = useFetchWrapper();
 
   // const [userId, setuserId] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
@@ -125,7 +122,7 @@ export default function ProfilePageComponent() {
             <img
               src={userProfile.avatar}
               alt="avatar"
-              className="h-[136px] w-[136px] rounded-full border-2 border-khakeshtari-400 max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
+              className="h-[136px] w-[136px] aspect-square object-cover rounded-full border-2 border-khakeshtari-400 max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
             />
             <div className="ml-4">
               <p className="text-right text-sm text-tala" dir="ltr">
@@ -136,12 +133,12 @@ export default function ProfilePageComponent() {
               </h3>
               <div className="mt-4 flex gap-x-3 text-sm font-normal text-sabz-200">
                 <button className="border-l pl-3" onClick={handleShowFollowers}>
-                  {userProfile.followers} دنبال کننده
+                  {userProfile.followersCount} دنبال کننده
                 </button>
                 <button className="border-l pl-3" onClick={handleShowFollowings}>
-                  {userProfile.followings} دنبال شونده
+                  {userProfile.followingCount} دنبال شونده
                 </button>
-                <span className="pl-3">{userProfile.postCount} پست</span>
+                <span className="pl-3">{userProfile.postsCount} پست</span>
               </div>
               <p className="mt-4 text-sm text-khakeshtari-400 max-sm:justify-self-center">
                 {userProfile.bio}

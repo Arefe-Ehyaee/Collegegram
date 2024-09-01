@@ -40,7 +40,7 @@ export default function SideNavbarComponent() {
           <img
             src={avatar}
             alt="avatar"
-            className="h-[56px] w-[56px] rounded-full border border-khakeshtari-400"
+            className="h-[56px] w-[56px] aspect-square object-cover rounded-full border border-khakeshtari-400"
           />
           <p className="mr-4">{username}</p>
         </div>
