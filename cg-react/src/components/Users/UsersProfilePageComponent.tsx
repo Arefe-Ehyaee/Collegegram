@@ -102,7 +102,7 @@ export default function UsersProfilePageComponent() {
         <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
           <div className="flex w-full items-center gap-8">
             <img
-              src={`${pageBaseURL}${data.data.avatar.path}`}
+              src={data.data.avatar.path}
               alt="avatar"
               className="h-[136px] w-[136px] rounded-full border-2 border-khakeshtari-400 max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
             />
