@@ -2,10 +2,7 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    height:{
-      52: '52px'
-    },
-    colors: {
+        colors: {
       white:'#fff',
       okhra: {
         100:'#FFEBEB',

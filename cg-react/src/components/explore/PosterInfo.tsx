@@ -1,6 +1,6 @@
 export interface PosterInfoProps {
     name: string;
-    styling?: string;
+    className?: string;
     avatar?: string;
     followerCount: number;
 }
@@ -8,9 +8,9 @@ export interface PosterInfoProps {
 
 
 const PosterInfo = (props:PosterInfoProps) => {
-    const { name, styling, avatar, followerCount } = props
+    const { name, className, avatar, followerCount } = props
     return (
-        <div className={`flex gap-4 items-center p-4 ${styling}`} dir="rtl">
+        <div className={`flex gap-4 items-center p-4 ${className}`} dir="rtl">
             <img src={avatar} alt="avatar" className="h-[48px] w-[48px] object-contain rounded-full border border-khakeshtari-400"/>
             <div>
                 <div className="text-xs leading-5 font-bold">{name}</div>

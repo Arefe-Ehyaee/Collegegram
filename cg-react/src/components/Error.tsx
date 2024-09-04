@@ -1,5 +1,5 @@
-import errorHeader from "../assets/Images/errorHeader.png"
-import CustomButtonH36 from "./ButtonComponentH36";
+
+import CustomButton from "./CustomButton";
 
 interface ErrorLayoutProps {
     children?: React.ReactNode;
@@ -25,7 +25,7 @@ const ErrorLayout: React.FC<ErrorLayoutProps> = ({ children }) => {
                 <div className={"text-base text-darkBlue text-center font-normal w-80 mt-8 tracking-wider mx-auto"}>
                 ما داریم تلاش می کنیم که برطرفش کنیم. لطفا چند دقیقه دیگه دوباره تلاش کن
                 </div>
-                <CustomButtonH36 text={"بازگشت به صفحه قبل"} styling='bg-okhra-200 mx-auto mt-8'></CustomButtonH36>
+                <CustomButton text={"بازگشت به صفحه قبل"} className='bg-okhra-200 mx-auto mt-8'></CustomButton>
             </div>
             
         </div>

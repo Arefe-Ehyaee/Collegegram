@@ -26,8 +26,7 @@ const ProfileDataWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     if (profileData ) {
-      const baseURL = "http://5.34.194.155:4000/";
-      const avatarURL = profileData.data.avatar ? `${profileData.data.avatar.path}` : undefined;
+      const avatarURL = profileData.data.avatar ? `${profileData.data.avatar.url}` : undefined;
       console.log("profile data in useeffect:", profileData.data)
       setUserProfile(prevProfile => ({
         ...prevProfile,
@@ -40,7 +39,8 @@ const ProfileDataWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
         id: profileData.data.id || prevProfile.id,
         postsCount: profileData.data.postsCount || prevProfile.postsCount,
         followersCount: profileData.data.followersCount || prevProfile.followersCount,
-        followingCount: profileData.data.followingCount || prevProfile.followingCount
+        followingCount: profileData.data.followingCount || prevProfile.followingCount,
+        is_private: profileData.data.is_private || prevProfile.is_private
       }));
     }
   }, [profileData]);

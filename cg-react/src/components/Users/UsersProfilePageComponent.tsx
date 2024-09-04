@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import CustomButtonH32 from "../ButtonComponentH32";
 import add from "../../assets/icons/add.svg";
-import CustomButtonH36 from "../ButtonComponentH36";
 import ModalTemplatePost from "../Posts/ModalTemplatePost";
 import CloseFriendModal from "./CloseFriendModal";
 import ToggleMenu from "../ToggleMenu";
@@ -14,8 +12,13 @@ import { useSearchParams } from "react-router-dom";
 import { followUser } from "./followUser";
 import { ClipLoader } from "react-spinners";
 import { unfollowUser } from "./unfollowUser";
+import ShowPostsComponent from "../Posts/ShowPostsComponent";
+import { defaultProfile } from "../../user-actions/atoms";
+import CustomButton from "../CustomButton";
 
 export default function UsersProfilePageComponent() {
+  type FollowingStatus = "Followed" | "NotFollowed" | "PendingApproval";
+
   const [token, setToken] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
   const username = searchParams.get("username");
@@ -26,7 +29,8 @@ export default function UsersProfilePageComponent() {
   const [BlockModal, setBlockModal] = useState(false);
   const [CloseFriendModalSate, setCloseFriendModalSate] = useState(false);
   const [NotCloseFriendModalSate, setNotCloseFriendModalSate] = useState(false);
-  const [followingStatus, setFollowingStatus] = useState(false);
+  const [followingStatus, setFollowingStatus] =
+    useState<FollowingStatus>("NotFollowed");
   const queryClient = useQueryClient();
   // useEffect(() => {
   //   if (BlockModal) {
@@ -63,7 +67,10 @@ export default function UsersProfilePageComponent() {
   //   setNotCloseFriendModalSate((prevState) => !prevState);
   // };
   const handleButtonClicked = async () => {
-    if (followingStatus) {
+    if (
+      followingStatus === "Followed" ||
+      followingStatus === "PendingApproval"
+    ) {
       await unfollowRefetch();
       queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
     } else {
@@ -121,7 +128,7 @@ export default function UsersProfilePageComponent() {
     }
   }, [followFetching, unfollowFetching]);
   useEffect(() => {
-    if (followingStatus) {
+    if (followingStatus !== "NotFollowed") {
       setIconVisible(false);
     }
   }, [followingStatus]);
@@ -133,13 +140,38 @@ export default function UsersProfilePageComponent() {
     return <span>Error: {userErrorMsg.message}</span>;
   }
 
+  const getButtonProperties = (status: FollowingStatus) => {
+    if (status === "Followed") {
+      return {
+        text: "دنبال نکردن",
+        className:
+          "bg-khakeshtari-100 ml-1 border border-okhra-200 !text-okhra-200",
+      };
+    } else if (status === "PendingApproval") {
+      return {
+        text: "لغو درخواست",
+        className:
+          "bg-khakeshtari-100 ml-1 border border-okhra-200 !text-okhra-200",
+      };
+    } else {
+      return {
+        text: "دنبال کردن",
+        className: "bg-okhra-200 ml-1 text-white",
+      };
+    }
+  };
+  const { text, className } = getButtonProperties(followingStatus);
   return (
     <div dir="rtl" className="md:px-16">
       <div className="ml-16 border-b border-khakeshtari-400 py-9 max-sm:ml-8 max-sm:mr-8">
         <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
           <div className="flex w-full items-center gap-8">
             <img
-              src={userData.data.avatar.path}
+              src={
+                userData.data.avatar && userData.data.avatar.url
+                  ? userData.data.avatar.url
+                  : defaultProfile.avatar
+              }
               alt="avatar"
               className="aspect-square h-[136px] w-[136px] rounded-full border-2 border-khakeshtari-400 object-cover max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
             />
@@ -151,20 +183,18 @@ export default function UsersProfilePageComponent() {
                 <h3 className="text-xl font-bold text-sabz-100">
                   {`${userData.data.first_name} ${userData.data.last_name}`}
                 </h3>
-                <CustomButtonH32
-                  text={followingStatus ? "دنبال نکردن" : "دنبال کردن"}
+
+                <CustomButton
+                  text={text}
                   iconsrc={iconVisible ? add : null}
-                  styling={
-                    followingStatus
-                      ? "bg-khakeshtari-100 ml-1 border border-okhra-200 text-okhra-200"
-                      : " bg-okhra-200 ml-1 text-white"
-                  }
+                  className={className}
                   handleOnClick={handleButtonClicked}
+                  size="small"
                 >
                   {(followFetching || unfollowFetching) && (
                     <ClipLoader color="#9b9b9b" size={20} />
                   )}
-                </CustomButtonH32>
+                </CustomButton>
               </div>
               <div className="flex items-center justify-between">
                 <div className="mt-4 flex gap-x-3 text-sm font-normal text-sabz-200">
@@ -174,7 +204,7 @@ export default function UsersProfilePageComponent() {
                   <span className="border-l pl-3">
                     {userData.data.followingCount} دنبال شونده
                   </span>
-                  <span className="pl-3">{userData.data.postCount} پست</span>
+                  <span className="pl-3">{userData.data.postsCount} پست</span>
                 </div>
                 <ToggleMenu imgSrc={Dots}>
                   <ul>
@@ -204,21 +234,43 @@ export default function UsersProfilePageComponent() {
               {/* <BlockingModal name={"Arefe"}></BlockingModal> */}
               <CloseFriendModal name={"Arefe"}></CloseFriendModal>
               <div className="mt-8 flex flex-row self-end">
-                <CustomButtonH36
+                <CustomButton
                   text="پشیمون شدم"
-                  styling="!text-siah ml-4"
+                  className="ml-4 !text-siah"
                   handleOnClick={() => setCloseFriendModalSate(false)}
-                />
-                <CustomButtonH36
+                ></CustomButton>
+                <CustomButton
                   text="آره حتما"
-                  styling="bg-okhra-200"
+                  className="bg-okhra-200"
                   handleOnClick={() => setCloseFriendModalSate(false)}
-                />
+                ></CustomButton>
               </div>
             </ModalTemplatePost>
           )}
         </div>
       </div>
+      {userData.data.is_private === true && followingStatus !== "Followed" && (
+        <div className="my-8 flex h-64 flex-grow flex-col items-center justify-center">
+          <h3 className="py-8 text-center text-2xl">
+            {`برای دیدن صفحه ${userData.data.username} باید دنبالش کنی.`}
+          </h3>
+          <CustomButton
+            text={text}
+            iconsrc={iconVisible ? add : undefined}
+            className={className}
+            handleOnClick={handleButtonClicked}
+            size="large"
+          >
+            {(followFetching || unfollowFetching) && (
+              <ClipLoader color="#9b9b9b" size={20} />
+            )}
+          </CustomButton>
+        </div>
+      )}
+      {(userData.data.is_private === false ||
+        followingStatus === "Followed") && (
+        <ShowPostsComponent username={userData.data.username} />
+      )}
     </div>
   );
 }

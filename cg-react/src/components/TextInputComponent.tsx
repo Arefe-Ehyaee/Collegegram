@@ -6,19 +6,19 @@ interface InputProps {
   type: string;
   placeholder: string;
   iconsrc?: string;
-  styling?: string;
+  className?: string;
   error?: string;
   register?: any; 
 }
 
-const InputField: React.FC<InputProps> = ({ name, placeholder, type, register, styling, iconsrc, error }) => {
+const InputField: React.FC<InputProps> = ({ name, placeholder, type, register, className, iconsrc, error }) => {
   return (
     <div className="relative mb-6">
       <input
         type={type}
         id={name}
         name={name}
-        className={`flex flex-col items-center w-80 h-12 border border-khakeshtari-400 px-4 py-2 rounded-2xl text-xs font-normal placeholder-gray font-isf pr-[30px] ${styling} placeholder-start ${error ? "border-red-500" : ""}`}
+        className={`flex flex-col items-center w-80 h-12 border border-khakeshtari-400 px-4 py-2 rounded-2xl text-xs font-normal placeholder-gray font-isf pr-[30px] ${className} placeholder-start ${error ? "border-red-500" : ""}`}
         dir="rtl"
         placeholder={placeholder}
         {...register(name)}  

@@ -2,35 +2,37 @@ import whitePen from "../../assets/icons/whitePen.svg";
 import post from "../../assets/Images/post.png";
 import redPen from "../../assets/icons/redPen.svg";
 import AvatarName from "../AvatarName";
-import CustomButtonH36 from "../ButtonComponentH36";
 import DesktopCaption from "./DesktopCaption";
 import BottomNavbarMobile from "../BottonNavbarMobile";
 import { useRecoilValue } from "recoil";
 import { userProfileAtom } from "../../user-actions/atoms";
+import CustomButton from "../CustomButton";
 
 interface MobilePostProps {
   children?: React.ReactNode;
 }
 
 const MobilePost: React.FC<MobilePostProps> = ({ children }) => {
-
   const userProfile = useRecoilValue(userProfileAtom);
   const avatar = userProfile.avatar;
   const username = userProfile.username;
-  
-  return (
 
+  return (
     <div className="mx-auto h-[720px] w-[520px]">
       <div
         className="flex items-center justify-between max-md:mt-[52px]"
         dir="rtl"
       >
-        <AvatarName name={username} avatar={avatar} styling="py-4 pr-1"></AvatarName>
-        <CustomButtonH36
+        <AvatarName
+          name={username}
+          avatar={avatar}
+          className="py-4 pr-1"
+        ></AvatarName>
+        <CustomButton
           text={"ویرایش پست"}
           iconsrc={whitePen}
-          styling="bg-okhra-200 ml-1 max-md:hidden"
-        ></CustomButtonH36>
+          className="ml-1 bg-okhra-200 max-md:hidden"
+        ></CustomButton>
         <img src={redPen} alt="edit" className="pl-6 md:hidden" />
       </div>
       <img src={post} alt="post" className="py-2" />

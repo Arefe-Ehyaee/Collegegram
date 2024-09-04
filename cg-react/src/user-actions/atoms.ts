@@ -30,7 +30,7 @@ export interface UserProfile {
     is_private?:boolean
 }
 
-const defaultProfile: UserProfile = {
+export const defaultProfile: UserProfile = {
     id: 'defaultID',
     username: 'defaultID',
     avatar: defaultAvatar, 

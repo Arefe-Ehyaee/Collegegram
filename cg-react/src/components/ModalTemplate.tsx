@@ -5,7 +5,7 @@ import { Children } from "react";
 interface ModalProps {
   showModal: boolean;
   onClose?: () => void;
-  styling?: string;
+  className?: string;
   mainComponent?: JSX.Element;
   children?:React.ReactNode
 }
@@ -13,13 +13,13 @@ interface ModalProps {
 const ModalTemplate = ({
   showModal,
   onClose,
-  styling,
+  className,
   mainComponent,
   children
 }: ModalProps) => {
   return (
     <div
-      className={`fixed inset-0 flex z-40 flex-col items-center justify-center bg-siah/40 ${showModal ? "visible bg-siah/40" : "invisible"}`}
+      className={`fixed inset-0 flex z-40 flex-col items-center justify-center ${className} bg-siah/40 ${showModal ? "visible bg-siah/40" : "invisible"}`}
       onClick={onClose}
     >
       <div

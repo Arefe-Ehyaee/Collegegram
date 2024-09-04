@@ -1,7 +1,6 @@
 import whitePen from "../../assets/icons/whitePen.svg";
 import redPen from "../../assets/icons/redPen.svg";
 import AvatarName from "../AvatarName";
-import CustomButtonH36 from "../ButtonComponentH36";
 import DesktopCaption from "./DesktopCaption";
 import BottomNavbarMobile from "../BottonNavbarMobile";
 import { userProfileAtom } from "../../user-actions/atoms";
@@ -15,6 +14,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { useLocation } from "react-router-dom";
+import CustomButton from "../CustomButton";
 
 interface PostsPageProps {
   imageSrc?: string;
@@ -89,13 +89,12 @@ const PostComponent: React.FC<PostsPageProps> = ({ children }) => {
             <AvatarName
               name={username}
               avatar={avatar}
-              styling="py-4 pr-1"
+              className="py-4 pr-1"
             ></AvatarName>
-            <CustomButtonH36
-              text={"ویرایش پست"}
+
+            <CustomButton text={"ویرایش پست"}
               iconsrc={whitePen}
-              styling="bg-okhra-200 ml-1 max-md:hidden"
-            ></CustomButtonH36>
+              className="bg-okhra-200 ml-1 max-md:hidden"></CustomButton>
             <img src={redPen} alt="edit" className="pl-6 md:hidden" />
           </div>
           <DesktopCaption

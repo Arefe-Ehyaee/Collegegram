@@ -1,13 +1,13 @@
 
 interface AvatarNameProps {
     name: string;
-    styling?: string;
+    className?: string;
     avatar?: string;
 }
 
-const AvatarName: React.FC<AvatarNameProps> = ({ name, styling, avatar }) => {
+const AvatarName: React.FC<AvatarNameProps> = ({ name, className, avatar }) => {
     return (
-        <div className={`flex gap-4 items-center max-md:pr-6 ${styling}`} dir="rtl">
+        <div className={`flex gap-4 items-center max-md:pr-6 ${className}`} dir="rtl">
             <img src={avatar} alt="avatar" className="h-[48px] w-[48px]  rounded-full border border-khakeshtari-400"/>
             <div>{name}</div>
         </div>

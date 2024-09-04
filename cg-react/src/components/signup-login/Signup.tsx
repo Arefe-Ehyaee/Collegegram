@@ -4,39 +4,40 @@ import InputField from "../TextInputComponent";
 import UserSvg from "../../assets/icons/user.svg";
 import GmailSvg from "../../assets/icons/gmail.svg";
 import keySvg from "../../assets/icons/key.svg";
-import CustomButtonH36 from "../ButtonComponentH36";
 import Label from "../Label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import axios from 'axios';
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import CustomButton from "../CustomButton";
 
-const signupSchema = z.object({
-  username: z
-    .string({ required_error: "نام کاربری مورد نیاز است" })
-    .min(3, { message: "نام کاربری باید حداقل 3 کاراکتر باشد" }),
-  email: z
-    .string({ required_error: "ایمیل مورد نیاز است" })
-    .min(3, { message: "ایمیل نامعتبر است" }),
-  password: z
-    .string({ required_error: "رمز عبور مورد نیاز است" })
-    .min(3, { message: "رمز عبور باید حداقل 3 کاراکتر باشد" })
-    .regex(/[A-Z]/, { message: "رمز عبور باید شامل حداقل یک حرف بزرگ باشد" })
-    .regex(/[0-9]/, { message: "رمز عبور باید شامل حداقل یک عدد باشد" }),
-  repeatpassword: z
-    .string({ required_error: "رمز عبور مورد نیاز است" })
-    .min(3, { message: "رمز عبور باید حداقل 3 کاراکتر باشد" }),
-})
-.superRefine(({ repeatpassword, password }, ctx) => {
-  if (repeatpassword !== password) {
-    ctx.addIssue({
-      code: "custom",
-      message: "پسورد‌ها باید یکسان باشند",
-      path: ["repeatpassword"],
-    });
-  }
-});
+const signupSchema = z
+  .object({
+    username: z
+      .string({ required_error: "نام کاربری مورد نیاز است" })
+      .min(3, { message: "نام کاربری باید حداقل 3 کاراکتر باشد" }),
+    email: z
+      .string({ required_error: "ایمیل مورد نیاز است" })
+      .min(3, { message: "ایمیل نامعتبر است" }),
+    password: z
+      .string({ required_error: "رمز عبور مورد نیاز است" })
+      .min(3, { message: "رمز عبور باید حداقل 3 کاراکتر باشد" })
+      .regex(/[A-Z]/, { message: "رمز عبور باید شامل حداقل یک حرف بزرگ باشد" })
+      .regex(/[0-9]/, { message: "رمز عبور باید شامل حداقل یک عدد باشد" }),
+    repeatpassword: z
+      .string({ required_error: "رمز عبور مورد نیاز است" })
+      .min(3, { message: "رمز عبور باید حداقل 3 کاراکتر باشد" }),
+  })
+  .superRefine(({ repeatpassword, password }, ctx) => {
+    if (repeatpassword !== password) {
+      ctx.addIssue({
+        code: "custom",
+        message: "پسورد‌ها باید یکسان باشند",
+        path: ["repeatpassword"],
+      });
+    }
+  });
 
 interface SignupFormData {
   username: string;
@@ -44,7 +45,6 @@ interface SignupFormData {
   password: string;
   repeatpassword: string;
 }
-
 
 const SignUp: React.FC = () => {
   const {
@@ -58,21 +58,23 @@ const SignUp: React.FC = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data: SignupFormData) => {
-    try{
+    try {
       console.log(data);
-      axios.post('http://5.34.194.155:4000/auth/sign-up',{
-        username: data.username,
-        email: data.email,
-        password: data.password,
-        confirmPassword:data.repeatpassword,
-      }).then(res=>{
-        const result = res;
-        console.log(result,res.status,res.data);
-        navigate('/login');
-      })
-    } catch(error) {
+      axios
+        .post("http://5.34.194.155:4000/auth/sign-up", {
+          username: data.username,
+          email: data.email,
+          password: data.password,
+          confirmPassword: data.repeatpassword,
+        })
+        .then((res) => {
+          const result = res;
+          console.log(result, res.status, res.data);
+          navigate("/login");
+        });
+    } catch (error) {
       console.error("There was an error!", error);
-    }  
+    }
   };
   return (
     <div className="backImg flex min-h-screen items-center justify-center">
@@ -120,14 +122,14 @@ const SignUp: React.FC = () => {
             error={errors.repeatpassword?.message}
             register={register}
           />
-          <CustomButtonH36
+          <CustomButton
             text={"ثبت نام"}
-            styling="bg-okhra-200 mt-12 text-sm"
-          ></CustomButtonH36>
+            className="mt-12 bg-okhra-200 text-sm"
+          ></CustomButton>
         </form>
       </Box>
     </div>
   );
-}
+};
 
 export default SignUp;

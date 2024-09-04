@@ -1,5 +1,4 @@
 import AvatarName from "../AvatarName";
-import CustomButtonH36 from "../ButtonComponentH36";
 import whitePen from "../../assets/icons/whitePen.svg";
 import DesktopCaption from "./DesktopCaption";
 import { useRecoilValue } from "recoil";
@@ -16,6 +15,7 @@ import PostInteractions from "./PostInteractions";
 import openPostPage from "../../assets/icons/Group 21.svg";
 import { useNavigate } from "react-router-dom";
 import timeTranslate from "../../utilities/timeTranslationFunction";
+import CustomButton from "../CustomButton";
 
 interface ShowPostModalProps {
   onClose: () => void;
@@ -81,7 +81,7 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
               data.data.media.map((post: any) => (
                 <SwiperSlide key={post.id}>
                   <img
-                    src={`${post.path}`}
+                    src={`${post.url}`}
                     className="h-[400px] w-[520px] rounded-3xl object-cover"
                   />
                 </SwiperSlide>
@@ -95,11 +95,9 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
               <AvatarName name={username} avatar={avatar} />
             </div>
             <div className="hidden md:block">
-              <CustomButtonH36
-                text={"ویرایش پست"}
+              <CustomButton text={"ویرایش پست"}
                 iconsrc={whitePen}
-                styling="bg-okhra-200 ml-1"
-              />
+                className="bg-okhra-200 ml-1" ></CustomButton>
             </div>
           </div>
           {data && (

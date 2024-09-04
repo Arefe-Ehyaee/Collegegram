@@ -1,7 +1,6 @@
 import Box from './BoxComponent';
 import InputField from '../TextInputComponent';
 import keySvg from "../../assets/icons/key.svg"
-import CustomButtonH36 from '../ButtonComponentH36';
 import Label from '../Label';
 import BoxTitle from './BoxTitle';
 import { z } from 'zod';
@@ -10,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
+import CustomButton from '../CustomButton';
 
 
 const SetNewPassSchema = z.object({
@@ -129,7 +129,7 @@ const SetNewPassword: React.FC = () => {
                 iconsrc={keySvg} 
                 register={register}
               />
-              <CustomButtonH36 text={'ثبت رمز عبور جدید'} styling='bg-okhra-200 text-sm'></CustomButtonH36>
+              <CustomButton text={'ثبت رمز عبور جدید'} className='bg-okhra-200 text-sm'></CustomButton>
               </form>
             </div>
           </Box>

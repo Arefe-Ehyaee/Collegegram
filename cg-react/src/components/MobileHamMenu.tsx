@@ -1,4 +1,3 @@
-import React from 'react'
 import hamMenu from "../assets/icons/hamMenu.svg";
 import angledpin from "../assets/icons/angled-pin.svg"
 import bookmark from "../assets/icons/bookmark.svg"

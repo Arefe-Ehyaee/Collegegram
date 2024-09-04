@@ -1,7 +1,7 @@
 interface ModalPostProps {
   showModal: boolean;
   onClose?: () => void;
-  styling?: string;
+  className?: string;
   mainComponent?: JSX.Element;
   children?:React.ReactNode
 }
@@ -9,13 +9,13 @@ interface ModalPostProps {
 const ModalTemplatePost = ({
   showModal,
   onClose,
-  styling,
+  className,
   mainComponent,
   children
 }: ModalPostProps) => {
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-siah/40 ${showModal ? "visible bg-siah/40" : "invisible"}`}
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-siah/40 ${className} ${showModal ? "visible bg-siah/40" : "invisible"}`}
       onClick={onClose}
     >
       <div

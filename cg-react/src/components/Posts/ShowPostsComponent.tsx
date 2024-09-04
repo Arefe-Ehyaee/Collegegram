@@ -3,13 +3,11 @@ import ShowPostModal from "./ShowPostModal";
 import ModalTemplatePost from "./ModalTemplatePost";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { FetchPosts } from "./FetchPosts";
-import { useRecoilState } from "recoil";
-import { userProfileAtom } from "../../user-actions/atoms";
 import { useInView } from "react-intersection-observer";
 import { BeatLoader } from "react-spinners";
 
 interface ShowPostsProps {
-  styling?: string;
+  username: string;
 }
 
 interface Posts {
@@ -24,17 +22,16 @@ interface Media {
   id: string;
   mime: string;
   name: string;
-  path: string;
+  url: string;
   size: number;
   children?: React.ReactNode;
 }
 
-export default function ShowPostsComponent({ styling }: ShowPostsProps) {
+export default function ShowPostsComponent({ username }: ShowPostsProps) {
   // const [photos, setPhotos] = useState<Photo[]>(photoList);
   const [showPostModal, setPostShowModal] = useState(false);
   const [selectedPhotoId, setSelectedPhotoId] = useState<string>("");
   const [token, setToken] = useState<string | null>(null);
-  const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
 
   const { ref, inView } = useInView();
 
@@ -48,20 +45,15 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
     setPostShowModal(true);
   };
 
-  // const {data, error, isPending, isError } = useQuery({
-  //   queryKey: ['posts'],
-  //   queryFn: () => FetchPosts(token || "", userProfile.username),
-  //   enabled: !!token,
-  // })
 
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading, isError, error } = useInfiniteQuery({
-    queryKey: ['posts', token, userProfile.username],
-    queryFn: async ({ pageParam = 1 }) => FetchPosts({ pageParam }, token || '', userProfile.username),
+    queryKey: ['posts', token, username],
+    queryFn: async ({ pageParam = 1 }) => FetchPosts({ pageParam }, token || '', username),
     getNextPageParam: (lastPage) => {
         return lastPage?.data?.nextPage ?? undefined; 
     },
     initialPageParam: 1,
-    enabled: !!token && !!userProfile.username,
+    enabled: !!token && !!username,
   });
 
   console.log(data?.pages[0]);
@@ -85,10 +77,6 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
 
   return (
     <div className="my-8 grid rounded-3xl border border-khakeshtari-400">
-      {/* <CustomButtonH36
-        text="ایجاد پست جدید"
-        styling="bg-okhra-200 self-center"
-      ></CustomButtonH36> */}
       <div className="grid grid-cols-2 gap-6 md:grid-cols-3 md:gap-4">
         {data && 
           data?.pages.flatMap((page) => 
@@ -96,7 +84,7 @@ export default function ShowPostsComponent({ styling }: ShowPostsProps) {
             <img
               key={post.id}
               className="aspect-square object-cover max-h-[304px] w-full cursor-pointer rounded-3xl"
-              src={`${post.media[0].path}`}
+              src={`${post.media[0].url}`}
               // alt={photo.alt}
               onClick={() => handleOnClick(post.id)}
             />

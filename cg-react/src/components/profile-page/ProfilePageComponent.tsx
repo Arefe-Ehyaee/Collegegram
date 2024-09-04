@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
-import CustomButtonH52 from "../ButtonComponentH52";
 import ShowPostsComponent from "../Posts/ShowPostsComponent";
 import EditProfileModal from "./EditProfileModal";
 import ModalTemplate from "../ModalTemplate";
 import { useRecoilState } from "recoil";
 import { userProfileAtom } from "../../user-actions/atoms";
 import FollowerFollowing from "../FollowerFollowing";
-import CustomButtonH36 from "../ButtonComponentH36";
 import { useQuery } from "@tanstack/react-query";
 import { FetchFollowers } from "./FetchFollowers";
 import { FetchFollowings } from "./FetchFollowings";
+import CustomButton from "../CustomButton";
 
 export interface Follower {
   id?: string,
@@ -35,7 +34,6 @@ export default function ProfilePageComponent() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
 
-  // const [userId, setuserId] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
   const [FollowerListModal, setFollowerListModal] = useState(false);
@@ -145,14 +143,13 @@ export default function ProfilePageComponent() {
               </p>
             </div>
           </div>
-          <CustomButtonH52
-            text="ویرایش پروفایل"
-            styling="bg-okhra-200"
-            handleOnClick={() => setShowEditModal(true)}
-          />
+
+          <CustomButton size="large" text="ویرایش پروفایل"
+            className="bg-okhra-200"
+            handleOnClick={() => setShowEditModal(true)}/>
         </div>
       </div>
-      <ShowPostsComponent/>
+      <ShowPostsComponent username={userProfile.username}/>
       {showEditModal && (
         <ModalTemplate
           onClose={() => setShowEditModal(false)}
@@ -173,8 +170,7 @@ export default function ProfilePageComponent() {
               return <FollowerFollowing key={follower.id} name={follower.username} followersNumber={follower.followersCount} avatar={follower.avatar} />
             })}
           </div>
-
-          <CustomButtonH36 text={"بستن"} styling="bg-okhra-200 mt-[34px]" handleOnClick={() => setFollowerListModal(false)}></CustomButtonH36>
+            <CustomButton text={"بستن"} className="bg-okhra-200 mt-[34px]" handleOnClick={() => setFollowerListModal(false)}></CustomButton>
         </ModalTemplate>  
       )}
 
@@ -186,7 +182,7 @@ export default function ProfilePageComponent() {
               return <FollowerFollowing key={following.id} name={following.username} followersNumber={following.followersCount} avatar={following.avatar}></FollowerFollowing>
           })}
         </div>
-        <CustomButtonH36 text={"بستن"} styling="bg-okhra-200 mt-[34px]" handleOnClick={() => setFollowingListModal(false)}></CustomButtonH36>
+        <CustomButton text={"بستن"} className="bg-okhra-200 mt-[34px]" handleOnClick={() => setFollowingListModal(false)}></CustomButton>
       </ModalTemplate>  
       )}
     </div>
