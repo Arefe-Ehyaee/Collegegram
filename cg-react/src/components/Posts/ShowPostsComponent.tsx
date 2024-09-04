@@ -74,6 +74,7 @@ export default function ShowPostsComponent({ username }: ShowPostsProps) {
     return <span>Error: {error.message}</span>;
   }
   const pageBaseURL = "http://5.34.194.155:4000/";
+  console.log("post",data?.pages)
 
   return (
     <div className="my-8 grid rounded-3xl border border-khakeshtari-400">

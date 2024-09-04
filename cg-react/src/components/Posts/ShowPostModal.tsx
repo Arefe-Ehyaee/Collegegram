@@ -37,6 +37,7 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
   const userProfile = useRecoilValue(userProfileAtom);
   const avatar = userProfile.avatar;
   const username = userProfile.username;
+  console.log("profileData", userProfile);
 
   const [token, setToken] = useState<string | null>(null);
 
@@ -53,10 +54,11 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
     enabled: !!token,
   });
 
+  console.log("postId", id);
 
   const handleOnClick = () => {
-    if (data) {
-      navigate("/posts", { state: { post: data } });
+    if (data && id) {
+      navigate("/posts", { state: { post: data, postId: id } });
     }
   };
 
