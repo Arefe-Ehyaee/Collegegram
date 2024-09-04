@@ -1,4 +1,3 @@
-import CustomButtonH36 from "../ButtonComponentH36";
 
 interface BlockingModalProps {
     name: string;

@@ -27,7 +27,7 @@ interface Media {
   id: string;
   mime: string;
   name: string;
-  path: string;
+  url: string;
   size: number;
   children?: React.ReactNode;
 }
@@ -77,7 +77,7 @@ const PostComponent: React.FC<PostsPageProps> = ({ children }) => {
               data.data.media.map((post: Media) => (
                 <SwiperSlide key={post.id}>
                   <img
-                    src={`${post.path}`}
+                    src={`${post.url}`}
                     className="h-[400px] w-[520px] rounded-3xl object-cover"
                   />
                 </SwiperSlide>
