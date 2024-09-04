@@ -7,11 +7,11 @@ import TextAreaWithEmojiComponent from "../TextAreaWithEmojiComponent";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import CustomButtonH36 from "../ButtonComponentH36";
 import InputField from "../TextInputComponent";
 import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 import { useQueryClient } from "@tanstack/react-query";
 import Delete from "../../assets/icons/close.svg";
+import CustomButton from "../CustomButton";
 
 interface UploadModalProps {
   onClose: Function;
@@ -127,7 +127,7 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
                       const filesArray = Array.from(files) as File[];
                       setSelectedPhotos((prevState) => {
                         const updatedPhotos = [...prevState, ...filesArray];
-                        setValue("pictures", updatedPhotos); 
+                        setValue("pictures", updatedPhotos);
                         return updatedPhotos;
                       });
                     }
@@ -153,16 +153,17 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
               ))}
             </div>
             <div className="mt-8 flex flex-row self-end">
-              <CustomButtonH36
+              <CustomButton
                 text="پشیمون شدم"
-                styling="!text-siah ml-4"
+                className="ml-4 !text-siah"
                 handleOnClick={() => onClose()}
-              />
-              <CustomButtonH36
+              ></CustomButton>
+
+              <CustomButton
                 text="بعدی"
-                styling="bg-okhra-200"
+                className="bg-okhra-200"
                 handleOnClick={() => setCurrentStep(2)}
-              />
+              ></CustomButton>
             </div>
           </div>
         )}
@@ -175,20 +176,21 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
               name="caption"
               label="کپشن:"
               register={register}
-              styling="!h-[156px] !min-w-[320px] !my-auto"
+              className="!h-[156px] !min-w-[320px] !my-auto"
               error={errors.caption?.message}
             />
             <div className="mt-8 flex flex-row self-end">
-              <CustomButtonH36
+              <CustomButton
                 text="پشیمون شدم"
-                styling="!text-siah ml-4"
+                className="ml-4 !text-siah"
                 handleOnClick={() => setCurrentStep(1)}
-              />
-              <CustomButtonH36
+              ></CustomButton>
+
+              <CustomButton
                 text="بعدی"
-                styling="bg-okhra-200"
+                className="bg-okhra-200"
                 handleOnClick={() => setCurrentStep(3)}
-              />
+              ></CustomButton>
             </div>
           </div>
         )}
@@ -207,16 +209,16 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
               error={errors.mentions?.message}
             />
             <div className="mt-8 flex flex-row self-end">
-              <CustomButtonH36
+              <CustomButton
                 text="پشیمون شدم"
-                styling="!text-siah ml-4"
+                className="ml-4 !text-siah"
                 handleOnClick={() => setCurrentStep(2)}
-              />
-              <CustomButtonH36
+              ></CustomButton>
+              <CustomButton
                 text="ثبت و انتشار پست"
-                styling="bg-okhra-200"
+                className="bg-okhra-200"
                 handleOnClick={handleSubmit(onSubmit)}
-              />
+              ></CustomButton>
             </div>
           </div>
         )}

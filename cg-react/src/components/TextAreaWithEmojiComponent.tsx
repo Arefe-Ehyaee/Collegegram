@@ -8,7 +8,7 @@ interface InputProps {
   name: string;
   placeholder?: string;
   iconsrc?: string;
-  styling?: string;
+  className?: string;
   error?: string;
   register?: any;
   label?: string;
@@ -17,7 +17,7 @@ interface InputProps {
 const TextAreaWithEmojiComponent: React.FC<InputProps> = ({
   name,
   placeholder,
-  styling,
+  className,
   register,
   error,
   label,
@@ -58,7 +58,7 @@ const TextAreaWithEmojiComponent: React.FC<InputProps> = ({
         name={name}
         id={name}
         placeholder={placeholder}
-        className={`h-[88px] w-[320px] resize-none rounded-[32px] border border-sabz-200 ${styling} p-4`}
+        className={`h-[88px] w-[320px] resize-none rounded-[32px] border border-sabz-200 ${className} p-4`}
         {...register(name)}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}

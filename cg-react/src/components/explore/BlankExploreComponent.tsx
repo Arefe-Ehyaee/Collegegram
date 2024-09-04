@@ -1,6 +1,4 @@
-import React from "react";
-import CustomButtonH52 from "../ButtonComponentH52";
-import PosterInfo from "./PosterInfo";
+import CustomButton from "../CustomButton";
 
 const BlankExploreComponent = () => {
   return (
@@ -14,7 +12,7 @@ const BlankExploreComponent = () => {
           برای دیدن پست‌ها در این صفحه باید کالج‌گرامی‌ها رو <br />
           دنبال کنی. آماده‌ای؟
         </h2>
-        <CustomButtonH52 text="جستجوی کالج‌گرامی‌ها" styling="bg-okhra-200" />
+        <CustomButton size="large" text="جستجوی کالج‌گرامی‌ها" className="bg-okhra-200"></CustomButton>
         
       </div>
     </div>

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import defaultAvatar from "../assets/icons/defaultavatar.svg";
-import CustomButtonH52 from "./ButtonComponentH52";
 import angledpin from "../assets/icons/angled-pin.svg";
 import bookmark from "../assets/icons/bookmark.svg";
 import chat from "../assets/icons/chat.svg";
@@ -14,6 +13,7 @@ import { useRecoilValue } from "recoil";
 import ModalTemplate from "./ModalTemplate";
 import UploadPostsModal from "./upload-edit-posts/UploadPostsModal";
 import { useNavigate } from "react-router-dom";
+import CustomButton from "./CustomButton";
 
 export default function SideNavbarComponent() {
   const userProfile = useRecoilValue(userProfileAtom);
@@ -28,13 +28,12 @@ export default function SideNavbarComponent() {
   };
   return (
     <div dir="rtl" className="mt-16 fixed flex h-full flex-col right-16 mr-12 justify-center items-center">
-      <CustomButtonH52
-        text="ایجاد پست جدید"
+      
+      <CustomButton text="ایجاد پست جدید"
+      size="large"
         iconsrc={addPostIcon}
-        styling="bg-okhra-200 mb-8"
-        handleOnClick={handleCreatePostClick}
-      ></CustomButtonH52>
-
+        className="bg-okhra-200 mb-8 fixed top-16"
+        handleOnClick={handleCreatePostClick}></CustomButton>
       <nav className=" fixed  rounded-t-3xl bottom-0 top-36 border w-72 border-khakeshtari-400 bg-white p-9">
         <div className="mb-8 flex items-center">
           <img

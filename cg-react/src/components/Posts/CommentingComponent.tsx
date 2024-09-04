@@ -6,10 +6,10 @@ import { userProfileAtom } from "../../user-actions/atoms";
 
 export interface CommentingComponentProps {
   avatar:string;
-  styling?: string;
+  className?: string;
 }
 
-const CommentingComponent: React.FC<CommentingComponentProps> = ({  styling,avatar}) => {
+const CommentingComponent: React.FC<CommentingComponentProps> = ({  className,avatar}) => {
 
   return (
     <div className="w-[100%] flex gap-2 pt-8 px-4 max-md:gap-1 items-center" dir="rtl">
@@ -18,7 +18,7 @@ const CommentingComponent: React.FC<CommentingComponentProps> = ({  styling,avat
         type='string'
         id='comment'
         name='comment'
-        className={`flex flex-col items-center w-[423px] h-[36px] border border-khakeshtari-400 px-4 py-2 rounded-3xl text-xs font-normal placeholder-gray font-isf ${styling} placeholder-start"}`}
+        className={`flex flex-col items-center w-[423px] h-[36px] border border-khakeshtari-400 px-4 py-2 rounded-3xl text-xs font-normal placeholder-gray font-isf ${className} placeholder-start"}`}
         dir="rtl"
         placeholder="نظر خود را بنویسید..."
       />

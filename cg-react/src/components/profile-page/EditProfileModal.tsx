@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TextInputComponent from "../TextInputComponent";
 import usericon from "../../assets/icons/user.svg";
 import GmailSvg from "../../assets/icons/gmail.svg";
@@ -6,12 +6,12 @@ import key from "../../assets/icons/key.svg";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import CustomButtonH36 from "../ButtonComponentH36";
 import ToggleSwitch from "../ToggleButton";
 import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { userProfileAtom } from "../../user-actions/atoms";
 import { useQueryClient } from "@tanstack/react-query";
+import CustomButton from "../CustomButton";
 
 const EditProfileSchema = z
   .object({
@@ -83,7 +83,10 @@ interface ProfileFormProps {
 
 const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
-
+  const [defaultChecked,setDefaultChecked] = useState<boolean>(false)
+  useEffect(()=>{
+    userProfile.is_private && setDefaultChecked(userProfile.is_private)
+  },[userProfile.is_private])
   const {
     register,
     handleSubmit,
@@ -95,30 +98,33 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
       last_name: userProfile.last_name,
       email: userProfile.email,
       bio: userProfile.bio,
+      is_private: userProfile.is_private,
     },
   });
-
+console.log('104',defaultChecked)
+console.log('105',userProfile)
   const queryClient = useQueryClient();
 
   const fetchWrapper = useFetchWrapper();
 
   const onSubmit = async (data: ProfileFormProps) => {
     console.log("Raw form data:", data);
-  
+
     const filteredData = new FormData();
-  
+
     Object.entries(data).forEach(([key, value]) => {
-      if (value && value !== "") {
+      if (value !== undefined && value !== "") {
         if (key === "avatar" && value.length > 0) {
           filteredData.append(key, value[0]);
-        } else if (key === "toggleValue") {
+        } else if (key === "is_private") {
           filteredData.append(key, value ? "true" : "false");
         } else {
           filteredData.append(key, value as string);
         }
       }
     });
- console.log('filteredData',filteredData)
+
+    console.log("filteredData", filteredData);
     try {
       const response = await fetchWrapper.patch(
         "http://5.34.194.155:4000/users/profile",
@@ -209,6 +215,7 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
           label="پیج خصوصی باشه"
           register={register}
           name="is_private"
+          defaultChecked={defaultChecked }
         />
         <div>
           <label className="block !pb-4 !pt-2">بایو</label>
@@ -219,16 +226,14 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
           ></textarea>
         </div>
         <div className="flex flex-row items-center justify-end">
-          <CustomButtonH36
-            text="پشیمون شدم"
-            styling="!text-siah ml-4"
-            handleOnClick={() => onClose()}
-          />
-          <CustomButtonH36
-            text="ثبت تغییرات"
-            styling="bg-okhra-200"
-            handleOnClick={handleSubmit(onSubmit)}
-          />
+
+          <CustomButton text="پشیمون شدم"
+            className="!text-siah ml-4"
+            handleOnClick={() => onClose()}></CustomButton>
+
+          <CustomButton  text="ثبت تغییرات"
+            className="bg-okhra-200"
+            handleOnClick={handleSubmit(onSubmit)}></CustomButton>
         </div>
       </form>
     </div>

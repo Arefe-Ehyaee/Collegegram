@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import InputField from "../TextInputComponent";
-import CustomButtonH36 from "../ButtonComponentH36";
 import Box from "./BoxComponent";
 import EnterSignup from "./EnterSignup";
 import Label from "../Label";
@@ -17,6 +16,7 @@ import { authAtom,userProfileAtom } from "../../user-actions/atoms";
 import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
+import CustomButton from "../CustomButton";
 
 
 const loginSchema = z.object({
@@ -107,7 +107,7 @@ const Login: React.FC = () => {
             iconsrc={keySvg}
           />
           <RememberMe />
-          <CustomButtonH36 text="ورود" styling="bg-okhra-200 mt-8 text-sm" />
+          <CustomButton text="ورود" className="bg-okhra-200 mt-8 text-sm"></CustomButton>
           <div className="absolute bottom-0 right-0 pr-8">
             <NavLink to="/retrievePass">
               <ArrowLink text="فراموشی رمز عبور" />
