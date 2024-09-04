@@ -2,29 +2,51 @@ import React, { useState } from "react";
 import replyButton from "../../assets/icons/reply.svg";
 import likeButton from "../../assets/icons/commentHeart.svg";
 import likeButtonActive from "../../assets/icons/commentHeartActive.svg";
+import timeTranslate from "../../utilities/timeTranslationFunction";
 
 export interface ShowCommentProps {
   id: string;
   username: string;
   firstname: string;
   lastname: string;
-  createdAt: EpochTimeStamp | string;
+  createdAt: string;
   description: string;
   parentId: string | null;
   postId: string;
   likeCount: number;
+  replies?: ShowCommentProps[];
+  onReplyClick: (id: string | null) => void;
 }
 
-const ShowComment: React.FC<ShowCommentProps> = (props) => {
+// function handleSendClick(id: string) {
+//   const commentValue = (comment.current?.value ?? '');
+//   // SetEnteredComment(commentValue);
+//   console.log(comment.current?.value);
+
+//   if(comment.current){
+//     PostAComment(token || "", id, commentValue, '');
+//     comment.current.value = '';
+//   }
+// }
+
+const ShowComment= (props: ShowCommentProps) => {
+
   const [isLiked, setIsLiked] = useState(false);
+
+  const [isReplyClicked, setIsReplyClicked] = useState(false);
 
   const handleLikeClick = () => {
     setIsLiked((prevLiked) => !prevLiked); 
   };
 
-  const handleReplyClick = () => {
-    
+  const handleReplyClick = (id: string) => {
+
+    setIsReplyClicked((prevReply) => !prevReply);
+
+    props.onReplyClick(props.id);
+    console.log("parent id", props.parentId);
   }
+
   const commentStyle = props.parentId 
     ? "mr-8 w-[90%]  " 
     : "w-full"; 
@@ -32,12 +54,12 @@ const ShowComment: React.FC<ShowCommentProps> = (props) => {
 
 
   return (
-    <div dir="rtl" className={`flex flex-col my-8 self-baseline ${commentStyle}`}>
+    <div dir="rtl" className={`flex flex-col my-6 self-baseline ${commentStyle}`}>
       <div className="flex flex-row justify-between items-center">
         <div className="flex flex-row items-center">
           <p className="font-bold">{props.username}</p>
-          <p className="pr-5 text-xs text-khakeshtari-500">
-            {props.createdAt}
+          <p className="pr-5 text-xs">
+            {timeTranslate(props.createdAt)}
           </p>
         </div>
         <div className="flex flex-row items-center gap-4">
@@ -49,12 +71,21 @@ const ShowComment: React.FC<ShowCommentProps> = (props) => {
               className="h-[16px]"
             />
           </button>
-          <button>
-            <img src={replyButton} alt="reply button" className="h-[19px]" onClick={handleReplyClick}/>
+          <button onClick={() => handleReplyClick(props.id)} className={`${isReplyClicked ? "bg-khakeshtari-400 " : ""}`}>
+            <img src={replyButton} alt="reply button" className="h-[19px]"/>
           </button>
         </div>
       </div>
       <p className="pt-4 leading-8 text-siah">{props.description}</p>
+
+      {props.replies && props.replies.length > 0 && (
+        <div >
+          {props.replies.map((reply) => (
+            <ShowComment key={reply.id} {...reply} onReplyClick={props.onReplyClick} />
+          ))}
+        </div>
+      )}
+
     </div>
   );
 };
