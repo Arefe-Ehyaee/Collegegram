@@ -14,8 +14,8 @@ export interface Follower {
   id?: string,
   avatar?: string,
   username?: string,
-  first_name?: string,
-  last_name?: string,
+  firstName?: string,
+  lastName?: string,
   bio?: string,
   followersCount?: number
 }
@@ -24,8 +24,8 @@ export interface Following {
   id?: string,
   avatar?: string,
   username?: string,
-  first_name?: string,
-  last_name?: string,
+  firstName?: string,
+  lastName?: string,
   bio?: string,
   followersCount?: number
 }
@@ -127,14 +127,14 @@ export default function ProfilePageComponent() {
                 {`@${userProfile.username}`}
               </p>
               <h3 className="mt-4 text-xl font-bold text-sabz-100">
-                {`${userProfile.first_name} ${userProfile.last_name}`}
+                {`${userProfile.firstName} ${userProfile.lastName}`}
               </h3>
               <div className="mt-4 flex gap-x-3 text-sm font-normal text-sabz-200">
                 <button className="border-l pl-3" onClick={handleShowFollowers}>
                   {userProfile.followersCount} دنبال کننده
                 </button>
                 <button className="border-l pl-3" onClick={handleShowFollowings}>
-                  {userProfile.followingCount} دنبال شونده
+                  {userProfile.followingsCount} دنبال شونده
                 </button>
                 <span className="pl-3">{userProfile.postsCount} پست</span>
               </div>

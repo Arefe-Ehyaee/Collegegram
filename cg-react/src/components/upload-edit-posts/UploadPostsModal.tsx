@@ -64,24 +64,21 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
 
   const onSubmit = async (data: UploadPostProps) => {
     const formData = new FormData();
+    
     if (data.pictures) {
       data.pictures.forEach((file) => {
         formData.append("pictures", file);
       });
     }
-
-    if (data.caption) {
-      formData.append("caption", data.caption);
-    }
-
-    if (data.mentions) {
-      formData.append("mentions", data.mentions);
-    }
-
+  
+    
+    formData.append("caption", data.caption || "");
+    formData.append("mentions", data.mentions || "");
+  
     for (let [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
-
+  
     try {
       const response = await fetchWrapper.post(
         "http://5.34.194.155:4000/posts",
@@ -99,6 +96,7 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
       onClose();
     }
   };
+  
 
   return (
     <div dir="rtl" className="flex min-w-[360px] flex-col items-center">

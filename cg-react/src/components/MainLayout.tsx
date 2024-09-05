@@ -30,7 +30,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
             className="ml-20 mt-16 block max-md:hidden"
           />
         </header>
-        <main className="h-full flex-col">{mainComponents}</main>
+        <main className=" flex flex-col">{mainComponents}</main>
       </div>
       <div className="block relative w-1/4 max-md:hidden">{navBar}</div>
       {children}

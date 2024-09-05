@@ -56,8 +56,6 @@ export default function ShowPostsComponent({ username }: ShowPostsProps) {
     enabled: !!token && !!username,
   });
 
-  console.log(data?.pages[0]);
-
   useEffect (() => {
     if (inView && hasNextPage) {
       fetchNextPage();

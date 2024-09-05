@@ -15,6 +15,9 @@ import { unfollowUser } from "./unfollowUser";
 import ShowPostsComponent from "../Posts/ShowPostsComponent";
 import { defaultProfile } from "../../user-actions/atoms";
 import CustomButton from "../CustomButton";
+import blockingIcon from "../../assets/icons/blockUser.svg";
+import addToCloseFriendsIcon from "../../assets/icons/addToCloseFriends.svg";
+import removeFromCloseFriendsIcon from "../../assets/icons/removeFromCloseFriends.svg";
 
 export default function UsersProfilePageComponent() {
   type FollowingStatus = "Followed" | "NotFollowed" | "PendingApproval";
@@ -163,7 +166,7 @@ export default function UsersProfilePageComponent() {
   const { text, className } = getButtonProperties(followingStatus);
   return (
     <div dir="rtl" className="md:px-16">
-      <div className="ml-16 border-b border-khakeshtari-400 py-9 max-sm:ml-8 max-sm:mr-8">
+      <div className=" border-b border-khakeshtari-400 py-9 max-sm:ml-8 max-sm:mr-8">
         <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
           <div className="flex w-full items-center gap-8">
             <img
@@ -181,7 +184,7 @@ export default function UsersProfilePageComponent() {
               </p>
               <div className="mt-4 flex items-center gap-x-3">
                 <h3 className="text-xl font-bold text-sabz-100">
-                  {`${userData.data.first_name} ${userData.data.last_name}`}
+                  {`${userData.data.firstName || ""} ${userData.data.lastName || ""}`}
                 </h3>
 
                 <CustomButton
@@ -202,20 +205,27 @@ export default function UsersProfilePageComponent() {
                     {userData.data.followersCount} دنبال کننده
                   </span>
                   <span className="border-l pl-3">
-                    {userData.data.followingCount} دنبال شونده
+                    {userData.data.followingsCount} دنبال شونده
                   </span>
                   <span className="pl-3">{userData.data.postsCount} پست</span>
                 </div>
                 <ToggleMenu imgSrc={Dots}>
                   <ul>
-                    <li className="hover:bg-gray-100 cursor-pointer px-4 py-2">
-                      گزینه اول
+                    <li className="hover:bg-khakeshtari-600 rounded-md flex cursor-pointer flex-row items-center px-4 py-2">
+                      <img
+                        src={addToCloseFriendsIcon}
+                        alt="add to close friends"
+                        className="h-5 w-5"
+                      />
+                      <p className="pr-4">افزودن به دوستان نزدیک</p>
                     </li>
-                    <li className="hover:bg-gray-100 cursor-pointer px-4 py-2">
-                      گزینه دوم
-                    </li>
-                    <li className="hover:bg-gray-100 cursor-pointer px-4 py-2">
-                      گزینه سوم
+                    <li className="hover:bg-khakeshtari-600 rounded-md flex cursor-pointer flex-row items-center px-4 py-2">
+                      <img
+                        src={blockingIcon}
+                        alt="block user"
+                        className="h-5 w-5"
+                      />
+                      <p className="pr-4">بلاک کردن</p>
                     </li>
                   </ul>
                 </ToggleMenu>
@@ -249,7 +259,7 @@ export default function UsersProfilePageComponent() {
           )}
         </div>
       </div>
-      {userData.data.is_private === true && followingStatus !== "Followed" && (
+      {userData.data.isPrivate === true && followingStatus !== "Followed" && (
         <div className="my-8 flex h-64 flex-grow flex-col items-center justify-center">
           <h3 className="py-8 text-center text-2xl">
             {`برای دیدن صفحه ${userData.data.username} باید دنبالش کنی.`}
@@ -267,7 +277,7 @@ export default function UsersProfilePageComponent() {
           </CustomButton>
         </div>
       )}
-      {(userData.data.is_private === false ||
+      {(userData.data.isPrivate === false ||
         followingStatus === "Followed") && (
         <ShowPostsComponent username={userData.data.username} />
       )}
