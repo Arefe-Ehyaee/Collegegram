@@ -27,7 +27,7 @@ export default function SideNavbarComponent() {
     setUploadModal(true);
   };
   return (
-    <div dir="rtl" className="mt-16 fixed flex h-full flex-col right-16 mr-12 justify-center items-center">
+    <div dir="rtl" className="mt-16 relative flex flex-col  justify-center items-center">
       
       <CustomButton text="ایجاد پست جدید"
       size="large"

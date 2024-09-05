@@ -32,15 +32,15 @@ const ProfileDataWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
         ...prevProfile,
         username: profileData.data.username || prevProfile.username,
         avatar: avatarURL || prevProfile.avatar,
-        first_name: profileData.data.first_name || prevProfile.first_name,
-        last_name: profileData.data.last_name || prevProfile.last_name,
+        firstName: profileData.data.firstName || prevProfile.firstName,
+        lastName: profileData.data.lastName || prevProfile.lastName,
         bio: profileData.data.bio || prevProfile.bio,
         email: profileData.data.email || prevProfile.email,
         id: profileData.data.id || prevProfile.id,
         postsCount: profileData.data.postsCount || prevProfile.postsCount,
         followersCount: profileData.data.followersCount || prevProfile.followersCount,
-        followingCount: profileData.data.followingCount || prevProfile.followingCount,
-        is_private: profileData.data.is_private || prevProfile.is_private
+        followingsCount: profileData.data.followingsCount || prevProfile.followingsCount,
+        isPrivate: profileData.data.isPrivate || prevProfile.isPrivate
       }));
     }
   }, [profileData]);

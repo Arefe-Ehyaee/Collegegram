@@ -18,7 +18,7 @@ const TestPage = () => {
     const posterProps = {
       avatar: mockProfileInfo.avatar,
       name:mockProfileInfo.username,
-      followerCount:600
+      followersCount:600
     }
     const postCardProps = {
       postCardInteractionProps : defaultProps,

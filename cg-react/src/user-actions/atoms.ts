@@ -20,27 +20,27 @@ export interface UserProfile {
     id: string;
     username: string;
     avatar: string;
-    first_name: string;
-    last_name:string;
+    firstName: string;
+    lastName:string;
     email?:string
     postsCount: number;
     followersCount: number;
-    followingCount: number;
+    followingsCount: number;
     bio: string;
-    is_private?:boolean
+    isPrivate?:boolean
 }
 
 export const defaultProfile: UserProfile = {
     id: 'defaultID',
     username: 'defaultID',
     avatar: defaultAvatar, 
-    first_name: 'نام',
-    last_name:'نشان',
+    firstName: 'نام',
+    lastName:'نشان',
     postsCount: 0,
     followersCount: 0,
-    followingCount: 0,
+    followingsCount: 0,
     bio: 'برای شخصی سازی این متن با ویرایش پروفایل بایو خود را تغییر دهید',
-    is_private:false
+    isPrivate:false
 };
 
 export const userProfileAtom = atom<UserProfile>({

@@ -28,12 +28,12 @@ const EditProfileSchema = z
           !file || file.length === 0 || file[0]?.size <= 5 * 1024 * 1024,
         "File size should be less than 5MB",
       ),
-    first_name: z
+    firstName: z
       .string()
       .min(3, { message: "نام باید حداقل 3 کاراکتر باشد" })
       .optional()
       .or(z.literal("")),
-    last_name: z
+    lastName: z
       .string()
       .min(3, { message: "نام خانوادگی باید حداقل 3 کاراکتر باشد" })
       .optional()
@@ -54,7 +54,7 @@ const EditProfileSchema = z
       .optional()
       .or(z.literal("")),
     bio: z.string().optional().or(z.literal("")),
-    is_private: z.boolean(),
+    isPrivate: z.boolean(),
   })
   .superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
@@ -71,22 +71,22 @@ interface EditProfileProps {
   profileImage: string;
 }
 interface ProfileFormProps {
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   password: string;
   email: string;
   bio: string;
   confirmPassword: string;
   avatar: FileList;
-  is_private: boolean;
+  isPrivate: boolean;
 }
 
 const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
   const [defaultChecked,setDefaultChecked] = useState<boolean>(false)
   useEffect(()=>{
-    userProfile.is_private && setDefaultChecked(userProfile.is_private)
-  },[userProfile.is_private])
+    userProfile.isPrivate && setDefaultChecked(userProfile.isPrivate)
+  },[userProfile.isPrivate])
   const {
     register,
     handleSubmit,
@@ -94,11 +94,11 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
   } = useForm<ProfileFormProps>({
     resolver: zodResolver(EditProfileSchema),
     defaultValues: {
-      first_name: userProfile.first_name,
-      last_name: userProfile.last_name,
+      firstName: userProfile.firstName,
+      lastName: userProfile.lastName,
       email: userProfile.email,
       bio: userProfile.bio,
-      is_private: userProfile.is_private,
+      isPrivate: userProfile.isPrivate,
     },
   });
 console.log('104',defaultChecked)
@@ -116,7 +116,7 @@ console.log('105',userProfile)
       if (value !== undefined && value !== "") {
         if (key === "avatar" && value.length > 0) {
           filteredData.append(key, value[0]);
-        } else if (key === "is_private") {
+        } else if (key === "isPrivate") {
           filteredData.append(key, value ? "true" : "false");
         } else {
           filteredData.append(key, value as string);
@@ -174,19 +174,19 @@ console.log('105',userProfile)
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <TextInputComponent
           type="text"
-          name="first_name"
+          name="firstName"
           placeholder="نام"
           iconsrc={usericon}
           register={register}
-          error={errors.first_name?.message}
+          error={errors.firstName?.message}
         ></TextInputComponent>
         <TextInputComponent
           type="text"
-          name="last_name"
+          name="lastName"
           placeholder="نام خانوادگی"
           iconsrc={usericon}
           register={register}
-          error={errors.last_name?.message}
+          error={errors.lastName?.message}
         ></TextInputComponent>
         <TextInputComponent
           type="email"
@@ -214,7 +214,7 @@ console.log('105',userProfile)
         <ToggleSwitch
           label="پیج خصوصی باشه"
           register={register}
-          name="is_private"
+          name="isPrivate"
           defaultChecked={defaultChecked }
         />
         <div>
