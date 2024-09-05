@@ -16,6 +16,8 @@ import openPostPage from "../../assets/icons/Group 21.svg";
 import { useNavigate } from "react-router-dom";
 import timeTranslate from "../../utilities/timeTranslationFunction";
 import CustomButton from "../CustomButton";
+import ModalTemplate from "../ModalTemplate";
+import EditPostsModal from "../upload-edit-posts/EditPostModal";
 
 interface ShowPostModalProps {
   onClose: () => void;
@@ -47,6 +49,12 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
     const storedToken = localStorage.getItem("token");
     setToken(storedToken || " ");
   }, []);
+
+  const [editPostModal, setEditPostModal] = useState(false);
+
+  const handleEditPostClick = () => {
+    setEditPostModal(true);
+  };
 
   const { data, error, isPending, isError } = useQuery({
     queryKey: ["post"],
@@ -99,7 +107,8 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
             <div className="hidden md:block">
               <CustomButton text={"ویرایش پست"}
                 iconsrc={whitePen}
-                className="bg-okhra-200 ml-1" ></CustomButton>
+                className="bg-okhra-200 ml-1" 
+                handleOnClick={handleEditPostClick}></CustomButton>
             </div>
           </div>
           {data && (
@@ -115,6 +124,16 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
         </div>
       </div>
       {children}
+
+      {editPostModal && (
+        <ModalTemplate
+          showModal={editPostModal}
+          onClose={() => setEditPostModal(false)}
+        >
+          {" "}
+          <EditPostsModal onClose={() => setEditPostModal(false)} postData={data.data} postId={id}/>
+        </ModalTemplate>
+      )}
     </div>
   );
 };

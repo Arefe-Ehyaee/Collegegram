@@ -22,6 +22,9 @@ import { BeatLoader } from "react-spinners";
 import { useInView } from "react-intersection-observer";
 import timeTranslate from "../../utilities/timeTranslationFunction";
 import CustomButton from "../CustomButton";
+import ModalTemplate from "../ModalTemplate";
+import EditPostsModal from "../upload-edit-posts/EditPostModal";
+
 
 interface PostsPageProps {
   children?: React.ReactNode;
@@ -63,6 +66,12 @@ const PostComponent = (props: PostsPageProps) => {
   const username = userProfile.username;
 
   const [token, setToken] = useState<string | null>(null);
+
+  const [editPostModal, setEditPostModal] = useState(false);
+
+  const handleEditPostClick = () => {
+    setEditPostModal(true);
+  };
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -130,7 +139,8 @@ const PostComponent = (props: PostsPageProps) => {
 
             <CustomButton text={"ویرایش پست"}
               iconsrc={whitePen}
-              className="bg-okhra-200 ml-1 max-md:hidden"></CustomButton>
+              className="bg-okhra-200 ml-1 max-md:hidden"
+              handleOnClick={handleEditPostClick}></CustomButton>
             <img src={redPen} alt="edit" className="pl-6 md:hidden" />
           </div>
           <DesktopCaption
@@ -154,6 +164,17 @@ const PostComponent = (props: PostsPageProps) => {
           <BottomNavbarMobile></BottomNavbarMobile>
         </div>
       </div>
+
+      {editPostModal && (
+        <ModalTemplate
+          showModal={editPostModal}
+          onClose={() => setEditPostModal(false)}
+        >
+          {" "}
+          <EditPostsModal onClose={() => setEditPostModal(false)} postData={data.data} postId={id}/>
+        </ModalTemplate>
+      )}
+
     </div>
   );
 };

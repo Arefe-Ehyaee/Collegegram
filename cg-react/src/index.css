@@ -110,3 +110,6 @@
   direction: rtl;
 }
 
+.faded {
+  opacity: 0.5;
+}
