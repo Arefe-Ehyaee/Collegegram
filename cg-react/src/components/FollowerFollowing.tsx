@@ -7,11 +7,12 @@ interface FollowerFollowingProps {
 }
 
 
+
 const FollowerFollowing: React.FC<FollowerFollowingProps> = ({name, followersNumber, avatar}) => {
     return(
         <div className="flex gap-[93px] items-center justify-between py-4 border-b border-khakeshtari-700" dir="rtl">
             <div className="flex gap-[27px] items-center">
-                <img src={avatar} alt="avatar" className="w-[56ps] h-[56px]" />
+                <img src={avatar} alt="avatar" className="w-[56ps] h-[56px] rounded-full" />
                 <div>
                     <div className="font-isf text-[13px] text-sabz-400 leading-[21.48px] font-bold">{name}</div>
                     <div className="font-isf text-[11px] text-sabz-400 leading-[14.3px] font-normal pt-2" dir="rtl">{`${followersNumber }دنبال کننده ` }</div>

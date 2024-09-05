@@ -15,7 +15,15 @@ export interface ShowCommentProps {
   postId: string;
   likeCount: number;
   replies?: ShowCommentProps[];
+  user: User;
   onReplyClick: (id: string | null) => void;
+}
+
+export interface User {
+  id: string;
+  username: string;
+  firstname: string;
+  lastname: string;
 }
 
 // function handleSendClick(id: string) {
@@ -39,12 +47,12 @@ const ShowComment= (props: ShowCommentProps) => {
     setIsLiked((prevLiked) => !prevLiked); 
   };
 
-  const handleReplyClick = (id: string) => {
+  const handleReplyClick = (username: string) => {
 
     setIsReplyClicked((prevReply) => !prevReply);
 
-    props.onReplyClick(props.id);
-    console.log("parent id", props.parentId);
+    props.onReplyClick(props.user.username);
+    console.log("comment username", props.user.username);
   }
 
   const commentStyle = props.parentId 
@@ -57,7 +65,7 @@ const ShowComment= (props: ShowCommentProps) => {
     <div dir="rtl" className={`flex flex-col my-6 self-baseline ${commentStyle}`}>
       <div className="flex flex-row justify-between items-center">
         <div className="flex flex-row items-center">
-          <p className="font-bold">{props.username}</p>
+          <p className="font-bold">{props.user.username}</p>
           <p className="pr-5 text-xs">
             {timeTranslate(props.createdAt)}
           </p>
@@ -71,7 +79,7 @@ const ShowComment= (props: ShowCommentProps) => {
               className="h-[16px]"
             />
           </button>
-          <button onClick={() => handleReplyClick(props.id)} className={`${isReplyClicked ? "bg-khakeshtari-400 " : ""}`}>
+          <button onClick={() => handleReplyClick(props.id)} className={`${isReplyClicked ? "bg-khakeshtari-400 p-2 rounded-md " : ""}`}>
             <img src={replyButton} alt="reply button" className="h-[19px]"/>
           </button>
         </div>

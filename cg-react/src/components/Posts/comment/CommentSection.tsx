@@ -10,16 +10,16 @@ export interface CommentSectionProps {
 
 const CommentSection = (props:CommentSectionProps) => {
 
-    const [commentParentId, setCommentParentId] = useState<string | null>(null);
+    const [commentUsername, setCommentUsername] = useState<string | null>(null);
 
-    const handleReplyClick = (id: string | null) => {
-        setCommentParentId(prevId => (prevId === id ? null : id));
+    const handleReplyClick = (username: string | null) => {
+        setCommentUsername(prevusername => (prevusername === username ? null : username));
     };
 
     const {commentingProps, id, showProps} = props; 
     return (
         <div className='flex flex-col justify-end px-4' dir='rtl'>
-            <CommentingComponent id={id} avatar={commentingProps.avatar} commnetParentId={commentParentId} />
+            <CommentingComponent id={id} avatar={commentingProps.avatar} commnetParentId={commentUsername} />
             {showProps.map((props, index) => (
                 <ShowComment key={index} {...props} onReplyClick={handleReplyClick} />
             ))}

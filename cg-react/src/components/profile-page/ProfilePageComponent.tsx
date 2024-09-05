@@ -4,30 +4,36 @@ import EditProfileModal from "./EditProfileModal";
 import ModalTemplate from "../ModalTemplate";
 import { useRecoilState } from "recoil";
 import { userProfileAtom } from "../../user-actions/atoms";
-import FollowerFollowing from "../FollowerFollowing";
-import { useQuery } from "@tanstack/react-query";
+import FollowerFollowing  from "../FollowerFollowing";
+import {
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { FetchFollowers } from "./FetchFollowers";
 import { FetchFollowings } from "./FetchFollowings";
 import CustomButton from "../CustomButton";
+import { useInView } from "react-intersection-observer";
+import { BeatLoader } from "react-spinners";
 
 export interface Follower {
-  id?: string,
-  avatar?: string,
-  username?: string,
-  firstName?: string,
-  lastName?: string,
-  bio?: string,
-  followersCount?: number
+  id?: string;
+  avatar: {url:string};
+  username?: string;
+  first_name?: string;
+  last_name?: string;
+  bio?: string;
+  followersCount?: number;
 }
 
 export interface Following {
-  id?: string,
-  avatar?: string,
-  username?: string,
-  firstName?: string,
-  lastName?: string,
-  bio?: string,
-  followersCount?: number
+  id?: string;
+  avatar: {url:string};
+  username?: string;
+  first_name?: string;
+  last_name?: string;
+  bio?: string;
+  followersCount?: number;
 }
 
 export default function ProfilePageComponent() {
@@ -39,76 +45,110 @@ export default function ProfilePageComponent() {
   const [FollowerListModal, setFollowerListModal] = useState(false);
   const [FollowingListModal, setFollowingListModal] = useState(false);
 
+  const { ref: followerRef, inView: followerInView } = useInView();
+  const { ref: followingRef, inView: followingInView } = useInView();
+
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     setToken(storedToken || " ");
   }, []);
 
   useEffect(() => {
-    if(FollowerListModal || FollowingListModal){
-      document.body.style.overflow = 'hidden';
+    if (FollowerListModal || FollowingListModal) {
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
-  }, [FollowerListModal, FollowingListModal])
+  }, [FollowerListModal, FollowingListModal]);
 
-  
+  const queryClient = useQueryClient();
 
   const {
     data: followersData,
-    error: followersError,
+    fetchNextPage: fetchNextPageFollowers,
+    hasNextPage: hasNextPageFollowers,
     isFetching: isFetchingFollowers,
-    refetch: refetchFollowers
-  } = useQuery({
-    queryKey: ['followers', userProfile.id],
-    queryFn: () => FetchFollowers(userProfile.id || "", token || ""),
-    enabled: false 
+    isError: isErrorFollowers,
+    error: followersError,
+    refetch: refetchFollowers,
+  } = useInfiniteQuery({
+    queryKey: ["followers", userProfile.id],
+    queryFn: async ({ pageParam = 1 }) =>
+      FetchFollowers({ pageParam }, userProfile.id || "", token || ""),
+    getNextPageParam: (lastPage) => {
+      return lastPage?.data?.nextPage ?? undefined;
+    },
+    initialPageParam: 1,
+    enabled: !!FollowerListModal && !!token,
   });
+
+  useEffect(() => {
+    if (followerInView && hasNextPageFollowers) {
+      refetchFollowers();
+    }
+  }, [followerInView, hasNextPageFollowers, fetchNextPageFollowers]);
 
   const {
     data: followingsData,
+    fetchNextPage: fetchNextPageFollowing,
+    hasNextPage: hasNextPageFollowing,
+    isFetching: isFetchingFollowing,
+    isError: isErrorFollowing,
     error: followingsError,
-    isFetching: isFetchingFollowings,
-    refetch: refetchFollowings,
-  } = useQuery({
-    queryKey: ['followings', userProfile.id],
-    queryFn: () => FetchFollowings(userProfile.id || "", token || ""),
-    enabled: false 
+    refetch: refetchFollowing,
+  } = useInfiniteQuery({
+    queryKey: ["followings", userProfile.id],
+    queryFn: async ({ pageParam = 1 }) =>
+      FetchFollowings({ pageParam }, userProfile.id || "", token || ""),
+    getNextPageParam: (lastPage) => {
+      return lastPage?.data?.nextPage ?? undefined;
+    },
+    initialPageParam: 1,
+    enabled: !!FollowingListModal && !!token,
   });
 
-  console.log(followersData)
-  console.log(followingsData)
+  useEffect(() => {
+    if (followingInView && hasNextPageFollowing) {
+      refetchFollowing();
+    }
+  }, [followingInView, hasNextPageFollowers, fetchNextPageFollowing]);
+
+  // console.log("followingsData", followingsData);
 
   const handleShowFollowers = () => {
-    setFollowerListModal(prevState => !prevState);
-    if (!FollowerListModal){
+    setFollowerListModal((prevState) => !prevState);
+    if (!FollowerListModal) {
+      queryClient.invalidateQueries({ queryKey: ["followers"] });
       refetchFollowers();
     }
-  }
+    console.log("followersData", followersData?.pages[0]);
+    // console.log("followersData", followersData?.pages[0]);
+  };
 
   if (isFetchingFollowers) {
-    return <span>Loading...</span>
+    return <span>Loading...</span>;
   }
 
   if (followersError) {
-    return <span>Error: {followersError.message}</span>
+    return <span>Error: {followersError.message}</span>;
   }
 
   const handleShowFollowings = () => {
-    setFollowingListModal(prevState => !prevState);
-    if (!FollowingListModal){
-      refetchFollowings();
+    setFollowingListModal((prevState) => !prevState);
+    if (!FollowingListModal) {
+      queryClient.invalidateQueries({ queryKey: ["followings"] });
+      refetchFollowing();
     }
-  }
+  };
 
-  if (isFetchingFollowings) {
-    return <span>Loading...</span>
+  if (isFetchingFollowing) {
+    return <span>Loading...</span>;
   }
 
   if (followingsError) {
-    return <span>Error: {followingsError.message}</span>
+    return <span>Error: {followingsError.message}</span>;
   }
-  
+
   return (
     <div dir="rtl" className="px-16">
       <div className="border-b border-khakeshtari-400 py-9">
@@ -120,7 +160,7 @@ export default function ProfilePageComponent() {
             <img
               src={userProfile.avatar}
               alt="avatar"
-              className="h-[136px] w-[136px] aspect-square object-cover rounded-full border-2 border-khakeshtari-400 max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
+              className="aspect-square h-[136px] w-[136px] rounded-full border-2 border-khakeshtari-400 object-cover max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
             />
             <div className="ml-4">
               <p className="text-right text-sm text-tala" dir="ltr">
@@ -133,8 +173,11 @@ export default function ProfilePageComponent() {
                 <button className="border-l pl-3" onClick={handleShowFollowers}>
                   {userProfile.followersCount} دنبال کننده
                 </button>
-                <button className="border-l pl-3" onClick={handleShowFollowings}>
-                  {userProfile.followingsCount} دنبال شونده
+                <button
+                  className="border-l pl-3"
+                  onClick={handleShowFollowings}
+                >
+                  {userProfile.followingCount} دنبال شونده
                 </button>
                 <span className="pl-3">{userProfile.postsCount} پست</span>
               </div>
@@ -144,12 +187,15 @@ export default function ProfilePageComponent() {
             </div>
           </div>
 
-          <CustomButton size="large" text="ویرایش پروفایل"
+          <CustomButton
+            size="large"
+            text="ویرایش پروفایل"
             className="bg-okhra-200"
-            handleOnClick={() => setShowEditModal(true)}/>
+            handleOnClick={() => setShowEditModal(true)}
+          />
         </div>
       </div>
-      <ShowPostsComponent username={userProfile.username}/>
+      <ShowPostsComponent username={userProfile.username} />
       {showEditModal && (
         <ModalTemplate
           onClose={() => setShowEditModal(false)}
@@ -163,29 +209,66 @@ export default function ProfilePageComponent() {
         />
       )}
       {FollowerListModal && (
-        <ModalTemplate onClose={() => setFollowerListModal(false)} showModal={FollowerListModal} >
-          <div className="font-bold text-xl pb-8">دنبال کننده ها</div>
+        <ModalTemplate
+          onClose={() => setFollowerListModal(false)}
+          showModal={FollowerListModal}
+        >
+          <div className="pb-8 text-xl font-bold">دنبال کننده ها</div>
           <div className="max-h-[450px] overflow-y-scroll">
-            {followingsData && !isFetchingFollowings && followingsData.map((follower: Follower) => {
-              return <FollowerFollowing key={follower.id} name={follower.username} followersNumber={follower.followersCount} avatar={follower.avatar} />
-            })}
+            {followersData &&
+              !isFetchingFollowers &&
+              followersData.pages.map((page) =>
+                page.map((follower: Follower) => (
+                  <FollowerFollowing
+                    key={follower.id}
+                    name={follower.username}
+                    followersNumber={follower.followersCount}
+                     avatar={ follower?.avatar?.url}
+                  />
+                )),
+              )}
           </div>
-            <CustomButton text={"بستن"} className="bg-okhra-200 mt-[34px]" handleOnClick={() => setFollowerListModal(false)}></CustomButton>
-        </ModalTemplate>  
+          <div className="flex justify-center" ref={followerRef}>
+            {isFetchingFollowers && <BeatLoader />}
+          </div>
+          <CustomButton
+            text={"بستن"}
+            className="mt-[34px] bg-okhra-200"
+            handleOnClick={() => setFollowerListModal(false)}
+          ></CustomButton>
+        </ModalTemplate>
       )}
 
       {FollowingListModal && (
-      <ModalTemplate onClose={() => setFollowingListModal(false)} showModal={FollowingListModal} >
-        <div className="font-bold text-xl pb-8">دنبال شونده ها</div>
-        <div className="max-h-[450px] overflow-y-scroll">
-          {followersData && !isFetchingFollowers && followersData.map((following: Following) => {
-              return <FollowerFollowing key={following.id} name={following.username} followersNumber={following.followersCount} avatar={following.avatar}></FollowerFollowing>
-          })}
-        </div>
-        <CustomButton text={"بستن"} className="bg-okhra-200 mt-[34px]" handleOnClick={() => setFollowingListModal(false)}></CustomButton>
-      </ModalTemplate>  
+        <ModalTemplate
+          onClose={() => setFollowingListModal(false)}
+          showModal={FollowingListModal}
+        >
+          <div className="pb-8 text-xl font-bold">دنبال شونده ها</div>
+          <div className="max-h-[450px] overflow-y-scroll">
+          {followingsData &&
+              !isFetchingFollowing &&
+              followingsData.pages.map((page) =>
+                page.map((follower: Follower) => (
+                  <FollowerFollowing
+                    key={follower.id}
+                    name={follower.username}
+                    followersNumber={follower.followersCount}
+                    avatar={follower?.avatar?.url}
+                  />
+                )),
+              )}
+          </div>
+          <div className="flex justify-center" ref={followingRef}>
+            {isFetchingFollowing && <BeatLoader />}
+          </div>
+          <CustomButton
+            text={"بستن"}
+            className="mt-[34px] bg-okhra-200"
+            handleOnClick={() => setFollowingListModal(false)}
+          ></CustomButton>
+        </ModalTemplate>
       )}
     </div>
   );
 }
-
