@@ -177,7 +177,7 @@ export default function ProfilePageComponent() {
                   className="border-l pl-3"
                   onClick={handleShowFollowings}
                 >
-                  {userProfile.followingCount} دنبال شونده
+                  {userProfile.followingsCount} دنبال شونده
                 </button>
                 <span className="pl-3">{userProfile.postsCount} پست</span>
               </div>
