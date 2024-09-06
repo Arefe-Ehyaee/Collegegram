@@ -64,7 +64,7 @@ const CommentingComponent = (props:CommentingComponentProps) => {
         type= "text"
         id='comment'
         name='comment'
-        className={`flex flex-col items-center w-[423px] h-[36px] border border-khakeshtari-400 px-4 py-2 rounded-3xl text-xs font-normal placeholder-gray font-isf ${styling} placeholder-start"}`}
+        className={`flex flex-col items-center w-[100%] h-[100%] border border-khakeshtari-400 py-2 rounded-3xl text-xs font-normal placeholder-gray font-isf ${styling} placeholder-start"}`}
         dir="rtl"
         placeholder= {placeholderText}
       />

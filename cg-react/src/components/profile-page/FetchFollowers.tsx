@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Follower } from "./ProfilePageComponent";
 
 
 export const FetchFollowers = async ({pageParam = 1}, userId: string, token: string) => {

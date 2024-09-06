@@ -16,6 +16,8 @@ import {QueryClientProvider, QueryClient} from '@tanstack/react-query'
 import ProfileDataWrapper from "./user-actions/ProfileDataWrapper";
 import { ParamToQueryNavigate } from "./components/ParamToQueryNavigate";
 import ExplorePage from "./components/explore/ExplorePage";
+import BlackListPage from "./components/profile-page/Blocking/BlackListPage";
+import CloseFriendsPage from "./components/profile-page/closeFriend/CloseFriendsPage";
 
 
 const queryClient = new QueryClient() ;
@@ -73,6 +75,8 @@ export default function App() {
               }
             />
             <Route path="/explore" element={<ExplorePage/>}/>
+            <Route path="/balckList" element={<BlackListPage/>}/>
+            <Route path="/closeFriendsList" element={<CloseFriendsPage/>}/>
             <Route path="/users/profile" element={<UsersProfilePage />} />
             <Route path="/users/:username" element={<ParamToQueryNavigate baseUrl="/users/profile" paramKey="username"/>}/>
           </Routes>
