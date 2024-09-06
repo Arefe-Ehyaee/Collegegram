@@ -3,9 +3,42 @@ import axios from 'axios';
 import { userProfileAtom, UserProfile as UserProfileInterface } from "./atoms";
 import { useRecoilState } from "recoil";
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
 
 const ProfileDataWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
+  const navigate = useNavigate();
+
+  const handleError = (error: any) => {
+    
+    if (error.response) {
+  
+      const statusCode = error.response.status;
+  
+      if (statusCode === 401) {
+        navigate("/login"); 
+        toast.error("نیاز به ورود مجدد دارید!");
+      } else if (statusCode === 400) {
+        toast.error("خطایی رخ داد!");
+        navigate("/error"); 
+      } else if (statusCode === 500) {
+        toast.error("خطایی رخ داد!");
+        navigate("/error"); 
+      } else if (error.response.data.message) {
+        toast.error(`Error: ${error.response.data.message}`);
+      } else if (error.response.statusText) {
+        toast.error(`Error: ${error.response.statusText}`);
+      } else {
+        toast.error("Unexpected server error");
+      }
+    } else if (error.request) {
+      toast.error("Network error");
+    } else {
+      toast.error(`Error: ${error.message}`);
+    }
+  };
 
   const fetchUserProfile = async () => {
     const fetchWrapper = axios.create({
@@ -23,6 +56,12 @@ const ProfileDataWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
     queryFn: fetchUserProfile,
     retry: false,
   });
+
+  useEffect(() => {
+    if(profileError) {
+      handleError(profileError)
+    }
+  }, [profileError])
 
   useEffect(() => {
     if (profileData ) {

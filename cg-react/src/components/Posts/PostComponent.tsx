@@ -146,7 +146,7 @@ const PostComponent = (props: PostsPageProps) => {
               ))}
           </Swiper>
         </div>
-        <div className="h-[680px] overflow-auto pl-16 max-sm:pl-2">
+        <div className="h-[680px] overflow-auto pl-8 max-sm:pl-2">
           <div className="flex items-center justify-between max-md:mt-0">
             <AvatarName
               name={data.data.author.username}

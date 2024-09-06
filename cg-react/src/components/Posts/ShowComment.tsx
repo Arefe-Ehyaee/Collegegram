@@ -16,7 +16,7 @@ export interface ShowCommentProps {
   likeCount: number;
   replies?: ShowCommentProps[];
   user: User;
-  onReplyClick: (id: string | null) => void;
+  onReplyClick: (username: string | null, commentId: string) => void;
 }
 
 export interface User {
@@ -43,16 +43,18 @@ const ShowComment= (props: ShowCommentProps) => {
 
   const [isReplyClicked, setIsReplyClicked] = useState(false);
 
+
   const handleLikeClick = () => {
     setIsLiked((prevLiked) => !prevLiked); 
   };
 
-  const handleReplyClick = (username: string) => {
+  const handleReplyClick = () => {
 
     setIsReplyClicked((prevReply) => !prevReply);
+   
 
-    props.onReplyClick(props.user.username);
-    console.log("comment username", props.user.username);
+    props.onReplyClick(props.user.username, props.id);
+    console.log("comment id", props.id);
   }
 
   const commentStyle = props.parentId 
@@ -79,7 +81,7 @@ const ShowComment= (props: ShowCommentProps) => {
               className="h-[16px]"
             />
           </button>
-          <button onClick={() => handleReplyClick(props.id)} className={`${isReplyClicked ? "bg-khakeshtari-400 p-2 rounded-md " : ""}`}>
+          <button onClick={handleReplyClick} className={`${isReplyClicked ? "bg-khakeshtari-400 p-2 rounded-md " : ""}`}>
             <img src={replyButton} alt="reply button" className="h-[19px]"/>
           </button>
         </div>

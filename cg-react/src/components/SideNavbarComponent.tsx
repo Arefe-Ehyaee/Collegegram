@@ -85,7 +85,7 @@ export default function SideNavbarComponent() {
             <a href="">جست‌و‌جو</a>
           </li>
         </ul>
-        <div className="flex pt-16 pr-4">
+        <div className="flex pr-4 pt-16">
           <ToggleMenu imgSrc={moreSideNav}>
             <ul className="mt-8 border-t border-khakeshtari-400 pt-8">
               <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
@@ -101,16 +101,16 @@ export default function SideNavbarComponent() {
                 </button>
               </li>
               <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
-                <div className="flex">
-                  <button onClick={() => navigate("/balckList")}>
+                <button onClick={() => navigate("/balckList")}>
+                  <div className="flex">
                     <img
                       src={blockingIcon}
                       alt="block user"
                       className="h-5 w-5"
                     />
                     <p className="pr-4">بلاک کردن</p>
-                  </button>
-                </div>
+                  </div>
+                </button>
               </li>
             </ul>
           </ToggleMenu>
