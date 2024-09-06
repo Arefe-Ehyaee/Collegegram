@@ -139,6 +139,7 @@ export default function ProfilePageComponent() {
       queryClient.invalidateQueries({ queryKey: ["followings"] });
       refetchFollowing();
     }
+    console.log("followingData", followingsData);
   };
 
   if (isFetchingFollowing) {
@@ -248,13 +249,13 @@ export default function ProfilePageComponent() {
           <div className="max-h-[450px] overflow-y-scroll">
           {followingsData &&
               !isFetchingFollowing &&
-              followingsData.pages.map((page) =>
-                page.map((follower: Follower) => (
+              followingsData?.pages.map((page) =>
+                page?.map((following: Following) => (
                   <FollowerFollowing
-                    key={follower.id}
-                    name={follower.username}
-                    followersNumber={follower.followersCount}
-                    avatar={follower?.avatar?.url}
+                    key={following.id}
+                    name={following.username}
+                    followersNumber={following.followersCount}
+                    avatar={following?.avatar?.url}
                   />
                 )),
               )}

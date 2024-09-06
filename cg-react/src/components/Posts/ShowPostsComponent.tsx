@@ -36,6 +36,15 @@ export default function ShowPostsComponent({ username }: ShowPostsProps) {
   const { ref, inView } = useInView();
 
   useEffect(() => {
+    if (showPostModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [showPostModal]);
+
+
+  useEffect(() => {
     const storedToken = localStorage.getItem("token");
     setToken(storedToken || " ");
   }, []);

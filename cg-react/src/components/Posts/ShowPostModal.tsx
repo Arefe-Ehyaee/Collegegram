@@ -74,7 +74,7 @@ const ShowPostModal = ({ onClose, id, children }: ShowPostModalProps) => {
       };
 
   return (
-    <div className="max-w-[1200px]" dir="rtl">
+    <div className="max-w-[1200px] max-sm:pt-[120px] max-sm:h-[900px] max-sm:overflow-y-auto" dir="rtl">
       <button onClick={handleOnClick}>
         <img src={openPostPage} alt="Open Post" />
       </button>
@@ -93,7 +93,7 @@ const ShowPostModal = ({ onClose, id, children }: ShowPostModalProps) => {
                 <SwiperSlide key={post.id}>
                   <img
                     src={`${post.url}`}
-                    className="h-[400px] w-[520px] rounded-3xl object-cover"
+                    className="h-[400px] w-[520px] rounded-3xl object-cover max-sm:h-[375px] max-sm:w-[100%]"
                     alt="Post media"
                   />
                 </SwiperSlide>
@@ -107,14 +107,19 @@ const ShowPostModal = ({ onClose, id, children }: ShowPostModalProps) => {
               name={data?.data?.author?.username ?? ""}
               avatar={data?.data?.author?.avatar?.url ?? ""}
             />
-            <div className="hidden md:block">
-              <CustomButton
-                text={"ویرایش پست"}
-                iconsrc={whitePen}
-                className="ml-1 bg-okhra-200"
-                handleOnClick={handleEditPostClick}
-              />
-            </div>
+
+            {userProfile?.username === data?.data.author.username && (
+              <>
+                <div className="hidden md:block">
+                  <CustomButton
+                    text={"ویرایش پست"}
+                    iconsrc={whitePen}
+                    className="ml-1 bg-okhra-200"
+                    handleOnClick={handleEditPostClick}
+                  />
+                </div>
+              </>
+            )}
           </div>
           {data && (
             <DesktopCaption
@@ -123,7 +128,7 @@ const ShowPostModal = ({ onClose, id, children }: ShowPostModalProps) => {
               mentions={data.data.mentions}
             />
           )}
-          <div className="grid justify-items-end">
+          <div className="flex justify-end">
             <PostInteractions {...postInteractionProps} />
           </div>
         </div>

@@ -16,7 +16,11 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { useLocation } from "react-router-dom";
-import { QueryClient, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useInfiniteQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { FetchComments } from "./comment/FetchComments";
 import { BeatLoader } from "react-spinners";
 import { useInView } from "react-intersection-observer";
@@ -50,7 +54,6 @@ const PostComponent = (props: PostsPageProps) => {
   const id = location.state?.postId || "defaultId";
 
   // console.log("postId inpostComponent", id);
-
 
   const commentingProps = {
     avatar: userProfile.avatar,
@@ -102,27 +105,27 @@ const PostComponent = (props: PostsPageProps) => {
   }, [inView, hasNextPageComment, fetchNextPageComment]);
 
   const postInteractionProps = data?.data?.media
-      ? {
-          likes: data.data.media.likesCount ?? 0,
-          comments: data.data.media.commentsCount ?? 0,
-          bookmarks: data.data.media.bookmarksCount ?? 0,
-          id: data.data.media.id ?? '',
-          isLiked: data.data.media.isLiked ?? false,
-          isBookmarked: data.data.media.isBookmarked ?? false,
-        }
-      : {
-          likes: 0,
-          comments: 0,
-          bookmarks: 0,
-          id: '',
-          isLiked: false,
-          isBookmarked: false,
-        };
+    ? {
+        likes: data.data.media.likesCount ?? 0,
+        comments: data.data.media.commentsCount ?? 0,
+        bookmarks: data.data.media.bookmarksCount ?? 0,
+        id: data.data.media.id ?? "",
+        isLiked: data.data.media.isLiked ?? false,
+        isBookmarked: data.data.media.isBookmarked ?? false,
+      }
+    : {
+        likes: 0,
+        comments: 0,
+        bookmarks: 0,
+        id: "",
+        isLiked: false,
+        isBookmarked: false,
+      };
 
   return (
-    <div className="max-md:h-full mx-auto mt-4 max-md:w-full" dir="rtl">
+    <div className="mx-auto mt-4 max-md:h-full max-md:w-full max-sm:overflow-y-auto" dir="rtl">
       <div className="grid grid-cols-1 gap-1 md:grid-cols-2">
-        <div className="w-[520px]">
+        <div className="w-[520px] max-sm:w-[100%]">
           <Swiper
             spaceBetween={10}
             slidesPerView={1}
@@ -137,32 +140,39 @@ const PostComponent = (props: PostsPageProps) => {
                 <SwiperSlide key={post.id}>
                   <img
                     src={`${post.url}`}
-                    className="h-[400px] w-[520px] rounded-3xl object-cover"
+                    className="h-[400px] w-[520px] rounded-3xl object-cover max-sm:h-[375px] max-sm:w-[100%] max-sm:px-2"
                   />
                 </SwiperSlide>
               ))}
           </Swiper>
         </div>
-        <div className="h-[680px] overflow-auto pl-16">
+        <div className="h-[680px] overflow-auto pl-16 max-sm:pl-2">
           <div className="flex items-center justify-between max-md:mt-0">
             <AvatarName
               name={data.data.author.username}
               avatar={data.data.author.avatar.url}
               className="py-4 pr-1"
             ></AvatarName>
-
-            <CustomButton text={"ویرایش پست"}
-              iconsrc={whitePen}
-              className="bg-okhra-200 ml-1 max-md:hidden"
-              handleOnClick={handleEditPostClick}></CustomButton>
-            <img src={redPen} alt="edit" className="pl-6 md:hidden" />
+            {userProfile?.username === data?.data.author.username && (
+              <>
+                <CustomButton
+                  text={"ویرایش پست"}
+                  iconsrc={whitePen}
+                  className="ml-1 bg-okhra-200 max-md:hidden"
+                  handleOnClick={handleEditPostClick}
+                ></CustomButton>
+                <img src={redPen} alt="edit" className="pl-6 md:hidden" />
+              </>
+            )}
           </div>
           <DesktopCaption
             date={timeTranslate(data.data.createdAt)}
             caption={data.data.caption}
             mentions={data.data.mentions}
           />
-          <PostInteractions {...postInteractionProps} />
+          <div className="flex justify-end">
+            <PostInteractions {...postInteractionProps} />
+          </div>
           {children}
           {commentData && (
             <CommentSection
@@ -175,7 +185,7 @@ const PostComponent = (props: PostsPageProps) => {
           <div className="flex justify-center" ref={ref}>
             {isFetchingComment && <BeatLoader />}
           </div>
-          <BottomNavbarMobile></BottomNavbarMobile>
+          {/* <BottomNavbarMobile></BottomNavbarMobile> */}
         </div>
       </div>
 
@@ -185,10 +195,13 @@ const PostComponent = (props: PostsPageProps) => {
           onClose={() => setEditPostModal(false)}
         >
           {" "}
-          <EditPostsModal onClose={() => setEditPostModal(false)} postData={data.data} postId={id}/>
+          <EditPostsModal
+            onClose={() => setEditPostModal(false)}
+            postData={data.data}
+            postId={id}
+          />
         </ModalTemplate>
       )}
-
     </div>
   );
 };

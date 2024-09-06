@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Following } from "./ProfilePageComponent";
 
 
 export const FetchFollowings = async ({pageParam = 1}, userId: string, token: string) => {
@@ -17,5 +16,6 @@ export const FetchFollowings = async ({pageParam = 1}, userId: string, token: st
         }
     });
 
-    return response.data.data.following;
+    return response.data.data.followings
+    ;
 }

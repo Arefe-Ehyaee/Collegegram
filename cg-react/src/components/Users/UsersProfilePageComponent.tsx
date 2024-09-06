@@ -32,20 +32,23 @@ export default function UsersProfilePageComponent() {
   const [BlockModal, setBlockModal] = useState(false);
   const [CloseFriendModalSate, setCloseFriendModalSate] = useState(false);
   const [NotCloseFriendModalSate, setNotCloseFriendModalSate] = useState(false);
-  const [followingStatus, setFollowingStatus] =
-    useState<FollowingStatus>("NotFollowed");
+  const [followingStatus, setFollowingStatus] = useState<FollowingStatus>("NotFollowed");
   const queryClient = useQueryClient();
-  // useEffect(() => {
-  //   if (BlockModal) {
-  //     document.body.style.overflow = "hidden";
-  //   } else {
-  //     document.body.style.overflow = "unset";
-  //   }
-  // }, [BlockModal]);
 
-  // const handleBlockModal = () => {
-  //   setBlockModal((prevState) => !prevState);
-  // };
+
+  useEffect(() => {
+    if (BlockModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [BlockModal]);
+
+  const handleBlockModal = () => {
+    setBlockModal((prevState) => !prevState);
+  };
+
+
 
   useEffect(() => {
     if (CloseFriendModalSate) {
@@ -166,7 +169,7 @@ export default function UsersProfilePageComponent() {
   const { text, className } = getButtonProperties(followingStatus);
   return (
     <div dir="rtl" className="md:px-16">
-      <div className=" border-b border-khakeshtari-400 py-9 max-sm:ml-8 max-sm:mr-8">
+      <div className="border-b border-khakeshtari-400 py-9 max-sm:ml-8 max-sm:mr-8">
         <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
           <div className="flex w-full items-center gap-8">
             <img
@@ -211,21 +214,25 @@ export default function UsersProfilePageComponent() {
                 </div>
                 <ToggleMenu imgSrc={Dots}>
                   <ul>
-                    <li className="hover:bg-khakeshtari-600 rounded-md flex cursor-pointer flex-row items-center px-4 py-2">
-                      <img
-                        src={addToCloseFriendsIcon}
-                        alt="add to close friends"
-                        className="h-5 w-5"
-                      />
-                      <p className="pr-4">افزودن به دوستان نزدیک</p>
+                    <li className="flex cursor-pointer flex-row items-center rounded-md px-4 py-2 hover:bg-khakeshtari-600">
+                      <button onClick={handleCloseFriendModal}>
+                        <img
+                          src={addToCloseFriendsIcon}
+                          alt="add to close friends"
+                          className="h-5 w-5"
+                        />
+                        <p className="pr-4">افزودن به دوستان نزدیک</p>
+                      </button>
                     </li>
-                    <li className="hover:bg-khakeshtari-600 rounded-md flex cursor-pointer flex-row items-center px-4 py-2">
-                      <img
-                        src={blockingIcon}
-                        alt="block user"
-                        className="h-5 w-5"
-                      />
-                      <p className="pr-4">بلاک کردن</p>
+                    <li className="flex cursor-pointer flex-row items-center rounded-md px-4 py-2 hover:bg-khakeshtari-600">
+                      <button onClick={handleBlockModal}>
+                        <img
+                          src={blockingIcon}
+                          alt="block user"
+                          className="h-5 w-5"
+                        />
+                        <p className="pr-4">بلاک کردن</p>
+                      </button>
                     </li>
                   </ul>
                 </ToggleMenu>
@@ -241,8 +248,11 @@ export default function UsersProfilePageComponent() {
               onClose={() => setCloseFriendModalSate(false)}
               showModal={CloseFriendModalSate}
             >
-              {/* <BlockingModal name={"Arefe"}></BlockingModal> */}
-              <CloseFriendModal name={"Arefe"}></CloseFriendModal>
+              <CloseFriendModal
+                name={userData.data.username}
+                avatar={userData.data.avatar.url}
+                followersCount={userData.data.followersCount}
+              ></CloseFriendModal>
               <div className="mt-8 flex flex-row self-end">
                 <CustomButton
                   text="پشیمون شدم"
@@ -252,7 +262,28 @@ export default function UsersProfilePageComponent() {
                 <CustomButton
                   text="آره حتما"
                   className="bg-okhra-200"
-                  handleOnClick={() => setCloseFriendModalSate(false)}
+                  // handleOnClick={() => setCloseFriendModalSate(false)}
+                ></CustomButton>
+              </div>
+            </ModalTemplatePost>
+          )}
+
+          {BlockModal && (
+            <ModalTemplatePost
+              onClose={() => setBlockModal(false)}
+              showModal={BlockModal}
+            >
+              <BlockingModal name={userData.data.username} avatar={userData.data.avatar.url} followersCount={userData.data.followersCount}></BlockingModal>
+              <div className="mt-8 flex flex-row self-end">
+                <CustomButton
+                  text="پشیمون شدم"
+                  className="ml-4 !text-siah"
+                  handleOnClick={() => setBlockModal(false)}
+                ></CustomButton>
+                <CustomButton
+                  text="آره حتما"
+                  className="bg-okhra-200"
+                  // handleOnClick={() => setCloseFriendModalSate(false)}
                 ></CustomButton>
               </div>
             </ModalTemplatePost>
