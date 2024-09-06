@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import back from "../assets/icons/back.svg";
 
 
-const NavbarMobileBack: React.FC = () => {
+const NavbarMobileBack = () => {
 
   const navigate = useNavigate();
   

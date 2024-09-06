@@ -22,9 +22,9 @@ import { BeatLoader } from "react-spinners";
 import { useInView } from "react-intersection-observer";
 import timeTranslate from "../../utilities/timeTranslationFunction";
 import CustomButton from "../CustomButton";
+import PostInteractions from "./PostInteractions";
 import ModalTemplate from "../ModalTemplate";
 import EditPostsModal from "../upload-edit-posts/EditPostModal";
-
 
 interface PostsPageProps {
   children?: React.ReactNode;
@@ -43,8 +43,6 @@ const PostComponent = (props: PostsPageProps) => {
   const { children } = props;
 
   const userProfile = useRecoilValue(userProfileAtom);
-  const mockCommentData = mockData.data;
-
   const { ref, inView } = useInView();
 
   const location = useLocation();
@@ -103,7 +101,23 @@ const PostComponent = (props: PostsPageProps) => {
     }
   }, [inView, hasNextPageComment, fetchNextPageComment]);
 
-  // console.log("commentData", commentData);
+  const postInteractionProps = data?.data?.media
+      ? {
+          likes: data.data.media.likesCount ?? 0,
+          comments: data.data.media.commentsCount ?? 0,
+          bookmarks: data.data.media.bookmarksCount ?? 0,
+          id: data.data.media.id ?? '',
+          isLiked: data.data.media.isLiked ?? false,
+          isBookmarked: data.data.media.isBookmarked ?? false,
+        }
+      : {
+          likes: 0,
+          comments: 0,
+          bookmarks: 0,
+          id: '',
+          isLiked: false,
+          isBookmarked: false,
+        };
 
   return (
     <div className="max-md:h-full mx-auto mt-4 max-md:w-full" dir="rtl">
@@ -132,8 +146,8 @@ const PostComponent = (props: PostsPageProps) => {
         <div className="h-[680px] overflow-auto pl-16">
           <div className="flex items-center justify-between max-md:mt-0">
             <AvatarName
-              name={username}
-              avatar={avatar}
+              name={data.data.author.username}
+              avatar={data.data.author.avatar.url}
               className="py-4 pr-1"
             ></AvatarName>
 
@@ -148,7 +162,7 @@ const PostComponent = (props: PostsPageProps) => {
             caption={data.data.caption}
             mentions={data.data.mentions}
           />
-
+          <PostInteractions {...postInteractionProps} />
           {children}
           {commentData && (
             <CommentSection

@@ -70,7 +70,7 @@ export default function SideNavbarComponent() {
         <ul className="mt-8 border-t border-khakeshtari-400 pt-8">
           <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
             <img src={explore} alt="explore icon" className="ml-2" />
-            <a href="">اکسپلور</a>
+            <button onClick={() => navigate("/explore")}>اکسپلور</button>
           </li>
           <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
             <img src={search} alt="search icon" className="ml-2" />

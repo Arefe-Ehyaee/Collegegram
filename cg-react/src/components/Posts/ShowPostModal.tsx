@@ -10,7 +10,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import {Navigation} from 'swiper/modules';
+import { Navigation } from "swiper/modules";
 import PostInteractions from "./PostInteractions";
 import openPostPage from "../../assets/icons/Group 21.svg";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +18,7 @@ import timeTranslate from "../../utilities/timeTranslationFunction";
 import CustomButton from "../CustomButton";
 import ModalTemplate from "../ModalTemplate";
 import EditPostsModal from "../upload-edit-posts/EditPostModal";
+import { PostInteractionsProps } from "../explore/PostCardInteractions";
 
 interface ShowPostModalProps {
   onClose: () => void;
@@ -25,24 +26,12 @@ interface ShowPostModalProps {
   id: string;
 }
 
-const InteractiondefaultProps = {
-  comments: 50,
-  bookmarks: 3,
-  likes: 337,
-};
-
-const ShowPostModal: React.FC<ShowPostModalProps> = ({
-  onClose,
-  id,
-  children,
-}) => {
+const ShowPostModal = ({ onClose, id, children }: ShowPostModalProps) => {
   const userProfile = useRecoilValue(userProfileAtom);
-  const avatar = userProfile.avatar;
-  const username = userProfile.username;
   console.log("profileData", userProfile);
 
   const [token, setToken] = useState<string | null>(null);
-
+  const [editPostModal, setEditPostModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,10 +39,14 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
     setToken(storedToken || " ");
   }, []);
 
-  const [editPostModal, setEditPostModal] = useState(false);
-
   const handleEditPostClick = () => {
     setEditPostModal(true);
+  };
+
+  const handleOnClick = () => {
+    if (data && id) {
+      navigate("/posts", { state: { post: data, postId: id } });
+    }
   };
 
   const { data, error, isPending, isError } = useQuery({
@@ -62,20 +55,28 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
     enabled: !!token,
   });
 
-  console.log("postId", id);
-
-  const handleOnClick = () => {
-    if (data && id) {
-      navigate("/posts", { state: { post: data, postId: id } });
-    }
-  };
-
-  const pageBaseURL = "http://5.34.194.155:4000/";
+  const postInteractionProps: PostInteractionsProps = data?.data?.media
+    ? {
+        likes: data.data.media.likesCount ?? 0,
+        comments: data.data.media.commentsCount ?? 0,
+        bookmarks: data.data.media.bookmarksCount ?? 0,
+        id: data.data.media.id ?? "",
+        isLiked: data.data.media.isLiked ?? false,
+        isBookmarked: data.data.media.isBookmarked ?? false,
+      }
+    : {
+        likes: 0,
+        comments: 0,
+        bookmarks: 0,
+        id: "",
+        isLiked: false,
+        isBookmarked: false,
+      };
 
   return (
     <div className="max-w-[1200px]" dir="rtl">
       <button onClick={handleOnClick}>
-        <img src={openPostPage}></img>
+        <img src={openPostPage} alt="Open Post" />
       </button>
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
         <div className="h-auto w-full md:max-w-[520px]">
@@ -87,28 +88,32 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
             className="md:w-full"
             modules={[Navigation]}
           >
-            {data &&
+            {data?.data?.media &&
               data.data.media.map((post: any) => (
                 <SwiperSlide key={post.id}>
                   <img
                     src={`${post.url}`}
                     className="h-[400px] w-[520px] rounded-3xl object-cover"
+                    alt="Post media"
                   />
                 </SwiperSlide>
               ))}
           </Swiper>
         </div>
 
-        <div className="flex flex-col gap-3 h-[500px] overflow-auto">
+        <div className="flex h-[500px] flex-col gap-3 overflow-auto">
           <div className="flex items-center justify-between gap-12">
-            <div>
-              <AvatarName name={username} avatar={avatar} />
-            </div>
+            <AvatarName
+              name={data?.data?.author?.username ?? ""}
+              avatar={data?.data?.author?.avatar?.url ?? ""}
+            />
             <div className="hidden md:block">
-              <CustomButton text={"ویرایش پست"}
+              <CustomButton
+                text={"ویرایش پست"}
                 iconsrc={whitePen}
-                className="bg-okhra-200 ml-1" 
-                handleOnClick={handleEditPostClick}></CustomButton>
+                className="ml-1 bg-okhra-200"
+                handleOnClick={handleEditPostClick}
+              />
             </div>
           </div>
           {data && (
@@ -119,19 +124,20 @@ const ShowPostModal: React.FC<ShowPostModalProps> = ({
             />
           )}
           <div className="grid justify-items-end">
-            <PostInteractions {...InteractiondefaultProps} />
+            <PostInteractions {...postInteractionProps} />
           </div>
         </div>
       </div>
-      {children}
-
       {editPostModal && (
         <ModalTemplate
           showModal={editPostModal}
           onClose={() => setEditPostModal(false)}
         >
-          {" "}
-          <EditPostsModal onClose={() => setEditPostModal(false)} postData={data.data} postId={id}/>
+          <EditPostsModal
+            onClose={() => setEditPostModal(false)}
+            postData={data.data}
+            postId={id}
+          />
         </ModalTemplate>
       )}
     </div>

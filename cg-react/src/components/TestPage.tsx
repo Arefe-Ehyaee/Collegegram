@@ -28,7 +28,7 @@ const TestPage = () => {
     }
 
   return (
-    <MainLayout mainComponents={ExplorePostCard(postCardProps)} navBar={SideNavbarComponent()}/>
+    <MainLayout mainComponents={<div></div>} navBar={SideNavbarComponent()}/>
   );
 };
 
