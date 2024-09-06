@@ -15,6 +15,8 @@ import { FetchFollowings } from "./FetchFollowings";
 import CustomButton from "../CustomButton";
 import { useInView } from "react-intersection-observer";
 import { BeatLoader } from "react-spinners";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export interface Follower {
   id?: string;
@@ -47,6 +49,8 @@ export default function ProfilePageComponent() {
 
   const { ref: followerRef, inView: followerInView } = useInView();
   const { ref: followingRef, inView: followingInView } = useInView();
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -125,9 +129,9 @@ export default function ProfilePageComponent() {
     // console.log("followersData", followersData?.pages[0]);
   };
 
-  if (isFetchingFollowers) {
-    return <span>Loading...</span>;
-  }
+  // if (isFetchingFollowers) {
+  //   return <span>Loading...</span>;
+  // }
 
   if (followersError) {
     return <span>Error: {followersError.message}</span>;
@@ -142,9 +146,9 @@ export default function ProfilePageComponent() {
     console.log("followingData", followingsData);
   };
 
-  if (isFetchingFollowing) {
-    return <span>Loading...</span>;
-  }
+  // if (isFetchingFollowing) {
+  //   return <span>Loading...</span>;
+  // }
 
   if (followingsError) {
     return <span>Error: {followingsError.message}</span>;
@@ -215,6 +219,7 @@ export default function ProfilePageComponent() {
           showModal={FollowerListModal}
         >
           <div className="pb-8 text-xl font-bold">دنبال کننده ها</div>
+          {isFetchingFollowers && <BeatLoader />}
           <div className="max-h-[450px] overflow-y-scroll">
             {followersData &&
               !isFetchingFollowers &&
@@ -230,7 +235,6 @@ export default function ProfilePageComponent() {
               )}
           </div>
           <div className="flex justify-center" ref={followerRef}>
-            {isFetchingFollowers && <BeatLoader />}
           </div>
           <CustomButton
             text={"بستن"}
@@ -246,6 +250,7 @@ export default function ProfilePageComponent() {
           showModal={FollowingListModal}
         >
           <div className="pb-8 text-xl font-bold">دنبال شونده ها</div>
+          {isFetchingFollowing && <BeatLoader />}
           <div className="max-h-[450px] overflow-y-scroll">
           {followingsData &&
               !isFetchingFollowing &&
@@ -261,7 +266,6 @@ export default function ProfilePageComponent() {
               )}
           </div>
           <div className="flex justify-center" ref={followingRef}>
-            {isFetchingFollowing && <BeatLoader />}
           </div>
           <CustomButton
             text={"بستن"}

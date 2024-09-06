@@ -65,7 +65,7 @@ const Login: React.FC = () => {
       if (response.ok) {
         localStorage.setItem('token', token);
         setAuth({ token });
-        navigate("/userprofile");
+        navigate("/explore");
         toast.success("با موفقیت وارد شدید!");
 
       }

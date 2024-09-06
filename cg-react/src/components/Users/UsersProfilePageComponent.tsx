@@ -8,9 +8,9 @@ import ModalTemplate from "../ModalTemplate";
 import BlockingModal from "./BlockingModal";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FetchOthersProfile } from "./FetchOthersProfile";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { followUser } from "./followUser";
-import { ClipLoader } from "react-spinners";
+import { BeatLoader, ClipLoader } from "react-spinners";
 import { unfollowUser } from "./unfollowUser";
 import ShowPostsComponent from "../Posts/ShowPostsComponent";
 import { defaultProfile } from "../../user-actions/atoms";
@@ -18,6 +18,7 @@ import CustomButton from "../CustomButton";
 import blockingIcon from "../../assets/icons/blockUser.svg";
 import addToCloseFriendsIcon from "../../assets/icons/addToCloseFriends.svg";
 import removeFromCloseFriendsIcon from "../../assets/icons/removeFromCloseFriends.svg";
+import { toast } from "react-toastify";
 
 export default function UsersProfilePageComponent() {
   type FollowingStatus = "Followed" | "NotFollowed" | "PendingApproval";
@@ -34,6 +35,37 @@ export default function UsersProfilePageComponent() {
   const [NotCloseFriendModalSate, setNotCloseFriendModalSate] = useState(false);
   const [followingStatus, setFollowingStatus] = useState<FollowingStatus>("NotFollowed");
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const handleError = (error: any) => {
+    
+    if (error.response) {
+  
+      const statusCode = error.response.status;
+  
+      if (statusCode === 401) {
+        navigate("/login"); 
+        toast.error("نیاز به ورود مجدد دارید!");
+      } else if (statusCode === 400) {
+        toast.error("خطایی رخ داد!");
+        navigate("/error"); 
+      } else if (statusCode === 500) {
+        toast.error("خطایی رخ داد!");
+        navigate("/error"); 
+      } else if (error.response.data.message) {
+        toast.error(`Error: ${error.response.data.message}`);
+      } else if (error.response.statusText) {
+        toast.error(`Error: ${error.response.statusText}`);
+      } else {
+        toast.error("Unexpected server error");
+      }
+    } else if (error.request) {
+      toast.error("Network error");
+    } else {
+      toast.error(`Error: ${error.message}`);
+    }
+  };
+  
 
 
   useEffect(() => {
@@ -138,12 +170,13 @@ export default function UsersProfilePageComponent() {
       setIconVisible(false);
     }
   }, [followingStatus]);
+
   if (userPending) {
-    return <span>Loading...</span>;
+    return (<div className="mx-auto"><BeatLoader /></div>);
   }
 
   if (userError) {
-    return <span>Error: {userErrorMsg.message}</span>;
+    handleError(userErrorMsg);
   }
 
   const getButtonProperties = (status: FollowingStatus) => {
