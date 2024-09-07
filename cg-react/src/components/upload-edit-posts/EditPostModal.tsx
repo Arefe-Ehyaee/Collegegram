@@ -12,6 +12,8 @@ import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Delete from "../../assets/icons/close.svg";
 import CustomButton from "../CustomButton";
+import { useRecoilValue } from "recoil";
+import { userProfileAtom } from "../../user-actions/atoms";
 
 interface EditModalProps {
   onClose: Function;
@@ -68,7 +70,7 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
   const [deletedPhotos, setDeletedPhotos] = useState<string[]>([]);
   const [clickedDelete, setclickedDelete] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
-
+ const UserData = useRecoilValue(userProfileAtom)
   useEffect(() => {
     if (postData) {
       setValue("caption", postData.caption || "");
@@ -135,7 +137,7 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
       })
       
     }
- 
+      
       const response = await fetch(`http://5.34.194.155:4000/posts/${postId}`, {
         method: "PATCH",
         headers: {
@@ -152,7 +154,8 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
     },
     onSuccess: () => {
       console.log("mutataionn")
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      const username = UserData.firstName
+      queryClient.invalidateQueries({ queryKey: ['posts', token, username] });
       onClose();
     },
     onError: (error) => {
