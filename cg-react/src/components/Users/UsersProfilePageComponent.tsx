@@ -13,15 +13,16 @@ import { followUser } from "./followUser";
 import { BeatLoader, ClipLoader } from "react-spinners";
 import { unfollowUser } from "./unfollowUser";
 import ShowPostsComponent from "../Posts/ShowPostsComponent";
-import { defaultProfile } from "../../user-actions/atoms";
+import { defaultProfile, userProfileAtom } from "../../user-actions/atoms";
 import CustomButton from "../CustomButton";
 import blockingIcon from "../../assets/icons/blockUser.svg";
 import addToCloseFriendsIcon from "../../assets/icons/addToCloseFriends.svg";
 import removeFromCloseFriendsIcon from "../../assets/icons/removeFromCloseFriends.svg";
+import {  useRecoilValue } from "recoil";
 import { toast } from "react-toastify";
 
 export default function UsersProfilePageComponent() {
-  type FollowingStatus = "Followed" | "NotFollowed" | "PendingApproval";
+  type FollowingStatus = "Following" | "NotFollowing " | "Pending" | "Blocked";
 
   const [token, setToken] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
@@ -33,9 +34,10 @@ export default function UsersProfilePageComponent() {
   const [BlockModal, setBlockModal] = useState(false);
   const [CloseFriendModalSate, setCloseFriendModalSate] = useState(false);
   const [NotCloseFriendModalSate, setNotCloseFriendModalSate] = useState(false);
-  const [followingStatus, setFollowingStatus] = useState<FollowingStatus>("NotFollowed");
+  const [followingStatus, setFollowingStatus] = useState<FollowingStatus>("NotFollowing ");
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
+  const loggedUserData = useRecoilValue(userProfileAtom)
+ const navigate = useNavigate()
 
   const handleError = (error: any) => {
     
@@ -106,8 +108,8 @@ export default function UsersProfilePageComponent() {
   // };
   const handleButtonClicked = async () => {
     if (
-      followingStatus === "Followed" ||
-      followingStatus === "PendingApproval"
+      followingStatus === "Following" ||
+      followingStatus === "Pending"
     ) {
       await unfollowRefetch();
       queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
@@ -136,6 +138,9 @@ export default function UsersProfilePageComponent() {
     if (userData && userData.data) {
       setUserId(userData.data.id);
       setFollowingStatus(userData.data.followingStatus);
+      if(userData.data.username === loggedUserData.username) {
+        navigate('/userprofile')
+      }
     }
   }, [userData]);
   const {
@@ -166,7 +171,7 @@ export default function UsersProfilePageComponent() {
     }
   }, [followFetching, unfollowFetching]);
   useEffect(() => {
-    if (followingStatus !== "NotFollowed") {
+    if (followingStatus !== "NotFollowing ") {
       setIconVisible(false);
     }
   }, [followingStatus]);
@@ -180,13 +185,13 @@ export default function UsersProfilePageComponent() {
   }
 
   const getButtonProperties = (status: FollowingStatus) => {
-    if (status === "Followed") {
+    if (status === "Following") {
       return {
         text: "دنبال نکردن",
         className:
           "bg-khakeshtari-100 ml-1 border border-okhra-200 !text-okhra-200",
       };
-    } else if (status === "PendingApproval") {
+    } else if (status === "Pending") {
       return {
         text: "لغو درخواست",
         className:
@@ -219,9 +224,9 @@ export default function UsersProfilePageComponent() {
                 {`@${userData.data.username}`}
               </p>
               <div className="mt-4 flex items-center gap-x-3">
-                <h3 className="text-xl font-bold text-sabz-100">
-                  {`${userData.data.firstName || ""} ${userData.data.lastName || ""}`}
-                </h3>
+                {(userData.data.firstName && userData.data.lastName) && <h3 className="text-xl font-bold text-sabz-100">
+                  {`${userData.data.firstName} ${userData.data.lastName}`}
+                </h3>}
 
                 <CustomButton
                   text={text}
@@ -230,7 +235,7 @@ export default function UsersProfilePageComponent() {
                   handleOnClick={handleButtonClicked}
                   size="small"
                 >
-                  {(followFetching || unfollowFetching) && (
+                  {(followFetching || unfollowFetching) && (          
                     <ClipLoader color="#9b9b9b" size={20} />
                   )}
                 </CustomButton>
@@ -323,7 +328,7 @@ export default function UsersProfilePageComponent() {
           )}
         </div>
       </div>
-      {userData.data.isPrivate === true && followingStatus !== "Followed" && (
+      {userData.data.isPrivate === true && followingStatus !== "Following" && (
         <div className="my-8 flex h-64 flex-grow flex-col items-center justify-center">
           <h3 className="py-8 text-center text-2xl">
             {`برای دیدن صفحه ${userData.data.username} باید دنبالش کنی.`}
@@ -342,7 +347,7 @@ export default function UsersProfilePageComponent() {
         </div>
       )}
       {(userData.data.isPrivate === false ||
-        followingStatus === "Followed") && (
+        followingStatus === "Following") && (
         <ShowPostsComponent username={userData.data.username} />
       )}
     </div>

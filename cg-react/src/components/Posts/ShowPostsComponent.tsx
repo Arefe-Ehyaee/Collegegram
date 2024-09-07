@@ -83,7 +83,7 @@ export default function ShowPostsComponent({ username }: ShowPostsProps) {
 
 
   return (
-    <div className="my-8 grid rounded-3xl border border-khakeshtari-400">
+    <div className="my-8 grid rounded-3xl ">
       <div className="grid grid-cols-2 gap-6 md:grid-cols-3 md:gap-4">
         {data && 
           data?.pages.flatMap((page) => 
