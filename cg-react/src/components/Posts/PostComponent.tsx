@@ -104,14 +104,14 @@ const PostComponent = (props: PostsPageProps) => {
     }
   }, [inView, hasNextPageComment, fetchNextPageComment]);
 
-  const postInteractionProps = data?.data?.media
+  const postInteractionProps = data?.data
     ? {
-        likes: data.data.media.likesCount ?? 0,
-        comments: data.data.media.commentsCount ?? 0,
-        bookmarks: data.data.media.bookmarksCount ?? 0,
-        id: data.data.media.id ?? "",
-        isLiked: data.data.media.isLiked ?? false,
-        isBookmarked: data.data.media.isBookmarked ?? false,
+        likes: data.data.likesCount ?? 0,
+        comments: data.data.commentsCount ?? 0,
+        bookmarks: data.data.bookmarksCount ?? 0,
+        id: data.data.id ?? "",
+        isLiked: data.data.isLiked ?? false,
+        isBookmarked: data.data.isBookmarked ?? false,
       }
     : {
         likes: 0,
