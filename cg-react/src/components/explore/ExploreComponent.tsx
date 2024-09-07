@@ -6,6 +6,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { fetchExplore } from "./fetchExplore";
 import { useInView } from "react-intersection-observer";
+import BlankExploreComponent from "./BlankExploreComponent";
 
 interface Avatar {
   url: string;
@@ -83,42 +84,41 @@ const ExploreComponent = () => {
 
 
 
-  return (
+  return data ? (
     <div className="my-8 mx-8 grid rounded-3xl border border-khakeshtari-400">
       <div className="grid grid-cols-2 gap-6 md:grid-cols-3 md:gap-4">
-      {data &&
-          data.pages.flatMap((page) =>
-            page.data?.posts.map((post: Posts) => {
-              const posterInfoProps = {
-                name: post.author.username,
-                followersCount: post.author.followersCount,
-                avatar: post.author.avatar?.url || "", 
-              };
-
-              const postCardInteractionProps = {
-                likes: post.likesCount,
-                comments: post.commentsCount,
-                bookmarks: post.bookmarksCount,
-                id: post.id,
-                isLiked: post.isLiked,
-                isBookmarked: post.isBookmarked
-              };
-
-              const postImageSrc = post.media[0] || "";
-              console.log("imgsrc", post.media[0])
-              return (
-                <ExplorePostCard
-                  key={post.id}
-                  posterInfoProps={posterInfoProps}
-                  postCardInteractionProps={postCardInteractionProps}
-                  postImageSrc={postImageSrc}
-                  onClick={() => handleOnClick(post.id)}
-                />
-              );
-            }),
-          )}
+        {data.pages.flatMap((page) =>
+          page.data?.posts.map((post: Posts) => {
+            const posterInfoProps = {
+              name: post.author.username,
+              followersCount: post.author.followersCount,
+              avatar: post.author.avatar?.url || "",
+            };
+  
+            const postCardInteractionProps = {
+              likes: post.likesCount,
+              comments: post.commentsCount,
+              bookmarks: post.bookmarksCount,
+              id: post.id,
+              isLiked: post.isLiked,
+              isBookmarked: post.isBookmarked,
+            };
+  
+            const postImageSrc = post.media[0] || "";
+            console.log("imgsrc", post.media[0]);
+            return (
+              <ExplorePostCard
+                key={post.id}
+                posterInfoProps={posterInfoProps}
+                postCardInteractionProps={postCardInteractionProps}
+                postImageSrc={postImageSrc}
+                onClick={() => handleOnClick(post.id)}
+              />
+            );
+          })
+        )}
       </div>
-
+  
       {showPostModal && (
         <ModalTemplatePost
           onClose={() => setPostShowModal(false)}
@@ -130,11 +130,15 @@ const ExploreComponent = () => {
           />
         </ModalTemplatePost>
       )}
+  
       <div className="flex justify-center" ref={ref}>
         {isFetching && <BeatLoader />}
       </div>
     </div>
+  ) : (
+    <BlankExploreComponent />
   );
+  
 };
 
 export default ExploreComponent;
