@@ -50,7 +50,7 @@ const ShowPostModal = ({ onClose, id, children }: ShowPostModalProps) => {
   };
 
   const { data, error, isPending, isError } = useQuery({
-    queryKey: ["post"],
+    queryKey: ["post", id],
     queryFn: () => FetchPost(token || "", id),
     enabled: !!token,
   });

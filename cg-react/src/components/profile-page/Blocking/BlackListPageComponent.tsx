@@ -1,36 +1,69 @@
 import FollowerFollowing from "../../FollowerFollowing";
 import defaultAvatar from "../../../assets/icons/defaultavatar.svg";
 import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInView } from "react-intersection-observer";
+import { BeatLoader } from "react-spinners";
+import { GetBlackList } from "./GetBlackList";
 
-export interface Follower {
+export interface User {
   id?: string;
-  avatar: string;
+  avatar: { url: string };
   username: string;
-  first_name?: string;
-  last_name?: string;
+  firstname?: string;
+  lastname?: string;
   postsCount: number;
   bio?: string;
   followersCount?: number;
   followingsCount?: number;
 }
 
-export const defaultProfile: Follower = {
-  id: "defaultID",
-  username: "defaultID",
-  avatar: defaultAvatar,
-  first_name: "نام",
-  last_name: "نشان",
-  postsCount: 0,
-  followersCount: 0,
-  followingsCount: 0,
-};
 
 export default function BlackListPageComponent() {
+  const [token, setToken] = useState<string | null>(null);
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken || " ");
+    console.log("blackListData", blackListData);
+  }, []);
+
+  const {
+    data: blackListData,
+    fetchNextPage: fetchNextPageblackListData,
+    hasNextPage: hasNextPageblackListData,
+    isFetching: isFetchingblackListData,
+    isLoading: isLoadingblackListData,
+    isError: isErrorblackListData,
+    error: blackListDataError,
+  } = useInfiniteQuery({
+    queryKey: ["comments", token],
+    queryFn: async ({ pageParam = 1 }) =>
+      GetBlackList({ pageParam }, token || ""),
+    getNextPageParam: (lastPage) => {
+      return lastPage?.data?.nextPage ?? undefined;
+    },
+    initialPageParam: 1,
+    enabled: !!token,
+  });
+
+  useEffect(() => {
+    console.log("blackListData", blackListData?.pages[0].data.users);
+
+    if (inView && hasNextPageblackListData) {
+      fetchNextPageblackListData();
+    }
+  }, [inView, hasNextPageblackListData, fetchNextPageblackListData]);
+
   return (
     <div dir="rtl" className="px-[72px] max-sm:pr-2">
       <div className="mt-10 flex justify-start max-sm:justify-center">
         <NavLink to="/closeFriendsList">
-          <h2 className="block px-7 font-isf text-xl text-khakeshtari-400 max-sm:px-2">دوستان نزدیک</h2>
+          <h2 className="block px-7 font-isf text-xl text-khakeshtari-400 max-sm:px-2">
+            دوستان نزدیک
+          </h2>
         </NavLink>
 
         <span>|</span>
@@ -41,18 +74,20 @@ export default function BlackListPageComponent() {
       </div>
 
       <div className="w-[344px] pt-16">
-        <FollowerFollowing
-          key={defaultProfile.id}
-          name={defaultProfile.username}
-          followersNumber={defaultProfile.followersCount}
-          avatar={defaultProfile?.avatar}
-        />
-        <FollowerFollowing
-          key={defaultProfile.id}
-          name={defaultProfile.username}
-          followersNumber={defaultProfile.followersCount}
-          avatar={defaultProfile?.avatar}
-        />
+        {blackListData &&
+          blackListData?.pages.flatMap((page) =>
+            page.data?.users.map((user: User) => (
+              <FollowerFollowing
+                key={user.id}
+                name={user.username}
+                followersNumber={user.followersCount}
+                avatar={user?.avatar.url}
+              />
+            )),
+          )}
+        <div className="flex justify-center" ref={ref}>
+          {isFetchingblackListData && <BeatLoader />}
+        </div>
       </div>
     </div>
   );

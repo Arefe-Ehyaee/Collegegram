@@ -144,6 +144,7 @@ export default function ProfilePageComponent() {
       refetchFollowing();
     }
     console.log("followingData", followingsData);
+    console.log("profileData", userProfile)
   };
 
   // if (isFetchingFollowing) {
