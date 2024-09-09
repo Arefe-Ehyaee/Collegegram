@@ -3,11 +3,13 @@ import { useState, ReactNode, useEffect, useRef } from "react";
 interface ToggleMenuProps {
   children: ReactNode;
   imgSrc: string;
+  label?:string
   className?: string;
 }
 
 export default function ToggleMenu({
   children,
+  label,
   imgSrc,
   className = "",
 }: ToggleMenuProps) {
@@ -83,13 +85,13 @@ export default function ToggleMenu({
   }
   return (
     <div className="relative">
-      <button onClick={handleToggle} ref={buttonRef} className="relative">
-        <img src={imgSrc} alt="Toggle Menu" />
+      <button onClick={handleToggle} ref={buttonRef} className="relative flex flex-row gap-x-2">
+        <img src={imgSrc} alt="Toggle Menu" /> <p>{label}</p>
       </button>
       {isOpen && (
         <div
           ref={menuRef}
-          className={`absolute ${menuPosition} ${borderRounding} ${className} mt-2 min-w-72 max-w-96 w-max border border-khakeshtari-700 bg-white px-8 py-6`}
+          className={`absolute ${menuPosition} ${borderRounding} ${className} mt-2 min-w-72 max-w-96 w-max border border-khakeshtari-700 bg-white z-10 px-8 py-6`}
         >
           {children}
         </div>

@@ -31,93 +31,94 @@ export default function SideNavbarComponent() {
     setUploadModal(true);
   };
   return (
-    <div
-      dir="rtl"
-      className="  flex flex-col items-center justify-center"
-    >
-      <div className="fixed flex flex-col items-center top-16 right-0 mr-24">
-      <CustomButton
-        text="ایجاد پست جدید"
-        size="large"
-        iconsrc={addPostIcon}
-        className=" mb-8 bg-okhra-200"
-        handleOnClick={handleCreatePostClick}
-      ></CustomButton>
-      <nav className=" fixed bottom-0 top-36 w-72 rounded-t-3xl border border-khakeshtari-400 bg-white p-9">
-        <div className="mb-8 flex items-center">
-          <img
-            src={avatar}
-            alt="avatar"
-            className="aspect-square h-[56px] w-[56px] rounded-full border border-khakeshtari-400 object-cover"
-          />
-          <p className="mr-4">{username}</p>
-        </div>
+    <div dir="rtl" className="flex flex-col items-center justify-center">
+      <div className="fixed right-0 top-16 mr-24 flex flex-col items-center">
+        <CustomButton
+          text="ایجاد پست جدید"
+          size="large"
+          iconsrc={addPostIcon}
+          className="mb-8 bg-okhra-200"
+          handleOnClick={handleCreatePostClick}
+        ></CustomButton>
+        <nav className="fixed flex flex-col bottom-0 top-36 w-72 rounded-t-3xl border border-khakeshtari-400 bg-white p-9">
+          <div className="mb-8 flex items-center">
+            <img
+              src={avatar}
+              alt="avatar"
+              className="aspect-square h-[56px] w-[56px] rounded-full border border-khakeshtari-400 object-cover"
+            />
+            <p className="mr-4">{username}</p>
+          </div>
+          <div className="flex flex-col flex-grow justify-between">
+            <div>
+              <ul>
+                <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
+                  <img src={angledpin} alt="my page icon" className="ml-2" />
+                  <button onClick={() => navigate("/userprofile")}>
+                    صفحه من
+                  </button>
+                </li>
+                <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
+                  <img src={bookmark} alt="bookmarks icon" className="ml-2" />
+                  <a href="#">ذخیره‌ها</a>
+                </li>
+                <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
+                  <img src={chat} alt="chats icon" className="ml-2" />
+                  <a href="#">پیام‌ها</a>
+                </li>
+                <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
+                  <img src={bell} alt="notifications icon" className="ml-2" />
+                  <a href="#">اعلانات</a>
+                </li>
+                <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
+                  <img src={tags} alt="tags icon" className="ml-2" />
+                  <a href="#">تگ‌شده‌ها</a>
+                </li>
+              </ul>
 
-        <ul>
-          <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
-            <img src={angledpin} alt="my page icon" className="ml-2" />
-            <button onClick={() => navigate("/userprofile")}>صفحه من</button>
-          </li>
-          <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
-            <img src={bookmark} alt="bookmarks icon" className="ml-2" />
-            <a href="#">ذخیره‌ها</a>
-          </li>
-          <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
-            <img src={chat} alt="chats icon" className="ml-2" />
-            <a href="#">پیام‌ها</a>
-          </li>
-          <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
-            <img src={bell} alt="notifications icon" className="ml-2" />
-            <a href="#">اعلانات</a>
-          </li>
-          <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
-            <img src={tags} alt="tags icon" className="ml-2" />
-            <a href="#">تگ‌شده‌ها</a>
-          </li>
-        </ul>
-
-        <ul className="mt-8 border-t border-khakeshtari-400 pt-8">
-          <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
-            <img src={explore} alt="explore icon" className="ml-2" />
-            <button onClick={() => navigate("/explore")}>اکسپلور</button>
-          </li>
-          <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
-            <img src={search} alt="search icon" className="ml-2" />
-            <a href="">جست‌و‌جو</a>
-          </li>
-        </ul>
-        <div className="flex pr-4 pt-16">
-          <ToggleMenu imgSrc={moreSideNav}>
-            <ul className="mt-8 border-t border-khakeshtari-400 pt-8">
-              <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
-                <button onClick={() => navigate("/closeFriendsList")}>
-                  <div className="flex">
-                    <img
-                      src={addToCloseFriendsIcon}
-                      alt="add to close friends"
-                      className="h-5 w-5"
-                    />
-                    <p className="pr-4">دوستان نزدیک</p>
-                  </div>
-                </button>
-              </li>
-              <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
-                <button onClick={() => navigate("/balckList")}>
-                  <div className="flex">
-                    <img
-                      src={blockingIcon}
-                      alt="block user"
-                      className="h-5 w-5"
-                    />
-                    <p className="pr-4">بلاک کردن</p>
-                  </div>
-                </button>
-              </li>
-            </ul>
-          </ToggleMenu>
-          <p className="mr-2">بیشتر</p>
-        </div>
-      </nav>
+              <ul className="mt-8 border-t border-khakeshtari-400 pt-8">
+                <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
+                  <img src={explore} alt="explore icon" className="ml-2" />
+                  <button onClick={() => navigate("/explore")}>اکسپلور</button>
+                </li>
+                <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
+                  <img src={search} alt="search icon" className="ml-2" />
+                  <a href="">جست‌و‌جو</a>
+                </li>
+              </ul>
+            </div>
+            <div className="flex pr-4">
+              <ToggleMenu imgSrc={moreSideNav} label="بیشتر">
+                <ul className="mt-8 border-t border-khakeshtari-400 pt-8">
+                  <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
+                    <button onClick={() => navigate("/closeFriendsList")}>
+                      <div className="flex">
+                        <img
+                          src={addToCloseFriendsIcon}
+                          alt="add to close friends"
+                          className="h-5 w-5"
+                        />
+                        <p className="pr-4">دوستان نزدیک</p>
+                      </div>
+                    </button>
+                  </li>
+                  <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
+                    <button onClick={() => navigate("/balckList")}>
+                      <div className="flex">
+                        <img
+                          src={blockingIcon}
+                          alt="block user"
+                          className="h-5 w-5"
+                        />
+                        <p className="pr-4">بلاک کردن</p>
+                      </div>
+                    </button>
+                  </li>
+                </ul>
+              </ToggleMenu>
+            </div>
+          </div>
+        </nav>
       </div>
       {uploadModal && (
         <ModalTemplate
