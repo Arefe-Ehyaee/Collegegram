@@ -53,14 +53,10 @@ const PostComponent = (props: PostsPageProps) => {
   const data = location.state?.post;
   const id = location.state?.postId || "defaultId";
 
-  // console.log("postId inpostComponent", id);
 
   const commentingProps = {
     avatar: userProfile.avatar,
     id: id,
-    // onCommentSent: () => {
-    //   queryClient.invalidateQueries({queryKey: ["comments"]});
-    // }
   };
 
   const avatar = userProfile.avatar;

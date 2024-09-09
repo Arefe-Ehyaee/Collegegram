@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import InputField from "../TextInputComponent";
 import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Delete from "../../assets/icons/close.svg";
 import CustomButton from "../CustomButton";
 import { useRecoilValue } from "recoil";
@@ -22,11 +22,11 @@ interface EditModalProps {
 }
 
 interface EditPostProps {
-  pictures: File[];
+  pictures?: File[];
   caption?: string;
   mentions?: string;
   media: Media[];
-  deletedMedia: string[]
+  deletedMedia: string[];
 }
 
 interface Media {
@@ -41,15 +41,21 @@ const EditPostSchema = z.object({
   caption: z.string().optional(),
   pictures: z
     .any()
-    .optional()
     .refine(
-      (file) => file && file[0]?.type.startsWith("image/"),
-      "فقط می‌توانید عکس انتخاب کنید",
+      (files) => {
+        if (!files || files.length === 0) {
+          return true;
+        }
+        return files.every(
+          (file: File) =>
+            file?.type.startsWith("image/") && file?.size <= 5 * 1024 * 1024
+        );
+      },
+      {
+        message: "فقط می‌توانید عکس انتخاب کنید و حجم عکس‌ها باید کمتر از ۵ مگابایت باشد",
+      }
     )
-    .refine(
-      (file) => file && file[0]?.size <= 5 * 1024 * 1024,
-      "حجم عکس‌ها باید کمتر از ۵ مگابایت باشد",
-    ),
+    .optional(),
   mentions: z.string().optional(),
   deletedPhotos: z.array(z.string()).optional(),
 });
@@ -68,33 +74,40 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
 
   const [selectedPhotos, setSelectedPhotos] = useState<File[]>([]);
   const [deletedPhotos, setDeletedPhotos] = useState<string[]>([]);
-  const [clickedDelete, setclickedDelete] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
- const UserData = useRecoilValue(userProfileAtom)
+  const [token, setToken] = useState<string | null>(null);
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken || " ");
+  }, []);
+  
+
   useEffect(() => {
     if (postData) {
       setValue("caption", postData.caption || "");
-      setValue("mentions", postData.mentions || "");
+      setValue("mentions", postData.mentions ?`@${postData.mentions}` : "");
     }
   }, [postData, setValue]);
 
-  const [mediaList, setMediaList] = useState<Media[]>(postData.media);
 
   const handleDeleteEditImage = (index: number, id?: string) => {
+    // setclickedDelete((prevState) => !prevState);
 
-    setclickedDelete((prevState) => !prevState);
+    console.log("deletedPhotos", deletedPhotos);
 
-    console.log("deletedPhotos",deletedPhotos);
-    
     if (id) {
-      setDeletedPhotos((prevState) => {
-        if (!prevState.includes(id)) {
-          return [...prevState, id];
-        }
-        return prevState;
-      });
+    setDeletedPhotos((prevState) => {
+      // Check if the ID already exists in the array.
+      if (prevState.includes(id)) {
+        // If it exists, remove it (toggle off).
+        return prevState.filter((photoId) => photoId !== id);
+      } else {
+        // If it doesn't exist, add it (toggle on).
+        return [...prevState, id];
+      }
+    });
     }
-  
+
     setSelectedPhotos((prevState) => {
       if (!id) {
         const updatedPhotos = prevState.filter((photo, i) => i !== index);
@@ -105,39 +118,28 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
     });
   };
 
-///////////////////////////////////////////////////////////////////////////////////////
-  const [token, setToken] = useState<string | null>(null);
+  ///////////////////////////////////////////////////////////////////////////////////////
+  const onSubmit = async (data: EditPostProps) => {
+    const formData = new FormData();
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || " ");
-  }, []);
-//////////////////////////////////////////////////////////////////////////////////////
-  const mutation = useMutation({
-    mutationFn: async (data: EditPostProps) => {
-      const formData = new FormData();
+    // data.deletedMedia = deletedPhotos;
 
-      if (data.pictures) {
-        data.pictures.forEach((file) => {
-          formData.append("pictures", file);
-        });
-      }
+    if (data.pictures && data.pictures.length > 0) {
+      data.pictures.forEach((file) => {
+        formData.append("pictures", file);
+      });
+    }
 
-      if (data.caption) {
-        formData.append("caption", data.caption);
-      }
-
-      if (data.mentions) {
-        formData.append("mentions", data.mentions);
-      }
+    formData.append("caption", data.caption || "");
+    formData.append("mentions", data.mentions || "");
 
     if (deletedPhotos.length > 0) {
       deletedPhotos.forEach((id) => {
         formData.append("deletedMedia[]", id);
-      })
-      
+      });
     }
-      
+
+    try {
       const response = await fetch(`http://5.34.194.155:4000/posts/${postId}`, {
         method: "PATCH",
         headers: {
@@ -145,47 +147,23 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
         },
         body: formData,
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to edit post");
+      if (response.ok) {
+        console.log(response);
+      } else {
+        console.error("Failed to upload edit post", response.statusText);
       }
-
-      return response.json();
-    },
-    onSuccess: () => {
-      console.log("mutataionn")
-      const username = UserData.firstName
-      queryClient.invalidateQueries({ queryKey: ['posts', token, username] });
+    } catch (error) {
+      console.error("Error editing post:", error);
+    } finally {
+      console.log("موفقققققققققق");
+      queryClient.invalidateQueries({ queryKey: ["post", postId] });
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
       onClose();
-    },
-    onError: (error) => {
-      console.error("Error editing:", error);
-    },
-  });
-///////////////////////////////////////////////////////////////////////////////////////
-const onSubmit = async (data: EditPostProps) => {
+    }
+  };
+  
 
-  if (!token) {
-    console.error("Token is missing, cannot perform mutation.");
-    return;
-  }
-  data.deletedMedia = deletedPhotos;
-
-
-  mutation.mutate(data, {
-    onError: (error) => {
-      console.error("Error occurred during submission:", error);
-    },
-    onSuccess: (response) => {
-      console.log("Submission successful!", response);  
-      onClose();  
-    },
-  });
-
-  console.log("Submit data", data);
-};
-
-///////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////
   return (
     <div dir="rtl" className="flex min-w-[360px] flex-col items-center">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -238,7 +216,10 @@ const onSubmit = async (data: EditPostProps) => {
                 </div>
               ))}
               {postData.media.map((media, index) => (
-                <div key={media.id} className={`relative ${deletedPhotos.includes(media.id) ? 'faded' : ''}`}>
+                <div
+                  key={media.id}
+                  className={`relative ${deletedPhotos.includes(media.id) ? "faded" : ""}`}
+                >
                   <img
                     key={index}
                     src={`${media.url}`}

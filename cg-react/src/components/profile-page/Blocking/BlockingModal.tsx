@@ -1,4 +1,4 @@
-import PosterInfo from "../explore/PosterInfo";
+import PosterInfo from "../../explore/PosterInfo";
 
 interface BlockingModalProps {
     name: string;

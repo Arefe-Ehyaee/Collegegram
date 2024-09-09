@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import ModalTemplatePost from "./Posts/ModalTemplatePost";
 import CloseFriendModal from "./Users/CloseFriendModal";
 import CustomButton from "./CustomButton";
-import BlockingModal from "./Users/BlockingModal";
+import BlockingModal from "./profile-page/Blocking/BlockingModal";
 import defaultAvatar from '../assets/icons/defaultavatar.svg'
 
 interface FollowerFollowingProps {
@@ -73,7 +73,7 @@ const FollowerFollowing: React.FC<FollowerFollowingProps> = ({name, followersNum
     return(
         <div className="flex gap-[93px] items-center justify-between py-4 border-b border-khakeshtari-700" dir="rtl">
             <div className="flex gap-[27px] items-center">
-                <img src={avatar} alt="avatar" className="w-[56ps] h-[56px] rounded-full" />
+                <img src={avatar} alt="avatar" className="w-[56px] h-[56px] rounded-full" />
                 <div>
                     <div className="font-isf text-[13px] text-sabz-400 leading-[21.48px] font-bold">{name}</div>
                     <div className="font-isf text-[11px] text-sabz-400 leading-[14.3px] font-normal pt-2" dir="rtl">{`${followersNumber }دنبال کننده ` }</div>

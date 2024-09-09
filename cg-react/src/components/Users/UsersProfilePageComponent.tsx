@@ -5,8 +5,12 @@ import CloseFriendModal from "./CloseFriendModal";
 import ToggleMenu from "../ToggleMenu";
 import Dots from "../../assets/icons/Dots.svg";
 import ModalTemplate from "../ModalTemplate";
-import BlockingModal from "./BlockingModal";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import BlockingModal from "../profile-page/Blocking/BlockingModal";
+import {
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { FetchOthersProfile } from "./FetchOthersProfile";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { followUser } from "./followUser";
@@ -17,12 +21,44 @@ import { defaultProfile, userProfileAtom } from "../../user-actions/atoms";
 import CustomButton from "../CustomButton";
 import blockingIcon from "../../assets/icons/blockUser.svg";
 import addToCloseFriendsIcon from "../../assets/icons/addToCloseFriends.svg";
-import removeFromCloseFriendsIcon from "../../assets/icons/removeFromCloseFriends.svg";
-import {  useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { toast } from "react-toastify";
+import FollowerFollowing from "../FollowerFollowing";
+import { FetchFollowers } from "../profile-page/FetchFollowers";
+import { FetchFollowings } from "../profile-page/FetchFollowings";
+import { useInView } from "react-intersection-observer";
+import { BlockAUser } from "../profile-page/Blocking/BlockAUser";
+import MenuLiOptionComponent from "../MenuLiOptionComponent";
+import { UnBlockAUser } from "../profile-page/Blocking/UnBlockAUser";
+import UnBlockingModal from "../profile-page/Blocking/UnBlockingModal";
+
+export interface Follower {
+  id?: string;
+  avatar: { url: string };
+  username?: string;
+  first_name?: string;
+  last_name?: string;
+  bio?: string;
+  followersCount?: number;
+}
+
+export interface Following {
+  id?: string;
+  avatar: { url: string };
+  username?: string;
+  first_name?: string;
+  last_name?: string;
+  bio?: string;
+  followersCount?: number;
+}
 
 export default function UsersProfilePageComponent() {
-  type FollowingStatus = "Following" | "NotFollowing " | "Pending" | "Blocked";
+  type FollowingStatus =
+    | "Following"
+    | "NotFollowing "
+    | "Pending"
+    | "isBlocked"
+    | "Blocked";
 
   const [token, setToken] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
@@ -32,28 +68,37 @@ export default function UsersProfilePageComponent() {
   const [clickedFollow, setClickedFollow] = useState(false);
   const [iconVisible, setIconVisible] = useState(true);
   const [BlockModal, setBlockModal] = useState(false);
-  const [CloseFriendModalSate, setCloseFriendModalSate] = useState(false);
+  const [UnBlockModal, setUnBlockModal] = useState(false);
+  const [CloseFriendModalState, setCloseFriendModalState] = useState(false);
   const [NotCloseFriendModalSate, setNotCloseFriendModalSate] = useState(false);
-  const [followingStatus, setFollowingStatus] = useState<FollowingStatus>("NotFollowing ");
+  const [followingStatus, setFollowingStatus] =
+    useState<FollowingStatus>("NotFollowing ");
   const queryClient = useQueryClient();
-  const loggedUserData = useRecoilValue(userProfileAtom)
- const navigate = useNavigate()
+  const loggedUserData = useRecoilValue(userProfileAtom);
+  const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
+
+  const [FollowerListModal, setFollowerListModal] = useState(false);
+  const [FollowingListModal, setFollowingListModal] = useState(false);
+
+  const [BlockStatus, setBlockStatus] = useState(false);
+
+  const { ref: followerRef, inView: followerInView } = useInView();
+  const { ref: followingRef, inView: followingInView } = useInView();
+
+  const navigate = useNavigate();
 
   const handleError = (error: any) => {
-    
     if (error.response) {
-  
       const statusCode = error.response.status;
-  
       if (statusCode === 401) {
-        navigate("/login"); 
+        navigate("/login");
         toast.error("نیاز به ورود مجدد دارید!");
       } else if (statusCode === 400) {
         toast.error("خطایی رخ داد!");
-        navigate("/error"); 
+        navigate("/error");
       } else if (statusCode === 500) {
         toast.error("خطایی رخ داد!");
-        navigate("/error"); 
+        navigate("/error");
       } else if (error.response.data.message) {
         toast.error(`Error: ${error.response.data.message}`);
       } else if (error.response.statusText) {
@@ -67,63 +112,7 @@ export default function UsersProfilePageComponent() {
       toast.error(`Error: ${error.message}`);
     }
   };
-  
-
-
-  useEffect(() => {
-    if (BlockModal) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-  }, [BlockModal]);
-
-  const handleBlockModal = () => {
-    setBlockModal((prevState) => !prevState);
-  };
-
-
-
-  useEffect(() => {
-    if (CloseFriendModalSate) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-  }, [CloseFriendModalSate]);
-  const handleCloseFriendModal = () => {
-    setCloseFriendModalSate((prevState) => !prevState);
-  };
-
-  // useEffect(() => {
-  //   if (NotCloseFriendModalSate) {
-  //     document.body.style.overflow = "hidden";
-  //   } else {
-  //     document.body.style.overflow = "unset";
-  //   }
-  // }, [NotCloseFriendModalSate]);
-
-  // const handleNotCloseFriendModalSate = () => {
-  //   setNotCloseFriendModalSate((prevState) => !prevState);
-  // };
-  const handleButtonClicked = async () => {
-    if (
-      followingStatus === "Following" ||
-      followingStatus === "Pending"
-    ) {
-      await unfollowRefetch();
-      queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
-    } else {
-      await followRefetch();
-      queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
-    }
-  };
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || " ");
-  }, []);
-
+  //////////////////////////////////////////////////////////////////////////////////////////
   const {
     data: userData,
     isError: userError,
@@ -138,11 +127,195 @@ export default function UsersProfilePageComponent() {
     if (userData && userData.data) {
       setUserId(userData.data.id);
       setFollowingStatus(userData.data.followingStatus);
-      if(userData.data.username === loggedUserData.username) {
-        navigate('/userprofile')
+      setBlockStatus(userData.data.isBlocked);
+      if (userData.data.username === loggedUserData.username) {
+        navigate("/userprofile");
       }
     }
   }, [userData]);
+  ////////////////////////////////////////////////////////////////////////
+  const {
+    data: followersData,
+    fetchNextPage: fetchNextPageFollowers,
+    hasNextPage: hasNextPageFollowers,
+    isFetching: isFetchingFollowers,
+    isError: isErrorFollowers,
+    error: followersError,
+    refetch: refetchFollowers,
+  } = useInfiniteQuery({
+    queryKey: ["followers", userData?.data.id],
+    queryFn: async ({ pageParam = 1 }) =>
+      FetchFollowers({ pageParam }, userData?.data.id || "", token || ""),
+    getNextPageParam: (lastPage) => {
+      return lastPage?.data?.nextPage ?? undefined;
+    },
+    initialPageParam: 1,
+    enabled: !!FollowerListModal && !!token,
+  });
+
+  useEffect(() => {
+    if (followerInView && hasNextPageFollowers) {
+      refetchFollowers();
+    }
+  }, [followerInView, hasNextPageFollowers, fetchNextPageFollowers]);
+  /////////////////////////////////////////////////////////////////////////
+  const {
+    data: followingsData,
+    fetchNextPage: fetchNextPageFollowing,
+    hasNextPage: hasNextPageFollowing,
+    isFetching: isFetchingFollowing,
+    isError: isErrorFollowing,
+    error: followingsError,
+    refetch: refetchFollowing,
+  } = useInfiniteQuery({
+    queryKey: ["followings", userData?.data.id],
+    queryFn: async ({ pageParam = 1 }) =>
+      FetchFollowings({ pageParam }, userData?.data.id || "", token || ""),
+    getNextPageParam: (lastPage) => {
+      return lastPage?.data?.nextPage ?? undefined;
+    },
+    initialPageParam: 1,
+    enabled: !!FollowingListModal && !!token,
+  });
+
+  useEffect(() => {
+    if (followingInView && hasNextPageFollowing) {
+      refetchFollowing();
+    }
+  }, [followingInView, hasNextPageFollowers, fetchNextPageFollowing]);
+
+  ////////////////////////////////////////////////////////////////////
+  const handleShowFollowers = () => {
+    setFollowerListModal((prevState) => !prevState);
+    if (!FollowerListModal) {
+      queryClient.invalidateQueries({
+        queryKey: ["followers", userProfile.id],
+      });
+      refetchFollowers();
+    }
+    console.log("followersData", followersData?.pages[0]);
+  };
+
+  const handleShowFollowings = () => {
+    setFollowingListModal((prevState) => !prevState);
+    if (!FollowingListModal) {
+      queryClient.invalidateQueries({
+        queryKey: ["followings", userProfile.id],
+      });
+      refetchFollowing();
+    }
+    console.log("followingData", followingsData);
+    console.log("user data", userData.data);
+  };
+  ////////////////////////////////////////////////////////////////////
+  useEffect(() => {
+    if (BlockModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [BlockModal]);
+
+  const handleBlockModal = () => {
+    setBlockModal((prevState) => !prevState);
+  };
+
+  const handleBlockAUser = () => {
+    blockRefetch();
+    queryClient.invalidateQueries({ queryKey: ["blockUser", userProfile.id] });
+    queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
+    setBlockModal(false);
+  };
+  ////////////////////////////////////////////////////////////////
+  useEffect(() => {
+    if (UnBlockModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [UnBlockModal]);
+
+  const handleUnBlockModal = () => {
+    setUnBlockModal((prevState) => !prevState);
+  };
+
+  const handleUnBlockAUser = () => {
+    unblockRefetch();
+    queryClient.invalidateQueries({queryKey: ["unblockUser", userProfile.id]});
+    queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
+    setUnBlockModal(false);
+  };
+  ////////////////////////////////////////////////////////////////
+  useEffect(() => {
+    if (CloseFriendModalState) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [CloseFriendModalState]);
+  const handleCloseFriendModal = () => {
+    setCloseFriendModalState((prevState) => !prevState);
+  };
+
+  // useEffect(() => {
+  //   if (NotCloseFriendModalSate) {
+  //     document.body.style.overflow = "hidden";
+  //   } else {
+  //     document.body.style.overflow = "unset";
+  //   }
+  // }, [NotCloseFriendModalSate]);
+
+  // const handleNotCloseFriendModalSate = () => {
+  //   setNotCloseFriendModalSate((prevState) => !prevState);
+  // };
+
+  ///////////////////////////////////////////////////////////////////////////////
+  const handleButtonClicked = async () => {
+    console.log("followingStatus", userData.data.followingStatus);
+    if (BlockStatus) {
+      toast.error("این کاربر رو بلاک کردی، پس نمیتونی دنبالش کنی!");
+      return;
+    } else if (
+      followingStatus === "Following" ||
+      followingStatus === "Pending"
+    ) {
+      await unfollowRefetch();
+      queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
+    } else {
+      await followRefetch();
+      queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
+    }
+  };
+  //////////////////////////////////////////////////////////////////////////////////////////
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken || " ");
+  }, []);
+
+  /////////////////////////////////////////////////////////////////////////////////////
+  const {
+    data: blockData,
+    isError: blockError,
+    isFetching: blockFetching,
+    refetch: blockRefetch,
+    isSuccess: blockisSuccess,
+  } = useQuery({
+    queryKey: ["blockUser", userId],
+    queryFn: () => BlockAUser(token || "", userId as string),
+    enabled: false,
+  });
+  /////////////////////////////////////////////////////////////////////////////////////
+  const {
+    data: unblockData,
+    isError: unblockError,
+    isFetching: unblockFetching,
+    refetch: unblockRefetch,
+  } = useQuery({
+    queryKey: ["unblockUser", userId],
+    queryFn: () => UnBlockAUser(token || "", userId as string),
+    enabled: false,
+  });
+  /////////////////////////////////////////////////////////////////////////////////////
   const {
     data: followData,
     isError: followError,
@@ -177,14 +350,25 @@ export default function UsersProfilePageComponent() {
   }, [followingStatus]);
 
   if (userPending) {
-    return (<div className="mx-auto"><BeatLoader /></div>);
+    return (
+      <div className="mx-auto">
+        <BeatLoader />
+      </div>
+    );
   }
 
   if (userError) {
     handleError(userErrorMsg);
   }
-
+  /////////////////////////////////////////////////////////////////////////////////////
   const getButtonProperties = (status: FollowingStatus) => {
+    if (BlockStatus) {
+      return {
+        text: "+ دنبال کردن",
+        className: "bg-khakeshtari-700",
+      };
+    }
+
     if (status === "Following") {
       return {
         text: "دنبال نکردن",
@@ -221,12 +405,14 @@ export default function UsersProfilePageComponent() {
             />
             <div className="ml-4 w-full">
               <p className="text-right text-sm text-tala" dir="ltr">
-                {`@${userData.data.username}`}
+                {`@${userData?.data.username}`}
               </p>
               <div className="mt-4 flex items-center gap-x-3">
-                {(userData.data.firstName && userData.data.lastName) && <h3 className="text-xl font-bold text-sabz-100">
-                  {`${userData.data.firstName} ${userData.data.lastName}`}
-                </h3>}
+                {userData.data.firstName && userData.data.lastName && (
+                  <h3 className="text-xl font-bold text-sabz-100">
+                    {`${userData.data.firstName} ${userData.data.lastName}`}
+                  </h3>
+                )}
 
                 <CustomButton
                   text={text}
@@ -235,72 +421,76 @@ export default function UsersProfilePageComponent() {
                   handleOnClick={handleButtonClicked}
                   size="small"
                 >
-                  {(followFetching || unfollowFetching) && (          
+                  {(followFetching || unfollowFetching) && (
                     <ClipLoader color="#9b9b9b" size={20} />
                   )}
                 </CustomButton>
               </div>
               <div className="flex items-center justify-between">
                 <div className="mt-4 flex gap-x-3 text-sm font-normal text-sabz-200">
-                  <span className="border-l pl-3">
-                    {userData.data.followersCount} دنبال کننده
-                  </span>
-                  <span className="border-l pl-3">
-                    {userData.data.followingsCount} دنبال شونده
-                  </span>
-                  <span className="pl-3">{userData.data.postsCount} پست</span>
+                  <button
+                    className="border-l pl-3"
+                    onClick={handleShowFollowers}
+                  >
+                    {userData?.data.followersCount} دنبال کننده
+                  </button>
+                  <button
+                    className="border-l pl-3"
+                    onClick={handleShowFollowings}
+                  >
+                    {userData?.data.followingsCount} دنبال شونده
+                  </button>
+                  <span className="pl-3">{userData?.data.postsCount} پست</span>
                 </div>
                 <ToggleMenu imgSrc={Dots}>
                   <ul>
-                    <li className="flex cursor-pointer flex-row items-center rounded-md px-4 py-2 hover:bg-khakeshtari-600">
-                      <button onClick={handleCloseFriendModal}>
-                        <img
-                          src={addToCloseFriendsIcon}
-                          alt="add to close friends"
-                          className="h-5 w-5"
-                        />
-                        <p className="pr-4">افزودن به دوستان نزدیک</p>
-                      </button>
-                    </li>
-                    <li className="flex cursor-pointer flex-row items-center rounded-md px-4 py-2 hover:bg-khakeshtari-600">
-                      <button onClick={handleBlockModal}>
-                        <img
-                          src={blockingIcon}
-                          alt="block user"
-                          className="h-5 w-5"
-                        />
-                        <p className="pr-4">بلاک کردن</p>
-                      </button>
-                    </li>
+                    <MenuLiOptionComponent
+                      text="افزودن به دوستان نزدیک"
+                      iconsrc={addToCloseFriendsIcon}
+                      handleOnClick={handleCloseFriendModal}
+                    ></MenuLiOptionComponent>
+                    {BlockStatus ? (
+                      <MenuLiOptionComponent
+                        text="حذف از بلاک ها"
+                        iconsrc={blockingIcon}
+                        handleOnClick={handleUnBlockModal}
+                      ></MenuLiOptionComponent>
+                    ) : (
+                      <MenuLiOptionComponent
+                        text="بلاک کردن"
+                        iconsrc={blockingIcon}
+                        handleOnClick={handleBlockModal}
+                      ></MenuLiOptionComponent>
+                    )}
                   </ul>
                 </ToggleMenu>
               </div>
               <p className="mt-4 text-sm text-khakeshtari-400 max-sm:justify-self-center">
-                {userData.data.bio}
+                {userData?.data.bio}
               </p>
             </div>
           </div>
 
-          {CloseFriendModalSate && (
+          {CloseFriendModalState && (
             <ModalTemplatePost
-              onClose={() => setCloseFriendModalSate(false)}
-              showModal={CloseFriendModalSate}
+              onClose={() => setCloseFriendModalState(false)}
+              showModal={CloseFriendModalState}
             >
               <CloseFriendModal
-                name={userData.data.username}
-                avatar={userData.data.avatar.url}
-                followersCount={userData.data.followersCount}
+                name={userData?.data.username}
+                avatar={userData?.data.avatar.url}
+                followersCount={userData?.data.followersCount}
               ></CloseFriendModal>
               <div className="mt-8 flex flex-row self-end">
                 <CustomButton
                   text="پشیمون شدم"
                   className="ml-4 !text-siah"
-                  handleOnClick={() => setCloseFriendModalSate(false)}
+                  handleOnClick={() => setCloseFriendModalState(false)}
                 ></CustomButton>
                 <CustomButton
                   text="آره حتما"
                   className="bg-okhra-200"
-                  // handleOnClick={() => setCloseFriendModalSate(false)}
+                  // handleOnClick={() => setCloseFriendModalState(false)}
                 ></CustomButton>
               </div>
             </ModalTemplatePost>
@@ -311,7 +501,11 @@ export default function UsersProfilePageComponent() {
               onClose={() => setBlockModal(false)}
               showModal={BlockModal}
             >
-              <BlockingModal name={userData.data.username} avatar={userData.data.avatar.url} followersCount={userData.data.followersCount}></BlockingModal>
+              <BlockingModal
+                name={userData?.data.username}
+                avatar={userData?.data.avatar.url}
+                followersCount={userData?.data.followersCount}
+              ></BlockingModal>
               <div className="mt-8 flex flex-row self-end">
                 <CustomButton
                   text="پشیمون شدم"
@@ -321,8 +515,41 @@ export default function UsersProfilePageComponent() {
                 <CustomButton
                   text="آره حتما"
                   className="bg-okhra-200"
-                  // handleOnClick={() => setCloseFriendModalSate(false)}
+                  handleOnClick={handleBlockAUser}
+                >
+                  {(blockFetching) && (
+                    <ClipLoader color="#9b9b9b" size={20} />
+                  )}
+                </CustomButton>
+              </div>
+            </ModalTemplatePost>
+          )}
+
+          {UnBlockModal && (
+            <ModalTemplatePost
+              onClose={() => setBlockModal(false)}
+              showModal={UnBlockModal}
+            >
+              <UnBlockingModal
+                name={userData?.data.username}
+                avatar={userData?.data.avatar.url}
+                followersCount={userData?.data.followersCount}
+              ></UnBlockingModal>
+              <div className="mt-8 flex flex-row self-end">
+                <CustomButton
+                  text="پشیمون شدم"
+                  className="ml-4 !text-siah"
+                  handleOnClick={() => setUnBlockModal(false)}
                 ></CustomButton>
+                <CustomButton
+                  text="آره حتما"
+                  className="bg-okhra-200"
+                  handleOnClick={handleUnBlockAUser}
+                >
+                  {(unblockFetching) && (
+                    <ClipLoader color="#9b9b9b" size={20} />
+                  )}
+                </CustomButton>
               </div>
             </ModalTemplatePost>
           )}
@@ -331,7 +558,7 @@ export default function UsersProfilePageComponent() {
       {userData.data.isPrivate === true && followingStatus !== "Following" && (
         <div className="my-8 flex h-64 flex-grow flex-col items-center justify-center">
           <h3 className="py-8 text-center text-2xl">
-            {`برای دیدن صفحه ${userData.data.username} باید دنبالش کنی.`}
+            {`برای دیدن صفحه ${userData?.data.username} باید دنبالش کنی.`}
           </h3>
           <CustomButton
             text={text}
@@ -348,7 +575,67 @@ export default function UsersProfilePageComponent() {
       )}
       {(userData.data.isPrivate === false ||
         followingStatus === "Following") && (
-        <ShowPostsComponent username={userData.data.username} />
+        <ShowPostsComponent username={userData?.data.username} />
+      )}
+
+      {FollowerListModal && (
+        <ModalTemplate
+          onClose={() => setFollowerListModal(false)}
+          showModal={FollowerListModal}
+        >
+          <div className="pb-8 text-xl font-bold">دنبال کننده ها</div>
+          {isFetchingFollowers && <BeatLoader />}
+          <div className="max-h-[450px] overflow-y-scroll">
+            {followersData &&
+              !isFetchingFollowers &&
+              followersData.pages.map((page) =>
+                page.map((follower: Follower) => (
+                  <FollowerFollowing
+                    key={follower.id}
+                    name={follower.username}
+                    followersNumber={follower.followersCount}
+                    avatar={follower?.avatar?.url}
+                  />
+                )),
+              )}
+          </div>
+          <div className="flex justify-center" ref={followerRef}></div>
+          <CustomButton
+            text={"بستن"}
+            className="mt-[34px] bg-okhra-200"
+            handleOnClick={() => setFollowerListModal(false)}
+          ></CustomButton>
+        </ModalTemplate>
+      )}
+
+      {FollowingListModal && (
+        <ModalTemplate
+          onClose={() => setFollowingListModal(false)}
+          showModal={FollowingListModal}
+        >
+          <div className="pb-8 text-xl font-bold">دنبال شونده ها</div>
+          {isFetchingFollowing && <BeatLoader />}
+          <div className="max-h-[450px] overflow-y-scroll">
+            {followingsData &&
+              !isFetchingFollowing &&
+              followingsData?.pages.map((page) =>
+                page?.map((following: Following) => (
+                  <FollowerFollowing
+                    key={following.id}
+                    name={following.username}
+                    followersNumber={following.followersCount}
+                    avatar={following?.avatar?.url}
+                  />
+                )),
+              )}
+          </div>
+          <div className="flex justify-center" ref={followingRef}></div>
+          <CustomButton
+            text={"بستن"}
+            className="mt-[34px] bg-okhra-200"
+            handleOnClick={() => setFollowingListModal(false)}
+          ></CustomButton>
+        </ModalTemplate>
       )}
     </div>
   );
