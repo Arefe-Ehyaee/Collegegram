@@ -33,16 +33,17 @@ export default function SideNavbarComponent() {
   return (
     <div
       dir="rtl"
-      className="relative mt-16 flex flex-col items-center justify-center"
+      className="  flex flex-col items-center justify-center"
     >
+      <div className="fixed flex flex-col items-center top-16 right-0 mr-24">
       <CustomButton
         text="ایجاد پست جدید"
         size="large"
         iconsrc={addPostIcon}
-        className="fixed top-16 mb-8 bg-okhra-200"
+        className=" mb-8 bg-okhra-200"
         handleOnClick={handleCreatePostClick}
       ></CustomButton>
-      <nav className="fixed bottom-0 top-36 w-72 rounded-t-3xl border border-khakeshtari-400 bg-white p-9">
+      <nav className=" fixed bottom-0 top-36 w-72 rounded-t-3xl border border-khakeshtari-400 bg-white p-9">
         <div className="mb-8 flex items-center">
           <img
             src={avatar}
@@ -117,6 +118,7 @@ export default function SideNavbarComponent() {
           <p className="mr-2">بیشتر</p>
         </div>
       </nav>
+      </div>
       {uploadModal && (
         <ModalTemplate
           showModal={uploadModal}

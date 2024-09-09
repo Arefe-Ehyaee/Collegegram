@@ -32,7 +32,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         </header>
         <main className="flex flex-col">{mainComponents}</main>
       </div>
-      <div className="block relative w-1/4 max-md:hidden">{navBar}</div>
+      <div className="block relative w-1/4 right-0 top-0 bottom-0 max-md:hidden">{navBar}</div>
       {children}
       <NavbarMobile isMenuOpen={isMenuOpen} toggleMenu={toggleMenu} />
       {!isMenuOpen && <BottomNavbarMobile />}
