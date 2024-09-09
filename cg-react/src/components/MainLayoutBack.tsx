@@ -25,7 +25,7 @@ const MainLayoutBack: React.FC<MainLayoutBackProps> = ({
         </header>
         <main className=" flex-col">{mainComponents}</main>
       </div>
-      <div className="block w-1/4 max-md:hidden">{navBar}</div>
+      <div className="block relative w-1/4 right-0 top-0 bottom-0 max-md:hidden">{navBar}</div>
       {children}
       <NavbarMobileBack></NavbarMobileBack>
       <BottomNavbarMobile></BottomNavbarMobile>
