@@ -79,6 +79,8 @@ export default function App() {
             <Route path="/closeFriendsList" element={<CloseFriendsPage/>}/>
             <Route path="/users/profile" element={<UsersProfilePage />} />
             <Route path="/users/:username" element={<ParamToQueryNavigate baseUrl="/users/profile" paramKey="username"/>}/>
+            <Route path="/error"  element={<ErrorLayout/>}/>
+            <Route path="*" element={<Navigate to='/error' replace/>} />
           </Routes>
           </ProfileDataWrapper>
           <ToastContainer bodyClassName="toastBody" />
