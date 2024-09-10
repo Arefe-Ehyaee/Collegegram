@@ -100,6 +100,12 @@ export default function UsersProfilePageComponent() {
         toast.error("خطایی رخ داد!");
         navigate("/error");
       } else if (error.response.data.message) {
+        navigate("/error");
+      } else if ( statusCode === 404) {
+        toast.error("نام کاربری مورد نظر پیدا نشد");
+        navigate("/error");
+      }
+       else if (error.response.data.message) {
         toast.error(`Error: ${error.response.data.message}`);
       } else if (error.response.statusText) {
         toast.error(`Error: ${error.response.statusText}`);

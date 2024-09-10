@@ -12,12 +12,11 @@ import ArrowLink from "./ArrowLink";
 import UserSvg from "../../assets/icons/user.svg";
 import keySvg from "../../assets/icons/key.svg";
 import { useSetRecoilState } from "recoil";
-import { authAtom,userProfileAtom } from "../../user-actions/atoms";
+import { authAtom } from "../../user-actions/atoms";
 import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 import CustomButton from "../CustomButton";
-
 
 const loginSchema = z.object({
   username: z
@@ -33,7 +32,6 @@ interface LoginFormData {
   password: string;
 }
 
-
 const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -44,11 +42,10 @@ const Login: React.FC = () => {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
   const fetchWrapper = useFetchWrapper();
   const setAuth = useSetRecoilState(authAtom);
 
-  
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     try {
@@ -63,21 +60,19 @@ const Login: React.FC = () => {
       // const token = response.data.token;
 
       if (response.ok) {
-        localStorage.setItem('token', token);
+        localStorage.setItem("token", token);
         setAuth({ token });
         navigate("/userprofile");
         toast.success("با موفقیت وارد شدید!");
-
       }
     } catch (error) {
       toast.error("نام کاربری یا رمز عبور اشتباهه!");
       console.error("Login error:", error);
     } finally {
-      queryClient.invalidateQueries({ queryKey: ['profileData']})
+      queryClient.invalidateQueries({ queryKey: ["profileData"] });
       setIsLoading(false);
     }
   };
-
 
   return (
     <div className="backImg relative flex min-h-screen items-center justify-center">
@@ -107,7 +102,10 @@ const Login: React.FC = () => {
             iconsrc={keySvg}
           />
           <RememberMe />
-          <CustomButton text="ورود" className="bg-okhra-200 mt-8 text-sm"></CustomButton>
+          <CustomButton
+            text="ورود"
+            className="mt-8 bg-okhra-200 text-sm"
+          ></CustomButton>
           <div className="absolute bottom-0 right-0 pr-8">
             <NavLink to="/retrievePass">
               <ArrowLink text="فراموشی رمز عبور" />
