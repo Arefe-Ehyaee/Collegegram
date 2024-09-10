@@ -1,9 +1,9 @@
 import PosterInfo from "../../explore/PosterInfo";
 
 interface UnBlockingModalProps {
-    name: string;
+    name?: string;
     avatar?: string;
-    followersCount: number;
+    followersCount?: number;
 }
 
 

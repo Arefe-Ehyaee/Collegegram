@@ -5,6 +5,7 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { FetchPosts } from "./FetchPosts";
 import { useInView } from "react-intersection-observer";
 import { BeatLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 interface ShowPostsProps {
   username: string;
@@ -78,7 +79,7 @@ export default function ShowPostsComponent({ username }: ShowPostsProps) {
   // }
 
   if (isError) {
-    return <span>Error: {error.message}</span>;
+    toast.error(error.message);
   }
 
 

@@ -1,8 +1,8 @@
 export interface PosterInfoProps {
-    name: string;
+    name?: string;
     className?: string;
     avatar?: string;
-    followersCount: number;
+    followersCount?: number;
 }
 
 

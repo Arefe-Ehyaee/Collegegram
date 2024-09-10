@@ -4,10 +4,13 @@ import addToCloseFriendsIcon from "../assets/icons/addToCloseFriends.svg";
 import Dots from "../assets/icons/Dots.svg";
 import { useEffect, useState } from "react";
 import ModalTemplatePost from "./Posts/ModalTemplatePost";
-import CloseFriendModal from "./Users/CloseFriendModal";
+import CloseFriendModal from "./profile-page/closeFriend/CloseFriendModal";
 import CustomButton from "./CustomButton";
 import BlockingModal from "./profile-page/Blocking/BlockingModal";
 import defaultAvatar from '../assets/icons/defaultavatar.svg'
+import { ClipLoader } from "react-spinners";
+import UnCloseFriendModal from "./profile-page/closeFriend/UnCloseFriendModal";
+import UnBlockingModal from "./profile-page/Blocking/UnBlockingModal";
 
 interface FollowerFollowingProps {
     name?: string;
@@ -41,8 +44,10 @@ export const defaultProfile: Follower = {
 
 const FollowerFollowing: React.FC<FollowerFollowingProps> = ({name, followersNumber, avatar}) => {
 
-    const [BlockModal, setBlockModal] = useState(false);
-    const [CloseFriendModalSate, setCloseFriendModalSate] = useState(false);
+  const [BlockModal, setBlockModal] = useState(false);
+  const [UnBlockModal, setUnBlockModal] = useState(false);
+  const [CloseFriendModalState, setCloseFriendModalState] = useState(false);
+  const [UnCloseFriendModalState, setUnCloseFriendModalState] = useState(false);
     
     useEffect(() => {
         if (BlockModal) {
@@ -56,20 +61,31 @@ const FollowerFollowing: React.FC<FollowerFollowingProps> = ({name, followersNum
         setBlockModal((prevState) => !prevState);
       };
     
+/////////////////////////////////////////////////////////////////////    
     
-    
-      useEffect(() => {
-        if (CloseFriendModalSate) {
-          document.body.style.overflow = "hidden";
-        } else {
-          document.body.style.overflow = "unset";
-        }
-      }, [CloseFriendModalSate]);
-      const handleCloseFriendModal = () => {
-        setCloseFriendModalSate((prevState) => !prevState);
-      };
 
-      
+// useEffect(() => {
+//   if (CloseFriendModalState) {
+//     document.body.style.overflow = "hidden";
+//   } else {
+//     document.body.style.overflow = "unset";
+//   }
+// }, [CloseFriendModalState]);
+
+const handleCloseFriendModal = () => {
+  setCloseFriendModalState((prevState) => !prevState);
+};
+
+// const handleCloseFriendAUser = () => {
+//   if (userData.data.followedStatus === "NotFollowing") {
+//     toast.warning("اول باید این کاربر رو دنبال کنی!");
+//   } else {
+//     closeFriendRefetch();
+//     queryClient.invalidateQueries({ queryKey: ["closeFriendUser", userId] });
+//     queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
+//     setCloseFriendModalState((prevState) => !prevState);
+//   }
+// };
     return(
         <div className="flex gap-[93px] items-center justify-between py-4 border-b border-khakeshtari-700" dir="rtl">
             <div className="flex gap-[27px] items-center">
@@ -105,27 +121,60 @@ const FollowerFollowing: React.FC<FollowerFollowingProps> = ({name, followersNum
                   </ul>
                 </ToggleMenu>
 
-                {CloseFriendModalSate && (
+          {CloseFriendModalState && (
             <ModalTemplatePost
-              onClose={() => setCloseFriendModalSate(false)}
-              showModal={CloseFriendModalSate}
+              onClose={() => setCloseFriendModalState(false)}
+              showModal={CloseFriendModalState}
             >
               <CloseFriendModal
-                name={defaultProfile.username}
-                avatar={defaultProfile.avatar}
-                followersCount={defaultProfile.followersCount}
+                name={name}
+                avatar={avatar}
+                followersCount={followersNumber}
               ></CloseFriendModal>
               <div className="mt-8 flex flex-row self-end">
                 <CustomButton
                   text="پشیمون شدم"
                   className="ml-4 !text-siah"
-                  handleOnClick={() => setCloseFriendModalSate(false)}
+                  handleOnClick={() => setCloseFriendModalState(false)}
                 ></CustomButton>
                 <CustomButton
                   text="آره حتما"
                   className="bg-okhra-200"
-                  // handleOnClick={() => setCloseFriendModalSate(false)}
+                  // handleOnClick={handleCloseFriendAUser}
+                >
+                  {/* {closeFriendFetching && (
+                    <ClipLoader color="#9b9b9b" size={20} />
+                  )} */}
+                </CustomButton>
+              </div>
+            </ModalTemplatePost>
+          )}
+
+          {UnCloseFriendModalState && (
+            <ModalTemplatePost
+              onClose={() => setUnCloseFriendModalState(false)}
+              showModal={UnCloseFriendModalState}
+            >
+              <UnCloseFriendModal
+                name={name}
+                avatar={avatar}
+                followersCount={followersNumber}
+              ></UnCloseFriendModal>
+              <div className="mt-8 flex flex-row self-end">
+                <CustomButton
+                  text="پشیمون شدم"
+                  className="ml-4 !text-siah"
+                  // handleOnClick={handleUnCloseFriendAUser}
                 ></CustomButton>
+                <CustomButton
+                  text="آره حتما"
+                  className="bg-okhra-200"
+                  // handleOnClick={handleUnCloseFriendAUser}
+                >
+                  {/* {uncloseFriendFetching && (
+                    <ClipLoader color="#9b9b9b" size={20} />
+                  )} */}
+                </CustomButton>
               </div>
             </ModalTemplatePost>
           )}
@@ -135,9 +184,11 @@ const FollowerFollowing: React.FC<FollowerFollowingProps> = ({name, followersNum
               onClose={() => setBlockModal(false)}
               showModal={BlockModal}
             >
-              <BlockingModal name={defaultProfile.username}
-                avatar={defaultProfile.avatar}
-                followersCount={defaultProfile.followersCount}></BlockingModal>
+              <BlockingModal
+                name={name}
+                avatar={avatar}
+                followersCount={followersNumber}
+              ></BlockingModal>
               <div className="mt-8 flex flex-row self-end">
                 <CustomButton
                   text="پشیمون شدم"
@@ -147,8 +198,37 @@ const FollowerFollowing: React.FC<FollowerFollowingProps> = ({name, followersNum
                 <CustomButton
                   text="آره حتما"
                   className="bg-okhra-200"
-                  // handleOnClick={() => setCloseFriendModalSate(false)}
+                  // handleOnClick={handleBlockAUser}
+                >
+                  {/* {blockFetching && <ClipLoader color="#9b9b9b" size={20} />} */}
+                </CustomButton>
+              </div>
+            </ModalTemplatePost>
+          )}
+
+          {UnBlockModal && (
+            <ModalTemplatePost
+              onClose={() => setBlockModal(false)}
+              showModal={UnBlockModal}
+            >
+              <UnBlockingModal
+                name={name}
+                avatar={avatar}
+                followersCount={followersNumber}
+              ></UnBlockingModal>
+              <div className="mt-8 flex flex-row self-end">
+                <CustomButton
+                  text="پشیمون شدم"
+                  className="ml-4 !text-siah"
+                  handleOnClick={() => setUnBlockModal(false)}
                 ></CustomButton>
+                <CustomButton
+                  text="آره حتما"
+                  className="bg-okhra-200"
+                  // handleOnClick={handleUnBlockAUser}
+                >
+                  {/* {unblockFetching && <ClipLoader color="#9b9b9b" size={20} />} */}
+                </CustomButton>
               </div>
             </ModalTemplatePost>
           )}
