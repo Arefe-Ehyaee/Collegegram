@@ -39,7 +39,7 @@ export default function BlackListPageComponent() {
     isError: isErrorblackListData,
     error: blackListDataError,
   } = useInfiniteQuery({
-    queryKey: ["comments", token],
+    queryKey: ["blackList", token],
     queryFn: async ({ pageParam = 1 }) =>
       GetBlackList({ pageParam }, token || ""),
     getNextPageParam: (lastPage) => {

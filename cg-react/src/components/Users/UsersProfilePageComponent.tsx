@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import add from "../../assets/icons/add.svg";
 import ModalTemplatePost from "../Posts/ModalTemplatePost";
-import CloseFriendModal from "./CloseFriendModal";
+import CloseFriendModal from "../profile-page/closeFriend/CloseFriendModal";
 import ToggleMenu from "../ToggleMenu";
 import Dots from "../../assets/icons/Dots.svg";
 import ModalTemplate from "../ModalTemplate";
@@ -31,6 +31,10 @@ import { BlockAUser } from "../profile-page/Blocking/BlockAUser";
 import MenuLiOptionComponent from "../MenuLiOptionComponent";
 import { UnBlockAUser } from "../profile-page/Blocking/UnBlockAUser";
 import UnBlockingModal from "../profile-page/Blocking/UnBlockingModal";
+import { CloseFriendAUser } from "../profile-page/closeFriend/CloseFriendAUser";
+import { UnCloseFriendAUser } from "../profile-page/closeFriend/UnCloseFriendAUser";
+import UnCloseFriendModal from "../profile-page/closeFriend/UnCloseFriendModal";
+import verified from "../../assets/icons/_Verified.svg";
 
 export interface Follower {
   id?: string;
@@ -53,7 +57,7 @@ export interface Following {
 }
 
 export default function UsersProfilePageComponent() {
-  type FollowingStatus =
+  type FollowStatus =
     | "Following"
     | "NotFollowing "
     | "Pending"
@@ -70,9 +74,12 @@ export default function UsersProfilePageComponent() {
   const [BlockModal, setBlockModal] = useState(false);
   const [UnBlockModal, setUnBlockModal] = useState(false);
   const [CloseFriendModalState, setCloseFriendModalState] = useState(false);
-  const [NotCloseFriendModalSate, setNotCloseFriendModalSate] = useState(false);
+  const [UnCloseFriendModalState, setUnCloseFriendModalState] = useState(false);
   const [followingStatus, setFollowingStatus] =
-    useState<FollowingStatus>("NotFollowing ");
+    useState<FollowStatus>("NotFollowing ");
+  const [followedStatus, setFollowedStatus] =
+    useState<FollowStatus>("NotFollowing ");
+
   const queryClient = useQueryClient();
   const loggedUserData = useRecoilValue(userProfileAtom);
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
@@ -80,7 +87,7 @@ export default function UsersProfilePageComponent() {
   const [FollowerListModal, setFollowerListModal] = useState(false);
   const [FollowingListModal, setFollowingListModal] = useState(false);
 
-  const [BlockStatus, setBlockStatus] = useState(false);
+  const [closeFriendStatus, setCloseFriendStatus] = useState(false);
 
   const { ref: followerRef, inView: followerInView } = useInView();
   const { ref: followingRef, inView: followingInView } = useInView();
@@ -133,7 +140,8 @@ export default function UsersProfilePageComponent() {
     if (userData && userData.data) {
       setUserId(userData.data.id);
       setFollowingStatus(userData.data.followingStatus);
-      setBlockStatus(userData.data.isBlocked);
+      setFollowedStatus(userData.data.followedStatus);
+      setCloseFriendStatus(userData.data.isCloseFriend);
       if (userData.data.username === loggedUserData.username) {
         navigate("/userprofile");
       }
@@ -228,7 +236,8 @@ export default function UsersProfilePageComponent() {
 
   const handleBlockAUser = () => {
     blockRefetch();
-    queryClient.invalidateQueries({ queryKey: ["blockUser", userProfile.id] });
+    queryClient.invalidateQueries({ queryKey: ['posts', token, username] });
+    // queryClient.invalidateQueries({ queryKey: ['blockUser', userId] });
     queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
     setBlockModal(false);
   };
@@ -247,7 +256,8 @@ export default function UsersProfilePageComponent() {
 
   const handleUnBlockAUser = () => {
     unblockRefetch();
-    queryClient.invalidateQueries({queryKey: ["unblockUser", userProfile.id]});
+    queryClient.invalidateQueries({ queryKey: ['posts', token, username] });
+    // queryClient.invalidateQueries({ queryKey: ['unblockUser', userId] });
     queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
     setUnBlockModal(false);
   };
@@ -259,26 +269,46 @@ export default function UsersProfilePageComponent() {
       document.body.style.overflow = "unset";
     }
   }, [CloseFriendModalState]);
+
   const handleCloseFriendModal = () => {
     setCloseFriendModalState((prevState) => !prevState);
   };
 
-  // useEffect(() => {
-  //   if (NotCloseFriendModalSate) {
-  //     document.body.style.overflow = "hidden";
-  //   } else {
-  //     document.body.style.overflow = "unset";
-  //   }
-  // }, [NotCloseFriendModalSate]);
+  const handleCloseFriendAUser = () => {
+    if (userData.data.followedStatus === "NotFollowing") {
+      toast.warning("اول باید این کاربر رو دنبال کنی!");
+    } else {
+      closeFriendRefetch();
+      queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
+      setCloseFriendModalState((prevState) => !prevState);
+    }
+  };
+  ///////////////////////////////////////////////////////////////////////////
+  useEffect(() => {
+    if (UnCloseFriendModalState) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [UnCloseFriendModalState]);
 
-  // const handleNotCloseFriendModalSate = () => {
-  //   setNotCloseFriendModalSate((prevState) => !prevState);
-  // };
+  const handleUnCloseFriendModalState = () => {
+    setUnCloseFriendModalState((prevState) => !prevState);
+  };
+
+  const handleUnCloseFriendAUser = () => {
+    uncloseFriendRefetch();
+    queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
+    setUnCloseFriendModalState((prevState) => !prevState);
+  };
 
   ///////////////////////////////////////////////////////////////////////////////
   const handleButtonClicked = async () => {
     console.log("followingStatus", userData.data.followingStatus);
-    if (BlockStatus) {
+    if (followingStatus === "Blocked") {
+      toast.error("این کاربر بلاکت کرده، پس نمیتونی دنبالش کنی!");
+      return;
+    } else if (followedStatus === "Blocked") {
       toast.error("این کاربر رو بلاک کردی، پس نمیتونی دنبالش کنی!");
       return;
     } else if (
@@ -319,6 +349,28 @@ export default function UsersProfilePageComponent() {
   } = useQuery({
     queryKey: ["unblockUser", userId],
     queryFn: () => UnBlockAUser(token || "", userId as string),
+    enabled: false,
+  });
+  /////////////////////////////////////////////////////////////////////////////////////
+  const {
+    data: closeFriendData,
+    isError: closeFriendError,
+    isFetching: closeFriendFetching,
+    refetch: closeFriendRefetch,
+  } = useQuery({
+    queryKey: ["closeFriendUser", userId],
+    queryFn: () => CloseFriendAUser(token || "", userId as string),
+    enabled: false,
+  });
+  /////////////////////////////////////////////////////////////////////////////////////
+  const {
+    data: uncloseFriendData,
+    isError: uncloseFriendError,
+    isFetching: uncloseFriendFetching,
+    refetch: uncloseFriendRefetch,
+  } = useQuery({
+    queryKey: ["unCloseFriendUser", userId],
+    queryFn: () => UnCloseFriendAUser(token || "", userId as string),
     enabled: false,
   });
   /////////////////////////////////////////////////////////////////////////////////////
@@ -367,8 +419,8 @@ export default function UsersProfilePageComponent() {
     handleError(userErrorMsg);
   }
   /////////////////////////////////////////////////////////////////////////////////////
-  const getButtonProperties = (status: FollowingStatus) => {
-    if (BlockStatus) {
+  const getButtonProperties = (status: FollowStatus) => {
+    if (followedStatus === "Blocked" || followingStatus === "Blocked") {
       return {
         text: "+ دنبال کردن",
         className: "bg-khakeshtari-700",
@@ -400,15 +452,27 @@ export default function UsersProfilePageComponent() {
       <div className="border-b border-khakeshtari-400 py-9 max-sm:ml-8 max-sm:mr-8">
         <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
           <div className="flex w-full items-center gap-8">
-            <img
-              src={
-                userData.data.avatar && userData.data.avatar.url
-                  ? userData.data.avatar.url
-                  : defaultProfile.avatar
-              }
-              alt="avatar"
-              className="aspect-square h-[136px] w-[136px] rounded-full border-2 border-khakeshtari-400 object-cover max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
-            />
+            <div className="relative h-[136px]  aspect-square object-cover rounded-full">
+              
+                <img
+                  src={
+                    userData.data.avatar && userData.data.avatar.url
+                      ? userData.data.avatar.url
+                      : defaultProfile.avatar
+                  }
+                  alt="avatar"
+                  className="aspect-square h-[136px] w-[136px] rounded-full border-2 border-khakeshtari-400 object-cover max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
+                />
+              
+              {closeFriendStatus && (
+                <img
+                  src={verified}
+                  alt="verified"
+                  className="absolute bottom-2 left-4 h-[20px] w-[20px]"
+                />
+              )}
+            </div>
+
             <div className="ml-4 w-full">
               <p className="text-right text-sm text-tala" dir="ltr">
                 {`@${userData?.data.username}`}
@@ -450,12 +514,21 @@ export default function UsersProfilePageComponent() {
                 </div>
                 <ToggleMenu imgSrc={Dots}>
                   <ul>
-                    <MenuLiOptionComponent
-                      text="افزودن به دوستان نزدیک"
-                      iconsrc={addToCloseFriendsIcon}
-                      handleOnClick={handleCloseFriendModal}
-                    ></MenuLiOptionComponent>
-                    {BlockStatus ? (
+                    {closeFriendStatus ? (
+                      <MenuLiOptionComponent
+                        text="حذف از دوستان نزدیک"
+                        iconsrc={addToCloseFriendsIcon}
+                        handleOnClick={handleUnCloseFriendModalState}
+                      ></MenuLiOptionComponent>
+                    ) : (
+                      <MenuLiOptionComponent
+                        text="افزودن به دوستان نزدیک"
+                        iconsrc={addToCloseFriendsIcon}
+                        handleOnClick={handleCloseFriendModal}
+                      ></MenuLiOptionComponent>
+                    )}
+
+                    {followedStatus === "Blocked" ? (
                       <MenuLiOptionComponent
                         text="حذف از بلاک ها"
                         iconsrc={blockingIcon}
@@ -496,8 +569,41 @@ export default function UsersProfilePageComponent() {
                 <CustomButton
                   text="آره حتما"
                   className="bg-okhra-200"
-                  // handleOnClick={() => setCloseFriendModalState(false)}
+                  handleOnClick={handleCloseFriendAUser}
+                >
+                  {closeFriendFetching && (
+                    <ClipLoader color="#9b9b9b" size={20} />
+                  )}
+                </CustomButton>
+              </div>
+            </ModalTemplatePost>
+          )}
+
+          {UnCloseFriendModalState && (
+            <ModalTemplatePost
+              onClose={() => setUnCloseFriendModalState(false)}
+              showModal={UnCloseFriendModalState}
+            >
+              <UnCloseFriendModal
+                name={userData?.data.username}
+                avatar={userData?.data.avatar.url}
+                followersCount={userData?.data.followersCount}
+              ></UnCloseFriendModal>
+              <div className="mt-8 flex flex-row self-end">
+                <CustomButton
+                  text="پشیمون شدم"
+                  className="ml-4 !text-siah"
+                  handleOnClick={handleUnCloseFriendAUser}
                 ></CustomButton>
+                <CustomButton
+                  text="آره حتما"
+                  className="bg-okhra-200"
+                  handleOnClick={handleUnCloseFriendAUser}
+                >
+                  {uncloseFriendFetching && (
+                    <ClipLoader color="#9b9b9b" size={20} />
+                  )}
+                </CustomButton>
               </div>
             </ModalTemplatePost>
           )}
@@ -523,9 +629,7 @@ export default function UsersProfilePageComponent() {
                   className="bg-okhra-200"
                   handleOnClick={handleBlockAUser}
                 >
-                  {(blockFetching) && (
-                    <ClipLoader color="#9b9b9b" size={20} />
-                  )}
+                  {blockFetching && <ClipLoader color="#9b9b9b" size={20} />}
                 </CustomButton>
               </div>
             </ModalTemplatePost>
@@ -552,9 +656,7 @@ export default function UsersProfilePageComponent() {
                   className="bg-okhra-200"
                   handleOnClick={handleUnBlockAUser}
                 >
-                  {(unblockFetching) && (
-                    <ClipLoader color="#9b9b9b" size={20} />
-                  )}
+                  {unblockFetching && <ClipLoader color="#9b9b9b" size={20} />}
                 </CustomButton>
               </div>
             </ModalTemplatePost>
@@ -579,7 +681,15 @@ export default function UsersProfilePageComponent() {
           </CustomButton>
         </div>
       )}
-      {(userData.data.isPrivate === false ||
+      {userData.data.followingStatus === "Blocked" && (
+        <div className="my-8 flex h-64 flex-grow flex-col items-center justify-center">
+          <h3 className="py-8 text-center text-2xl">
+            {` نمی تونی ${userData?.data.username}  رو دنبال کنی. چون اون نمیخواهد دوست تو باشه!`}
+          </h3>
+        </div>
+      )}
+      {((userData.data.isPrivate === false &&
+        userData.data.followingStatus !== "Blocked") ||
         followingStatus === "Following") && (
         <ShowPostsComponent username={userData?.data.username} />
       )}

@@ -110,7 +110,7 @@ export default function SideNavbarComponent() {
                           alt="block user"
                           className="h-5 w-5"
                         />
-                        <p className="pr-4">بلاک کردن</p>
+                        <p className="pr-4">لیست سیاه</p>
                       </div>
                     </button>
                   </li>

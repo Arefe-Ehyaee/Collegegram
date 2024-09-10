@@ -1,31 +1,63 @@
 import FollowerFollowing from "../../FollowerFollowing";
 import defaultAvatar from "../../../assets/icons/defaultavatar.svg";
 import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { GetCloseFriendList } from "./GetCloseFriendList";
+import { useInView } from "react-intersection-observer";
+import { BeatLoader } from "react-spinners";
 
-export interface Follower {
+export interface User {
   id?: string;
-  avatar: string;
+  avatar: { url: string };
   username: string;
-  first_name?: string;
-  last_name?: string;
+  firstname?: string;
+  lastname?: string;
   postsCount: number;
   bio?: string;
   followersCount?: number;
   followingsCount?: number;
 }
 
-export const defaultProfile: Follower = {
-  id: "defaultID",
-  username: "defaultID",
-  avatar: defaultAvatar,
-  first_name: "نام",
-  last_name: "نشان",
-  postsCount: 0,
-  followersCount: 0,
-  followingsCount: 0,
-};
 
 export default function CloseFriendsPageComponent() {
+
+  const [token, setToken] = useState<string | null>(null);
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken || " ");
+    console.log("CloseFriendListData", CloseFriendListData);
+  }, []);
+
+  const {
+    data: CloseFriendListData,
+    fetchNextPage: fetchNextPageCloseFriendList,
+    hasNextPage: hasNextPageCloseFriendList,
+    isFetching: isFetchingCloseFriendList,
+    isLoading: isLoadingCloseFriendList,
+    isError: isErrorCloseFriendList,
+    error: CloseFriendListError,
+  } = useInfiniteQuery({
+    queryKey: ["CloseFriendList", token],
+    queryFn: async ({ pageParam = 1 }) =>
+      GetCloseFriendList({ pageParam }, token || ""),
+    getNextPageParam: (lastPage) => {
+      return lastPage?.data?.nextPage ?? undefined;
+    },
+    initialPageParam: 1,
+    enabled: !!token,
+  });
+
+  useEffect(() => {
+    console.log("blackListData", CloseFriendListData?.pages[0].data.users);
+
+    if (inView && hasNextPageCloseFriendList) {
+      fetchNextPageCloseFriendList();
+    }
+  }, [inView, hasNextPageCloseFriendList, fetchNextPageCloseFriendList]);
+  
   return (
     <div dir="rtl" className="px-[72px] max-sm:pr-2">
       <div className="mt-10 flex justify-start max-sm:justify-center">
@@ -41,18 +73,20 @@ export default function CloseFriendsPageComponent() {
       </div>
 
       <div className="w-[344px] pt-16">
-        <FollowerFollowing
-          key={defaultProfile.id}
-          name={defaultProfile.username}
-          followersNumber={defaultProfile.followersCount}
-          avatar={defaultProfile?.avatar}
-        />
-        <FollowerFollowing
-          key={defaultProfile.id}
-          name={defaultProfile.username}
-          followersNumber={defaultProfile.followersCount}
-          avatar={defaultProfile?.avatar}
-        />
+        {CloseFriendListData &&
+          CloseFriendListData?.pages.flatMap((page) =>
+            page.data?.users.map((user: User) => (
+              <FollowerFollowing
+                key={user.id}
+                name={user.username}
+                followersNumber={user.followersCount}
+                avatar={user?.avatar.url}
+              />
+            )),
+          )}
+        <div className="flex justify-center" ref={ref}>
+          {isFetchingCloseFriendList && <BeatLoader />}
+        </div>
       </div>
     </div>
   );
