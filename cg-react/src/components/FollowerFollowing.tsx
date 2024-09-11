@@ -87,18 +87,18 @@ const handleCloseFriendModal = () => {
 //   }
 // };
     return(
-        <div className="flex gap-[93px] items-center justify-between py-4 border-b border-khakeshtari-700" dir="rtl">
+        <div className="flex gap-[93px] items-center justify-between py-4 border-b border-grey-700" dir="rtl">
             <div className="flex gap-[27px] items-center">
                 <img src={avatar} alt="avatar" className="w-[56px] h-[56px] rounded-full" />
                 <div>
-                    <div className="font-isf text-[13px] text-sabz-400 leading-[21.48px] font-bold">{name}</div>
-                    <div className="font-isf text-[11px] text-sabz-400 leading-[14.3px] font-normal pt-2" dir="rtl">{`${followersNumber }دنبال کننده ` }</div>
+                    <div className="font-isf text-[13px] text-green-400 leading-[21.48px] font-bold">{name}</div>
+                    <div className="font-isf text-[11px] text-green-400 leading-[14.3px] font-normal pt-2" dir="rtl">{`${followersNumber }دنبال کننده ` }</div>
                 </div>
             </div>
 
             <ToggleMenu imgSrc={Dots}>
                   <ul>
-                    <li className="flex cursor-pointer flex-row items-center rounded-md px-4 py-2 hover:bg-khakeshtari-600">
+                    <li className="flex cursor-pointer flex-row items-center rounded-md px-4 py-2 hover:bg-grey-600">
                       <button onClick={handleCloseFriendModal}>
                         <img
                           src={addToCloseFriendsIcon}
@@ -108,7 +108,7 @@ const handleCloseFriendModal = () => {
                         <p className="pr-4">افزودن به دوستان نزدیک</p>
                       </button>
                     </li>
-                    <li className="flex cursor-pointer flex-row items-center rounded-md px-4 py-2 hover:bg-khakeshtari-600">
+                    <li className="flex cursor-pointer flex-row items-center rounded-md px-4 py-2 hover:bg-grey-600">
                       <button onClick={handleBlockModal}>
                         <img
                           src={blockingIcon}
@@ -134,12 +134,12 @@ const handleCloseFriendModal = () => {
               <div className="mt-8 flex flex-row self-end">
                 <CustomButton
                   text="پشیمون شدم"
-                  className="ml-4 !text-siah"
+                  className="ml-4 !text-black-100"
                   handleOnClick={() => setCloseFriendModalState(false)}
                 ></CustomButton>
                 <CustomButton
                   text="آره حتما"
-                  className="bg-okhra-200"
+                  className="bg-red-200"
                   // handleOnClick={handleCloseFriendAUser}
                 >
                   {/* {closeFriendFetching && (
@@ -163,12 +163,12 @@ const handleCloseFriendModal = () => {
               <div className="mt-8 flex flex-row self-end">
                 <CustomButton
                   text="پشیمون شدم"
-                  className="ml-4 !text-siah"
+                  className="ml-4 !text-black-100"
                   // handleOnClick={handleUnCloseFriendAUser}
                 ></CustomButton>
                 <CustomButton
                   text="آره حتما"
-                  className="bg-okhra-200"
+                  className="bg-red-200"
                   // handleOnClick={handleUnCloseFriendAUser}
                 >
                   {/* {uncloseFriendFetching && (
@@ -192,12 +192,12 @@ const handleCloseFriendModal = () => {
               <div className="mt-8 flex flex-row self-end">
                 <CustomButton
                   text="پشیمون شدم"
-                  className="ml-4 !text-siah"
+                  className="ml-4 !text-black-100"
                   handleOnClick={() => setBlockModal(false)}
                 ></CustomButton>
                 <CustomButton
                   text="آره حتما"
-                  className="bg-okhra-200"
+                  className="bg-red-200"
                   // handleOnClick={handleBlockAUser}
                 >
                   {/* {blockFetching && <ClipLoader color="#9b9b9b" size={20} />} */}
@@ -219,12 +219,12 @@ const handleCloseFriendModal = () => {
               <div className="mt-8 flex flex-row self-end">
                 <CustomButton
                   text="پشیمون شدم"
-                  className="ml-4 !text-siah"
+                  className="ml-4 !text-black-100"
                   handleOnClick={() => setUnBlockModal(false)}
                 ></CustomButton>
                 <CustomButton
                   text="آره حتما"
-                  className="bg-okhra-200"
+                  className="bg-red-200"
                   // handleOnClick={handleUnBlockAUser}
                 >
                   {/* {unblockFetching && <ClipLoader color="#9b9b9b" size={20} />} */}

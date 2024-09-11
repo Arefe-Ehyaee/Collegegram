@@ -104,7 +104,7 @@ const Login: React.FC = () => {
           <RememberMe />
           <CustomButton
             text="ورود"
-            className="mt-8 bg-okhra-200 text-sm"
+            className="mt-8 bg-red-200 text-sm"
           ></CustomButton>
           <div className="absolute bottom-0 right-0 pr-8">
             <NavLink to="/retrievePass">

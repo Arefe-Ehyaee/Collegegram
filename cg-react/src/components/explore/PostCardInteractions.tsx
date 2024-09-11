@@ -95,7 +95,7 @@ const PostCardInteractions = (props: PostInteractionsProps) => {
   return (
     <div
       dir="rtl"
-      className="flex h-[53px] w-full flex-row items-center gap-x-3 pr-2 md:pr-6 md:gap-x-4 text-sm text-meshki"
+      className="flex h-[53px] w-full flex-row items-center gap-x-3 pr-2 md:pr-6 md:gap-x-4 text-sm text-black-200"
     >
       <button className="flex flex-row items-center justify-between gap-x-2">
         <img src={commentIcon} alt="comment button" />

@@ -58,7 +58,7 @@ const TextAreaWithEmojiComponent: React.FC<InputProps> = ({
         name={name}
         id={name}
         placeholder={placeholder}
-        className={`h-[88px] w-[320px] resize-none rounded-[32px] border border-sabz-200 ${className} p-4`}
+        className={`h-[88px] w-[320px] resize-none rounded-[32px] border border-green-200 ${className} p-4`}
         {...register(name)}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
@@ -66,7 +66,7 @@ const TextAreaWithEmojiComponent: React.FC<InputProps> = ({
 
       {error && (
         <div className="absolute right-0 top-full mt-1 w-full text-right">
-          <span className="flex items-center text-xs text-okhra-400">
+          <span className="flex items-center text-xs text-red-400">
             {error}
             {erroricon && (
               <img

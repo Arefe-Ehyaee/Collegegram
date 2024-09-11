@@ -10,7 +10,7 @@ const MenuLiOptionComponent = ({
   handleOnClick,
 }: MenuLiOptionComponentProps) => {
   return (
-    <li className="flex cursor-pointer flex-row items-center rounded-md px-4 py-2 hover:bg-khakeshtari-600">
+    <li className="flex cursor-pointer flex-row items-center rounded-md px-4 py-2 hover:bg-grey-600">
       <button onClick={handleOnClick}>
         <div className="flex">
           {iconsrc && <img src={iconsrc} alt="logo" className="h-5 w-5" />}

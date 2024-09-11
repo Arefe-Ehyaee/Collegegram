@@ -61,7 +61,7 @@ export default function BlackListPageComponent() {
     <div dir="rtl" className="px-[72px] max-sm:pr-2">
       <div className="mt-10 flex justify-start max-sm:justify-center">
         <NavLink to="/closeFriendsList">
-          <h2 className="block px-7 font-isf text-xl text-khakeshtari-400 max-sm:px-2">
+          <h2 className="block px-7 font-isf text-xl text-grey-400 max-sm:px-2">
             دوستان نزدیک
           </h2>
         </NavLink>

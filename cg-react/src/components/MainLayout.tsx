@@ -21,7 +21,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   };
 
   return (
-    <div className="flex min-h-screen bg-khakeshtari-100">
+    <div className="flex min-h-screen bg-grey-100">
       <div className="w-3/4 max-md:mt-[67px] max-md:w-full">
         <header className="flex justify-start">
           <img

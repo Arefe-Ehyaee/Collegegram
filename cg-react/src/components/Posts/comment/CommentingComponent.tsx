@@ -49,13 +49,13 @@ const CommentingComponent = (props: CommentingComponentProps) => {
 
   return (
     <div className="w-[100%] flex gap-2 pt-8 px-4 max-md:gap-1 items-center" dir="rtl">
-      <img src={avatar} alt="avatar" className="h-[40px] w-[40px] rounded-full border border-khakeshtari-400"/>
+      <img src={avatar} alt="avatar" className="h-[40px] w-[40px] rounded-full border border-grey-400"/>
       <input
         ref={comment}
         type="text"
         id='comment'
         name='comment'
-        className={`flex flex-col items-center w-[100%] h-[100%] border pr-2 border-khakeshtari-400 py-2 rounded-3xl text-xs font-normal placeholder-gray font-isf ${styling}`}
+        className={`flex flex-col items-center w-[100%] h-[100%] border pr-2 border-grey-400 py-2 rounded-3xl text-xs font-normal placeholder-grey-400 font-isf ${styling}`}
         dir="rtl"
         placeholder={placeholderText}
       />

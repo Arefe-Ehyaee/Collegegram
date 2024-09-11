@@ -92,7 +92,7 @@ const RetrievePassword: React.FC = () => {
             <div className="flex items-center justify-start gap-x-6">
               <CustomButton
                 text={"ارسال لینک بازیابی رمز عبور"}
-                className="bg-okhra-200 text-sm"
+                className="bg-red-200 text-sm"
               ></CustomButton>
               <NavLink
                 to="/"

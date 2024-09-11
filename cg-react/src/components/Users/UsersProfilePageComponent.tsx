@@ -436,7 +436,7 @@ export default function UsersProfilePageComponent() {
     if (followedStatus === "Blocked" || followingStatus === "Blocked") {
       return {
         text: "+ دنبال کردن",
-        className: "bg-khakeshtari-700",
+        className: "bg-grey-700",
       };
     }
 
@@ -444,25 +444,25 @@ export default function UsersProfilePageComponent() {
       return {
         text: "دنبال نکردن",
         className:
-          "bg-khakeshtari-100 ml-1 border border-okhra-200 !text-okhra-200",
+          "bg-grey-100 ml-1 border border-red-200 !text-red-200",
       };
     } else if (status === "Pending") {
       return {
         text: "لغو درخواست",
         className:
-          "bg-khakeshtari-100 ml-1 border border-okhra-200 !text-okhra-200",
+          "bg-grey-100 ml-1 border border-red-200 !text-red-200",
       };
     } else {
       return {
         text: "دنبال کردن",
-        className: "bg-okhra-200 ml-1 text-white",
+        className: "bg-red-200 ml-1 text-white",
       };
     }
   };
   const { text, className } = getButtonProperties(followingStatus);
   return (
     <div dir="rtl" className="md:px-16">
-      <div className="border-b border-khakeshtari-400 py-9 max-sm:ml-8 max-sm:mr-8">
+      <div className="border-b border-grey-400 py-9 max-sm:ml-8 max-sm:mr-8">
         <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
           <div className="flex w-full items-center gap-8">
             <div className="relative aspect-square h-[136px] rounded-full object-cover">
@@ -473,7 +473,7 @@ export default function UsersProfilePageComponent() {
                     : defaultProfile.avatar
                 }
                 alt="avatar"
-                className="aspect-square h-[136px] w-[136px] rounded-full border-2 border-khakeshtari-400 object-cover max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
+                className="aspect-square h-[136px] w-[136px] rounded-full border-2 border-grey-400 object-cover max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
               />
 
               {closeFriendStatus && (
@@ -486,12 +486,12 @@ export default function UsersProfilePageComponent() {
             </div>
 
             <div className="ml-4 w-full">
-              <p className="text-right text-sm text-tala" dir="ltr">
+              <p className="text-right text-sm text-golden" dir="ltr">
                 {`@${userData?.data.username}`}
               </p>
               <div className="mt-4 flex items-center gap-x-3">
                 {userData.data.firstName && userData.data.lastName && (
-                  <h3 className="text-xl font-bold text-sabz-100">
+                  <h3 className="text-xl font-bold text-green-100">
                     {`${userData.data.firstName} ${userData.data.lastName}`}
                   </h3>
                 )}
@@ -509,7 +509,7 @@ export default function UsersProfilePageComponent() {
                 </CustomButton>
               </div>
               <div className="flex items-center justify-between">
-                <div className="mt-4 flex gap-x-3 text-sm font-normal text-sabz-200">
+                <div className="mt-4 flex gap-x-3 text-sm font-normal text-green-200">
                   <button
                     className="border-l pl-3"
                     onClick={handleShowFollowers}
@@ -556,7 +556,7 @@ export default function UsersProfilePageComponent() {
                   </ul>
                 </ToggleMenu>
               </div>
-              <p className="mt-4 text-sm text-khakeshtari-400 max-sm:justify-self-center">
+              <p className="mt-4 text-sm text-grey-400 max-sm:justify-self-center">
                 {userData?.data.bio}
               </p>
             </div>
@@ -575,12 +575,12 @@ export default function UsersProfilePageComponent() {
               <div className="mt-8 flex flex-row self-end">
                 <CustomButton
                   text="پشیمون شدم"
-                  className="ml-4 !text-siah"
+                  className="ml-4 !text-black-100"
                   handleOnClick={() => setCloseFriendModalState(false)}
                 ></CustomButton>
                 <CustomButton
                   text="آره حتما"
-                  className="bg-okhra-200"
+                  className="bg-red-200"
                   handleOnClick={handleCloseFriendAUser}
                 >
                   {closeFriendFetching && (
@@ -604,12 +604,12 @@ export default function UsersProfilePageComponent() {
               <div className="mt-8 flex flex-row self-end">
                 <CustomButton
                   text="پشیمون شدم"
-                  className="ml-4 !text-siah"
+                  className="ml-4 !text-black-100"
                   handleOnClick={handleUnCloseFriendAUser}
                 ></CustomButton>
                 <CustomButton
                   text="آره حتما"
-                  className="bg-okhra-200"
+                  className="bg-red-200"
                   handleOnClick={handleUnCloseFriendAUser}
                 >
                   {uncloseFriendFetching && (
@@ -633,12 +633,12 @@ export default function UsersProfilePageComponent() {
               <div className="mt-8 flex flex-row self-end">
                 <CustomButton
                   text="پشیمون شدم"
-                  className="ml-4 !text-siah"
+                  className="ml-4 !text-black-100"
                   handleOnClick={() => setBlockModal(false)}
                 ></CustomButton>
                 <CustomButton
                   text="آره حتما"
-                  className="bg-okhra-200"
+                  className="bg-red-200"
                   handleOnClick={handleBlockAUser}
                 >
                   {blockFetching && <ClipLoader color="#9b9b9b" size={20} />}
@@ -660,12 +660,12 @@ export default function UsersProfilePageComponent() {
               <div className="mt-8 flex flex-row self-end">
                 <CustomButton
                   text="پشیمون شدم"
-                  className="ml-4 !text-siah"
+                  className="ml-4 !text-black-100"
                   handleOnClick={() => setUnBlockModal(false)}
                 ></CustomButton>
                 <CustomButton
                   text="آره حتما"
-                  className="bg-okhra-200"
+                  className="bg-red-200"
                   handleOnClick={handleUnBlockAUser}
                 >
                   {unblockFetching && <ClipLoader color="#9b9b9b" size={20} />}
@@ -738,7 +738,7 @@ export default function UsersProfilePageComponent() {
           <div className="flex justify-center" ref={followerRef}></div>
           <CustomButton
             text={"بستن"}
-            className="mt-[34px] bg-okhra-200"
+            className="mt-[34px] bg-red-200"
             handleOnClick={() => setFollowerListModal(false)}
           ></CustomButton>
         </ModalTemplate>
@@ -768,7 +768,7 @@ export default function UsersProfilePageComponent() {
           <div className="flex justify-center" ref={followingRef}></div>
           <CustomButton
             text={"بستن"}
-            className="mt-[34px] bg-okhra-200"
+            className="mt-[34px] bg-red-200"
             handleOnClick={() => setFollowingListModal(false)}
           ></CustomButton>
         </ModalTemplate>

@@ -92,7 +92,7 @@ const PostInteractions = (props: PostInteractionsProps) => {
   return (
     <div
       dir="rtl"
-      className="flex h-[61px] flex-row items-center gap-x-4 text-sm text-okhra-200"
+      className="flex h-[61px] flex-row items-center gap-x-4 text-sm text-red-200"
     >
       <button className="flex flex-col items-center justify-between">
         <img src={commentIcon} alt="comment buton" />

@@ -7,7 +7,7 @@ interface ArrowLinkProps {
 
 const ArrowLink: React.FC<ArrowLinkProps> = ({ text }) => {
   return (
-    <div className={"text-sm text-okhra-200 flex justify-end items-center gap-x-2 mb-4"}>
+    <div className={"text-sm text-red-200 flex justify-end items-center gap-x-2 mb-4"}>
         {text}
         <img src={arrow} alt="arrow" className="h-2 w-2" />
     </div>

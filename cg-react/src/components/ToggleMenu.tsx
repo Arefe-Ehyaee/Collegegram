@@ -91,7 +91,7 @@ export default function ToggleMenu({
       {isOpen && (
         <div
           ref={menuRef}
-          className={`absolute ${menuPosition} ${borderRounding} ${className} mt-2 min-w-72 max-w-96 w-max border border-khakeshtari-700 bg-white z-10 px-8 py-6`}
+          className={`absolute ${menuPosition} ${borderRounding} ${className} mt-2 min-w-72 max-w-96 w-max border border-grey-700 bg-white z-10 px-8 py-6`}
         >
           {children}
         </div>

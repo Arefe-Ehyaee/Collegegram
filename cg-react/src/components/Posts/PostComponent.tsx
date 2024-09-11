@@ -154,7 +154,7 @@ const PostComponent = (props: PostsPageProps) => {
                 <CustomButton
                   text={"ویرایش پست"}
                   iconsrc={whitePen}
-                  className="ml-1 bg-okhra-200 max-md:hidden"
+                  className="ml-1 bg-red-200 max-md:hidden"
                   handleOnClick={handleEditPostClick}
                 ></CustomButton>
                 <img src={redPen} alt="edit" className="pl-6 md:hidden" />

@@ -27,7 +27,7 @@ export default function MyNotificationPageComponent() {
       <div className="mt-10 flex justify-start max-sm:justify-center">
         <NavLink to="/myNotifications">
           <div className="flex">
-            <h2 className="block px-7 font-isf text-xl text-khakeshtari-400 max-sm:px-2">
+            <h2 className="block px-7 font-isf text-xl text-grey-400 max-sm:px-2">
               اعلانات من
             </h2>
             {NotifTest.notifCounts > 0 && (

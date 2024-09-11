@@ -129,7 +129,7 @@ const SetNewPassword: React.FC = () => {
                 iconsrc={keySvg} 
                 register={register}
               />
-              <CustomButton text={'ثبت رمز عبور جدید'} className='bg-okhra-200 text-sm'></CustomButton>
+              <CustomButton text={'ثبت رمز عبور جدید'} className='bg-red-200 text-sm'></CustomButton>
               </form>
             </div>
           </Box>

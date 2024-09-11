@@ -114,7 +114,7 @@ const ShowPostModal = ({ onClose, id, children }: ShowPostModalProps) => {
                   <CustomButton
                     text={"ویرایش پست"}
                     iconsrc={whitePen}
-                    className="ml-1 bg-okhra-200"
+                    className="ml-1 bg-red-200"
                     handleOnClick={handleEditPostClick}
                   />
                 </div>

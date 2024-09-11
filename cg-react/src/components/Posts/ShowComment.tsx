@@ -74,19 +74,19 @@ const ShowComment= (props: ShowCommentProps) => {
         </div>
         <div className="flex flex-row items-center gap-4">
           <button onClick={handleLikeClick} className="flex flex-row items-center">
-            <p className="mx-2 text-okhra-200 leading-4">{props.likeCount}</p>
+            <p className="mx-2 text-red-200 leading-4">{props.likeCount}</p>
             <img
               src={isLiked ? likeButtonActive : likeButton}
               alt="like Button"
               className="h-[16px]"
             />
           </button>
-          <button onClick={handleReplyClick} className={`${isReplyClicked ? "bg-khakeshtari-400 p-2 rounded-md " : ""}`}>
+          <button onClick={handleReplyClick} className={`${isReplyClicked ? "bg-grey-400 p-2 rounded-md " : ""}`}>
             <img src={replyButton} alt="reply button" className="h-[19px]"/>
           </button>
         </div>
       </div>
-      <p className="pt-4 leading-8 text-siah">{props.description}</p>
+      <p className="pt-4 leading-8 text-black-100">{props.description}</p>
 
       {props.replies && props.replies.length > 0 && (
         <div >

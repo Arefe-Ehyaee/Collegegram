@@ -16,7 +16,7 @@ const ErrorLayout: React.FC<ErrorLayoutProps> = ({ children }) => {
       </header>
       
       <main className="flex-grow items-center mt-48 justify-center">
-        <div className={"box-style w-[485px] h-[450px] bg-khakeshtari-100 rounded-3xl border border-khakeshtari-400 py-16 px-0 items-center justify-center"}>
+        <div className={"box-style w-[485px] h-[450px] bg-grey-100 rounded-3xl border border-grey-400 py-16 px-0 items-center justify-center"}>
             <div className="items-center justify-center">
                 <div className={"text-[40px] text-darkBlue text-center font-bold w-80 mx-auto"}>
                 وای اینجا چه خبره؟
@@ -27,7 +27,7 @@ const ErrorLayout: React.FC<ErrorLayoutProps> = ({ children }) => {
                 <div className={"text-base text-darkBlue text-center font-normal w-80 mt-8 tracking-wider mx-auto"}>
                 ما داریم تلاش می کنیم که برطرفش کنیم. لطفا چند دقیقه دیگه دوباره تلاش کن
                 </div>
-                <CustomButton text={"بازگشت به صفحه پروفایل"} handleOnClick={()=> navigate("/userprofile")} className='bg-okhra-200 mx-auto mt-8'></CustomButton>
+                <CustomButton text={"بازگشت به صفحه پروفایل"} handleOnClick={()=> navigate("/userprofile")} className='bg-red-200 mx-auto mt-8'></CustomButton>
             </div>
             
         </div>
