@@ -1,6 +1,8 @@
 import axios from "axios";
 
 export const PostAComment = async (token: string, postId: string | null, description: string, parentId?: string| null) => {
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
     const data: any = {
       description: description,
     };
@@ -14,7 +16,7 @@ export const PostAComment = async (token: string, postId: string | null, descrip
     }
   
     const response = await axios.post(
-      `http://5.34.194.155:4000/posts/${postId}/comments`,
+      `${API_BASE_URL}/posts/${postId}/comments`,
       data,
       {
         headers: {

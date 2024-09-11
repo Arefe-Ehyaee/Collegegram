@@ -1,8 +1,10 @@
 import axios from "axios";
 
 export const BlockAUser = async (token: string, userId: string) => {
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
   const response = await axios.post(
-    `http://5.34.194.155:4000/users/${userId}/block`,
+    `${API_BASE_URL}/users/${userId}/block`,
     {},
     {
       headers: {
