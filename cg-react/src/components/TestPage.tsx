@@ -5,6 +5,7 @@ import MainLayout from "./MainLayout";
 import SideNavbarComponent from "./SideNavbarComponent";
 import { userProfileAtom } from "../user-actions/atoms";
 import { useRecoilValue } from "recoil";
+import NotificationComponent from "./Notification/NotificationComponent";
 
 
 const TestPage = () => {
@@ -28,7 +29,7 @@ const TestPage = () => {
     }
 
   return (
-    <MainLayout mainComponents={<div></div>} navBar={SideNavbarComponent()}/>
+    <MainLayout mainComponents={<div><NotificationComponent notifType={"request"} seen={false}></NotificationComponent></div>} navBar={SideNavbarComponent()}/>
   );
 };
 

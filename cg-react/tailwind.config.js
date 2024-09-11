@@ -33,6 +33,7 @@ module.exports = {
       tala:'#C19008',
       ghahvei: "#604A4A",
       darkBlue: "#17494D",
+      yasi: "#E9E4FF",
     },
     extend: {
       fontFamily: {
@@ -46,5 +47,7 @@ module.exports = {
       'none': '0 0 #0000'
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/line-clamp')
+  ],
 };
