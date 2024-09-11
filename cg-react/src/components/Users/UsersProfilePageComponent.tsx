@@ -234,12 +234,13 @@ export default function UsersProfilePageComponent() {
     setBlockModal((prevState) => !prevState);
   };
 
-  const handleBlockAUser = () => {
-    blockRefetch();
-    queryClient.invalidateQueries({ queryKey: ['posts', token, username] });
-    // queryClient.invalidateQueries({ queryKey: ['blockUser', userId] });
-    queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
-    setBlockModal(false);
+  const handleBlockAUser = async() => {
+    try{
+      await blockRefetch();
+      await queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
+    } finally {
+      setBlockModal(false);
+    }
   };
   ////////////////////////////////////////////////////////////////
   useEffect(() => {
@@ -254,12 +255,14 @@ export default function UsersProfilePageComponent() {
     setUnBlockModal((prevState) => !prevState);
   };
 
-  const handleUnBlockAUser = () => {
-    unblockRefetch();
-    queryClient.invalidateQueries({ queryKey: ['posts', token, username] });
-    // queryClient.invalidateQueries({ queryKey: ['unblockUser', userId] });
-    queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
-    setUnBlockModal(false);
+  const handleUnBlockAUser = async() => {
+    try {
+      await unblockRefetch();
+      await queryClient.invalidateQueries({ queryKey: ["posts", token, username] });
+      await queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
+    } finally {
+      setUnBlockModal(false);
+    }  
   };
   ////////////////////////////////////////////////////////////////
   useEffect(() => {
@@ -274,13 +277,19 @@ export default function UsersProfilePageComponent() {
     setCloseFriendModalState((prevState) => !prevState);
   };
 
-  const handleCloseFriendAUser = () => {
-    if (userData.data.followedStatus === "NotFollowing") {
+  const handleCloseFriendAUser = async() => {
+    if (userData.data.followingStatus === "NotFollowing") {
       toast.warning("اول باید این کاربر رو دنبال کنی!");
-    } else {
-      closeFriendRefetch();
-      queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
-      setCloseFriendModalState((prevState) => !prevState);
+    } else if (userData.data.followedStatus === "NotFollowing") {
+      toast.warning("این کاربر باید دنبالت کنه!");
+    } 
+    else { 
+      try {
+        await closeFriendRefetch();
+        await queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
+      } finally {
+        setCloseFriendModalState((prevState) => !prevState);
+      }
     }
   };
   ///////////////////////////////////////////////////////////////////////////
@@ -296,10 +305,14 @@ export default function UsersProfilePageComponent() {
     setUnCloseFriendModalState((prevState) => !prevState);
   };
 
-  const handleUnCloseFriendAUser = () => {
-    uncloseFriendRefetch();
-    queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
-    setUnCloseFriendModalState((prevState) => !prevState);
+  const handleUnCloseFriendAUser = async () => {
+    try {
+      await uncloseFriendRefetch(); 
+      await queryClient.invalidateQueries({ queryKey: ["othersProfile", username] }); 
+    } 
+    finally {
+      setUnCloseFriendModalState((prevState) => !prevState); 
+    }
   };
 
   ///////////////////////////////////////////////////////////////////////////////
@@ -452,18 +465,17 @@ export default function UsersProfilePageComponent() {
       <div className="border-b border-khakeshtari-400 py-9 max-sm:ml-8 max-sm:mr-8">
         <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
           <div className="flex w-full items-center gap-8">
-            <div className="relative h-[136px]  aspect-square object-cover rounded-full">
-              
-                <img
-                  src={
-                    userData.data.avatar && userData.data.avatar.url
-                      ? userData.data.avatar.url
-                      : defaultProfile.avatar
-                  }
-                  alt="avatar"
-                  className="aspect-square h-[136px] w-[136px] rounded-full border-2 border-khakeshtari-400 object-cover max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
-                />
-              
+            <div className="relative aspect-square h-[136px] rounded-full object-cover">
+              <img
+                src={
+                  userData.data.avatar && userData.data.avatar.url
+                    ? userData.data.avatar.url
+                    : defaultProfile.avatar
+                }
+                alt="avatar"
+                className="aspect-square h-[136px] w-[136px] rounded-full border-2 border-khakeshtari-400 object-cover max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
+              />
+
               {closeFriendStatus && (
                 <img
                   src={verified}
@@ -688,8 +700,16 @@ export default function UsersProfilePageComponent() {
           </h3>
         </div>
       )}
+      {userData.data.followedStatus === "Blocked" && (
+        <div className="my-8 flex h-64 flex-grow flex-col items-center justify-center">
+          <h3 className="py-8 text-center text-2xl">
+            {` برای دیدن صفحه  ${userData?.data.username}  باید دنبالش کنی!`}
+          </h3>
+        </div>
+      )}
       {((userData.data.isPrivate === false &&
-        userData.data.followingStatus !== "Blocked") ||
+        (userData.data.followingStatus !== "Blocked" &&
+          userData.data.followedStatus !== "Blocked")) ||
         followingStatus === "Following") && (
         <ShowPostsComponent username={userData?.data.username} />
       )}
