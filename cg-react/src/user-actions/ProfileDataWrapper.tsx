@@ -41,8 +41,10 @@ const ProfileDataWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const fetchUserProfile = async () => {
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
     const fetchWrapper = axios.create({
-      baseURL: 'http://5.34.194.155:4000/',
+      baseURL: `${API_BASE_URL}/`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
