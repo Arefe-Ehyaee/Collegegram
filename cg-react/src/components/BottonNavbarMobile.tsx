@@ -15,8 +15,8 @@ const BottomNavbarMobile: React.FC = () => {
   }
   const navigate = useNavigate();
   return (
-      <div className="md:hidden bg-khakeshtari-600 fixed bottom-0 flex h-[56px] items-center justify-center rounded-full border border-khakeshtari-400 max-md:w-9/12 ml-14">
-        <button className="md:hidden fixed bottom-5 flex h-[56px] w-[56px] items-center justify-center rounded-full bg-okhra-200" onClick={handleCreatePostClick}>
+      <div className="md:hidden bg-grey-600 fixed bottom-0 flex h-[56px] items-center justify-center rounded-full border border-grey-400 max-md:w-9/12 ml-14">
+        <button className="md:hidden fixed bottom-5 flex h-[56px] w-[56px] items-center justify-center rounded-full bg-red-200" onClick={handleCreatePostClick}>
             <img src={add} alt="add" />
         </button>
         <div className="md:hidden flex justify-between space-x-44">

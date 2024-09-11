@@ -153,12 +153,12 @@ console.log('105',userProfile)
 
   return (
     <div className="flex flex-col items-center">
-      <h2 className="pb-8 text-xl font-bold text-sabz-400">ویرایش حساب</h2>
+      <h2 className="pb-8 text-xl font-bold text-green-400">ویرایش حساب</h2>
       <label htmlFor="avatar" className="cursor-pointer">
         <img
           src={profileImage}
           alt="profile image edit/upload"
-          className="h-[91px] w-[91px] rounded-full border-2 border-tala"
+          className="h-[91px] w-[91px] rounded-full border-2 border-golden"
         />
       </label>
       <input
@@ -170,7 +170,7 @@ console.log('105',userProfile)
       {errors.avatar && (
         <p className="text-red-500">{errors.avatar.message as string}</p>
       )}
-      <h3 className="mb-12 pt-2 text-sm text-sabz-200">عکس پروفایل</h3>
+      <h3 className="mb-12 pt-2 text-sm text-green-200">عکس پروفایل</h3>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <TextInputComponent
           type="text"
@@ -221,18 +221,18 @@ console.log('105',userProfile)
           <label className="block !pb-4 !pt-2">بایو</label>
           <textarea
             id="bio"
-            className="h-[88px] w-[320px] resize-none rounded-[32px] border border-sabz-200 p-4"
+            className="h-[88px] w-[320px] resize-none rounded-[32px] border border-green-200 p-4"
             {...register("bio")}
           ></textarea>
         </div>
         <div className="flex flex-row items-center justify-end">
 
           <CustomButton text="پشیمون شدم"
-            className="!text-siah ml-4"
+            className="!text-black-100 ml-4"
             handleOnClick={() => onClose()}></CustomButton>
 
           <CustomButton  text="ثبت تغییرات"
-            className="bg-okhra-200"
+            className="bg-red-200"
             handleOnClick={handleSubmit(onSubmit)}></CustomButton>
         </div>
       </form>

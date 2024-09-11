@@ -41,7 +41,7 @@ export default function MyFriendssNotificationPageComponent() {
         <span className="px-4">|</span>
 
         <NavLink to="/myFriendsNotifications">
-          <h2 className="block px-7 font-isf text-xl text-khakeshtari-400 max-sm:px-2">
+          <h2 className="block px-7 font-isf text-xl text-grey-400 max-sm:px-2">
             اعلانات دوستان من
           </h2>
         </NavLink>

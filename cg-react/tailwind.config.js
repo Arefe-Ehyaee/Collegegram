@@ -4,15 +4,17 @@ module.exports = {
   theme: {
         colors: {
       white:'#fff',
-      okhra: {
+      red: {
         100:'#FFEBEB',
         200:"#EA5A69",
         300:'#F02D41',
         400: '#CC0000'
       },
-      siah: "#262626",
-      meshki: "#191919",
-      khakeshtari: {
+      black: {
+        100:"#262626",
+        200:"#191919"
+      },
+      grey: {
         100:'#F5F5F5',
         200:'#E1E1E1',
         300:'#F3F0EE',
@@ -23,17 +25,16 @@ module.exports = {
         600: '#F8F9F9',
         700: '#C4C4D0'
       },
-      sabz: {
+      green: {
         100: "#587052",
         200: "#17494D",
         300: "#C3F9C2",
         400: "#17494D",
       },
-      gray: "#CDCDCD",
-      tala:'#C19008',
-      ghahvei: "#604A4A",
+      golden:'#C19008',
+      brown: "#604A4A",
       darkBlue: "#17494D",
-      yasi: "#E9E4FF",
+      lavender: "#E9E4FF",
     },
     extend: {
       fontFamily: {

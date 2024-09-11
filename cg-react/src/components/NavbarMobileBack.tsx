@@ -7,7 +7,7 @@ const NavbarMobileBack = () => {
   const navigate = useNavigate();
   
   return (
-    <div className="fixed top-0 w-full bg-khakeshtari-100 md:hidden">
+    <div className="fixed top-0 w-full bg-grey-100 md:hidden">
       <div className="flex justify-between px-6 py-5">
         <button onClick={()=>navigate("/userprofile")}>
           <img src={back} alt="menu" />

@@ -22,12 +22,12 @@ const NavbarMobile: React.FC<NavbarMobileProps> = ({ isMenuOpen, toggleMenu }) =
   //   setIsMenuOpen(prevState => !prevState);
   // };
   return (
-    <div className="fixed top-0 w-full bg-khakeshtari-100 border-b border-khakeshtari-400 md:hidden">
+    <div className="fixed top-0 w-full bg-grey-100 border-b border-grey-400 md:hidden">
       <div className="flex justify-between px-6 py-3">
         <button onClick={toggleMenu}>
           <img src={hamMenu} alt="menu" />
         </button>
-        <img src={userProfile.avatar} alt="user" className="w-[47px] h-[47px] rounded-full border border-khakeshtari-300" />
+        <img src={userProfile.avatar} alt="user" className="w-[47px] h-[47px] rounded-full border border-grey-300" />
       
       </div>
       <div className="fixed bottom-0 w-full">

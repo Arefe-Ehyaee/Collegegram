@@ -238,13 +238,13 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
             <div className="mt-8 flex flex-row self-end">
               <CustomButton
                 text="پشیمون شدم"
-                className="ml-4 !text-siah"
+                className="ml-4 !text-black-100"
                 handleOnClick={() => onClose()}
               ></CustomButton>
 
               <CustomButton
                 text="بعدی"
-                className="bg-okhra-200"
+                className="bg-red-200"
                 handleOnClick={() => setCurrentStep(2)}
               ></CustomButton>
             </div>
@@ -265,13 +265,13 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
             <div className="mt-8 flex flex-row self-end">
               <CustomButton
                 text="پشیمون شدم"
-                className="ml-4 !text-siah"
+                className="ml-4 !text-black-100"
                 handleOnClick={() => setCurrentStep(1)}
               ></CustomButton>
 
               <CustomButton
                 text="بعدی"
-                className="bg-okhra-200"
+                className="bg-red-200"
                 handleOnClick={() => setCurrentStep(3)}
               ></CustomButton>
             </div>
@@ -294,12 +294,12 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
             <div className="mt-8 flex flex-row self-end">
               <CustomButton
                 text="پشیمون شدم"
-                className="ml-4 !text-siah"
+                className="ml-4 !text-black-100"
                 handleOnClick={() => setCurrentStep(2)}
               ></CustomButton>
               <CustomButton
                 text="ثبت و انتشار پست"
-                className="bg-okhra-200"
+                className="bg-red-200"
                 handleOnClick={handleSubmit(onSubmit)}
               ></CustomButton>
             </div>

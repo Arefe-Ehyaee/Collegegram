@@ -157,7 +157,7 @@ export default function ProfilePageComponent() {
 
   return (
     <div dir="rtl" className="px-16">
-      <div className="border-b border-khakeshtari-400 py-9">
+      <div className="border-b border-grey-400 py-9">
         <h2 className="mb-9 block font-isf text-xl font-bold max-sm:hidden">
           صفحه من
         </h2>
@@ -166,16 +166,16 @@ export default function ProfilePageComponent() {
             <img
               src={userProfile.avatar}
               alt="avatar"
-              className="aspect-square h-[136px] w-[136px] rounded-full border-2 border-khakeshtari-400 object-cover max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
+              className="aspect-square h-[136px] w-[136px] rounded-full border-2 border-grey-400 object-cover max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
             />
             <div className="ml-4">
-              <p className="text-right text-sm text-tala" dir="ltr">
+              <p className="text-right text-sm text-golden" dir="ltr">
                 {`@${userProfile.username}`}
               </p>
-              <h3 className="mt-4 text-xl font-bold text-sabz-100">
+              <h3 className="mt-4 text-xl font-bold text-green-100">
                 {`${userProfile.firstName} ${userProfile.lastName}`}
               </h3>
-              <div className="mt-4 flex gap-x-3 text-sm font-normal text-sabz-200">
+              <div className="mt-4 flex gap-x-3 text-sm font-normal text-green-200">
                 <button className="border-l pl-3" onClick={handleShowFollowers}>
                   {userProfile.followersCount} دنبال کننده
                 </button>
@@ -187,7 +187,7 @@ export default function ProfilePageComponent() {
                 </button>
                 <span className="pl-3">{userProfile.postsCount} پست</span>
               </div>
-              <p className="mt-4 text-sm text-khakeshtari-400 max-sm:justify-self-center">
+              <p className="mt-4 text-sm text-grey-400 max-sm:justify-self-center">
                 {userProfile.bio}
               </p>
             </div>
@@ -196,7 +196,7 @@ export default function ProfilePageComponent() {
           <CustomButton
             size="large"
             text="ویرایش پروفایل"
-            className="bg-okhra-200"
+            className="bg-red-200"
             handleOnClick={() => setShowEditModal(true)}
           />
         </div>
@@ -239,7 +239,7 @@ export default function ProfilePageComponent() {
           </div>
           <CustomButton
             text={"بستن"}
-            className="mt-[34px] bg-okhra-200"
+            className="mt-[34px] bg-red-200"
             handleOnClick={() => setFollowerListModal(false)}
           ></CustomButton>
         </ModalTemplate>
@@ -270,7 +270,7 @@ export default function ProfilePageComponent() {
           </div>
           <CustomButton
             text={"بستن"}
-            className="mt-[34px] bg-okhra-200"
+            className="mt-[34px] bg-red-200"
             handleOnClick={() => setFollowingListModal(false)}
           ></CustomButton>
         </ModalTemplate>

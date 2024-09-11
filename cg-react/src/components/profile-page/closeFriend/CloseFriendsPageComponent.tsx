@@ -68,7 +68,7 @@ export default function CloseFriendsPageComponent() {
         <span>|</span>
 
         <NavLink to="/balckList">
-          <h2 className="block px-7 font-isf text-xl text-khakeshtari-400 max-sm:px-2">لیست سیاه</h2>
+          <h2 className="block px-7 font-isf text-xl text-grey-400 max-sm:px-2">لیست سیاه</h2>
         </NavLink>
       </div>
 

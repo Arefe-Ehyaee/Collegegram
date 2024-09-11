@@ -15,11 +15,11 @@ const ModalTemplatePost = ({
 }: ModalPostProps) => {
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-siah/40 ${className} ${showModal ? "visible bg-siah/40" : "invisible"}`}
+      className={`fixed inset-0 z-50 flex flex-col items-center justify-center bg-black-100/40 ${className} ${showModal ? "visible bg-black-100/40" : "invisible"}`}
       onClick={onClose}
     >
       <div
-        className="flex flex-col items-center justify-center rounded-3xl border-khakeshtari-400 bg-khakeshtari-100 px-[35px] py-16"
+        className="flex flex-col items-center justify-center rounded-3xl border-grey-400 bg-grey-100 px-[35px] py-16"
         onClick={(e) => e.stopPropagation()}
       >
         {mainComponent}{children}

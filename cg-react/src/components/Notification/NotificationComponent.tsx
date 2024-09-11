@@ -41,7 +41,7 @@ const MyNotificationComponent = ({
 }: NotificationComponentprops) => {
   return (
     <div
-      className={`${seen ? "bg-khakeshtari-100 border-none" : "bg-yasi border-khakeshtari-700"} my-4 flex h-[64px] items-center justify-between gap-[93px] rounded-full border-b`}
+      className={`${seen ? "bg-grey-100 border-none" : "bg-lavender border-grey-700"} my-4 flex h-[64px] items-center justify-between gap-[93px] rounded-full border-b`}
       dir="rtl"
     >
       <div className="flex items-center gap-[27px]">
@@ -51,26 +51,26 @@ const MyNotificationComponent = ({
           className="h-[64px] w-[64px] rounded-full"
         />
         <div>
-          <div className="font-isf text-[13px] font-bold leading-[21.48px] text-sabz-400">
+          <div className="font-isf text-[13px] font-bold leading-[21.48px] text-green-400">
             {getNotificationMessage(notifType, defaultProfile.subject, defaultProfile.user)}
           </div>
           {notifType === "comment" && (
             <>
               <div
-                className="pt-1 font-isf text-[11px] font-normal leading-[14.3px] text-sabz-400 line-clamp-1"
+                className="pt-1 font-isf text-[11px] font-normal leading-[14.3px] text-green-400 line-clamp-1"
                 dir="rtl"
               >{defaultProfile.comment}</div>
             </>
           )}
           <div
-            className="pt-2 font-isf text-[11px] font-normal leading-[14.3px] text-sabz-400"
+            className="pt-2 font-isf text-[11px] font-normal leading-[14.3px] text-green-400"
             dir="rtl"
           >{`${0}دنبال کننده `}</div>
         </div>
         {(notifType === "followedYou" || notifType === "followedOthers") && (
           <CustomButton
             text="+ دنبال کردن"
-            className="bg-okhra-200"
+            className="bg-red-200"
             // handleOnClick={}
           ></CustomButton>
         )}
@@ -79,12 +79,12 @@ const MyNotificationComponent = ({
           <>
             <CustomButton
               text="قبولههه"
-              className="bg-okhra-200"
+              className="bg-red-200"
               // handleOnClick={}
             ></CustomButton>
             <CustomButton
               text="خوشم نمیاد ازش"
-              className="bg-okhra-200"
+              className="bg-red-200"
               // handleOnClick={}
             ></CustomButton>
           </>

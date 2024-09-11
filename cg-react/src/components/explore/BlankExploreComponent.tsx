@@ -12,7 +12,7 @@ const BlankExploreComponent = () => {
           برای دیدن پست‌ها در این صفحه باید کالج‌گرامی‌ها رو <br />
           دنبال کنی. آماده‌ای؟
         </h2>
-        <CustomButton size="large" text="جستجوی کالج‌گرامی‌ها" className="bg-okhra-200"></CustomButton>
+        <CustomButton size="large" text="جستجوی کالج‌گرامی‌ها" className="bg-red-200"></CustomButton>
         
       </div>
     </div>

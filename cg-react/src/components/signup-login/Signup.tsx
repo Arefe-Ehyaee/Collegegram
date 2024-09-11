@@ -124,7 +124,7 @@ const SignUp: React.FC = () => {
           />
           <CustomButton
             text={"ثبت نام"}
-            className="mt-12 bg-okhra-200 text-sm"
+            className="mt-12 bg-red-200 text-sm"
           ></CustomButton>
         </form>
       </Box>

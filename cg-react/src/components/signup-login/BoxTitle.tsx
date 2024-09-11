@@ -6,7 +6,7 @@ interface BoxTitleProps {
 
 const BoxTitle: React.FC<BoxTitleProps> = ({ text }) => {
   return (
-    <div className={"text-xl text-siah text-center"}>
+    <div className={"text-xl text-black-100 text-center"}>
         {text}
     </div>
   );
