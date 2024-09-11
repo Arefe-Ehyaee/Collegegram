@@ -18,6 +18,10 @@ import { ParamToQueryNavigate } from "./components/ParamToQueryNavigate";
 import ExplorePage from "./components/explore/ExplorePage";
 import BlackListPage from "./components/profile-page/Blocking/BlackListPage";
 import CloseFriendsPage from "./components/profile-page/closeFriend/CloseFriendsPage";
+import NotificationPageComponent from "./components/Notification/MyNotificationPageComponent";
+import MyNotificationPageComponent from "./components/Notification/MyNotificationPageComponent";
+import MyNotificationPage from "./components/Notification/MyNotificationPage";
+import MyFriendsNotifPage from "./components/Notification/MyFriendsNotifPage ";
 
 
 const queryClient = new QueryClient() ;
@@ -76,6 +80,8 @@ export default function App() {
             />
             <Route path="/explore" element={<ExplorePage/>}/>
             <Route path="/balckList" element={<BlackListPage/>}/>
+            <Route path="/myNotifications" element={<MyNotificationPage/>}/>
+            <Route path="/myFriendsNotifications" element={<MyFriendsNotifPage/>}/>
             <Route path="/closeFriendsList" element={<CloseFriendsPage/>}/>
             <Route path="/users/profile" element={<UsersProfilePage />} />
             <Route path="/users/:username" element={<ParamToQueryNavigate baseUrl="/users/profile" paramKey="username"/>}/>

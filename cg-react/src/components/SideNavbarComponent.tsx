@@ -18,6 +18,11 @@ import moreSideNav from "../assets/icons/terms.svg";
 import ToggleMenu from "./ToggleMenu";
 import blockingIcon from "../assets/icons/blockUser.svg";
 import addToCloseFriendsIcon from "../assets/icons/addToCloseFriends.svg";
+import NotifBadge from "./Notification/NotifBadge";
+
+export interface Notif {
+  notifCounts: number;
+}
 
 export default function SideNavbarComponent() {
   const userProfile = useRecoilValue(userProfileAtom);
@@ -30,6 +35,11 @@ export default function SideNavbarComponent() {
   const handleCreatePostClick = () => {
     setUploadModal(true);
   };
+
+  const NotifTest = {
+    notifCounts: 333,
+  };
+
   return (
     <div dir="rtl" className="flex flex-col items-center justify-center">
       <div className="fixed right-0 top-16 mr-24 flex flex-col items-center">
@@ -40,7 +50,7 @@ export default function SideNavbarComponent() {
           className="mb-8 bg-okhra-200"
           handleOnClick={handleCreatePostClick}
         ></CustomButton>
-        <nav className="fixed flex flex-col bottom-0 top-36 w-72 rounded-t-3xl border border-khakeshtari-400 bg-white p-9">
+        <nav className="fixed bottom-0 top-36 flex w-72 flex-col rounded-t-3xl border border-khakeshtari-400 bg-white p-9">
           <div className="mb-8 flex items-center">
             <img
               src={avatar}
@@ -49,7 +59,7 @@ export default function SideNavbarComponent() {
             />
             <p className="mr-4">{username}</p>
           </div>
-          <div className="flex flex-col flex-grow justify-between">
+          <div className="flex flex-grow flex-col justify-between">
             <div>
               <ul>
                 <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
@@ -66,9 +76,16 @@ export default function SideNavbarComponent() {
                   <img src={chat} alt="chats icon" className="ml-2" />
                   <a href="#">پیام‌ها</a>
                 </li>
-                <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
+                <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500"> 
                   <img src={bell} alt="notifications icon" className="ml-2" />
-                  <a href="#">اعلانات</a>
+                  <div className="flex">
+                    <a href="#" className="pl-4">اعلانات</a>
+                    {NotifTest.notifCounts > 0 && (
+                      <NotifBadge
+                        notifCounts={NotifTest.notifCounts}
+                      ></NotifBadge>
+                    )}
+                  </div>
                 </li>
                 <li className="flex items-center rounded-3xl p-4 hover:bg-khakeshtari-500">
                   <img src={tags} alt="tags icon" className="ml-2" />
