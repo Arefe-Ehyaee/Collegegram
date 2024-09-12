@@ -1,5 +1,5 @@
 import MainLayoutBack from "../MainLayoutBack"
-import SideNavbarComponent from "../SideNavbarComponent"
+import SideNavbarComponent from "../nav-bar/SideNavbarComponent"
 import PostComponent from "./PostComponent";
 
 

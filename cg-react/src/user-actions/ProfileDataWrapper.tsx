@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { userProfileAtom } from "./atoms";
+import { UserProfile, userProfileAtom } from "./atoms";
 import { useRecoilState } from "recoil";
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
@@ -69,16 +69,15 @@ const ProfileDataWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     if (profileData ) {
       const avatarURL = profileData.data.avatar ? `${profileData.data.avatar.url}` : undefined;
-      console.log("profile data in useeffect:", profileData.data)
       setUserProfile(prevProfile => ({
         ...prevProfile,
-        username: profileData.data.username || prevProfile.username,
+        username: profileData.data.username || "",
         avatar: avatarURL || prevProfile.avatar,
-        firstName: profileData.data.firstName || prevProfile.firstName,
-        lastName: profileData.data.lastName || prevProfile.lastName,
-        bio: profileData.data.bio || prevProfile.bio,
+        firstName: profileData.data.firstName || "",
+        lastName: profileData.data.lastName || "",
+        bio: profileData.data.bio || "",
         email: profileData.data.email || prevProfile.email,
-        id: profileData.data.id || prevProfile.id,
+        id: profileData.data.id,
         postsCount: profileData.data.postsCount || prevProfile.postsCount,
         followersCount: profileData.data.followersCount || prevProfile.followersCount,
         followingsCount: profileData.data.followingsCount || prevProfile.followingsCount,
@@ -86,8 +85,6 @@ const ProfileDataWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
       }));
     }
   }, [profileData]);
-
-  console.log("profile data:", profileData);
 
   return <div>{children}</div>;
 };

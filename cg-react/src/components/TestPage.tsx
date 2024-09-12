@@ -2,7 +2,7 @@ import timeTranslate from "../utilities/timeTranslationFunction";
 import BlankExploreComponent from "./explore/BlankExploreComponent";
 import ExplorePostCard from "./explore/ExplorePostCard";
 import MainLayout from "./MainLayout";
-import SideNavbarComponent from "./SideNavbarComponent";
+import SideNavbarComponent from "./nav-bar/SideNavbarComponent";
 import { userProfileAtom } from "../user-actions/atoms";
 import { useRecoilValue } from "recoil";
 import NotificationComponent from "./Notification/NotificationComponent";

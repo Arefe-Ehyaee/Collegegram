@@ -1,5 +1,5 @@
 import MainLayout from "../MainLayout";
-import SideNavbarComponent from "../SideNavbarComponent";
+import SideNavbarComponent from "../nav-bar/SideNavbarComponent";
 import MyFriendsNotifPageComponent from "./MyFriendsNotifPageComponent";
 
 
