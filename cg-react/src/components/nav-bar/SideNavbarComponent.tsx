@@ -1,24 +1,20 @@
 import { useState } from "react";
-import defaultAvatar from "../assets/icons/defaultavatar.svg";
-import angledpin from "../assets/icons/angled-pin.svg";
-import bookmark from "../assets/icons/bookmark.svg";
-import chat from "../assets/icons/chat.svg";
-import bell from "../assets/icons/bell.svg";
-import tags from "../assets/icons/tag.svg";
-import explore from "../assets/icons/explore.svg";
-import search from "../assets/icons/search.svg";
-import addPostIcon from "../assets/icons/addposticon.svg";
-import { userProfileAtom } from "../user-actions/atoms";
+import angledpin from "../../assets/icons/angled-pin.svg";
+import bookmark from "../../assets/icons/bookmark.svg";
+import chat from "../../assets/icons/chat.svg";
+import bell from "../../assets/icons/bell.svg";
+import tags from "../../assets/icons/tag.svg";
+import explore from "../../assets/icons/explore.svg";
+import search from "../../assets/icons/search.svg";
+import addPostIcon from "../../assets/icons/addposticon.svg";
+import { userProfileAtom } from "../../user-actions/atoms";
 import { useRecoilValue } from "recoil";
-import ModalTemplate from "./ModalTemplate";
-import UploadPostsModal from "./upload-edit-posts/UploadPostsModal";
+import ModalTemplate from "../ModalTemplate";
+import UploadPostsModal from "../upload-edit-posts/UploadPostsModal";
 import { useNavigate } from "react-router-dom";
-import CustomButton from "./CustomButton";
-import moreSideNav from "../assets/icons/terms.svg";
-import ToggleMenu from "./ToggleMenu";
-import blockingIcon from "../assets/icons/blockUser.svg";
-import addToCloseFriendsIcon from "../assets/icons/addToCloseFriends.svg";
-import NotifBadge from "./Notification/NotifBadge";
+import CustomButton from "../CustomButton";
+import NotifBadge from "../Notification/NotifBadge";
+import SideNavbarToggleMenu from "./SideNavbarToggleMenu";
 
 export interface Notif {
   notifCounts: number;
@@ -105,34 +101,7 @@ export default function SideNavbarComponent() {
               </ul>
             </div>
             <div className="flex pr-4">
-              <ToggleMenu imgSrc={moreSideNav} label="بیشتر">
-                <ul className="mt-8 border-t border-grey-400 pt-8">
-                  <li className="flex items-center rounded-3xl p-4 hover:bg-grey-500">
-                    <button onClick={() => navigate("/closeFriendsList")}>
-                      <div className="flex">
-                        <img
-                          src={addToCloseFriendsIcon}
-                          alt="add to close friends"
-                          className="h-5 w-5"
-                        />
-                        <p className="pr-4">دوستان نزدیک</p>
-                      </div>
-                    </button>
-                  </li>
-                  <li className="flex items-center rounded-3xl p-4 hover:bg-grey-500">
-                    <button onClick={() => navigate("/balckList")}>
-                      <div className="flex">
-                        <img
-                          src={blockingIcon}
-                          alt="block user"
-                          className="h-5 w-5"
-                        />
-                        <p className="pr-4">لیست سیاه</p>
-                      </div>
-                    </button>
-                  </li>
-                </ul>
-              </ToggleMenu>
+              <SideNavbarToggleMenu/>
             </div>
           </div>
         </nav>

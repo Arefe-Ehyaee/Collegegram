@@ -27,7 +27,8 @@ export interface UserProfile {
     followersCount: number;
     followingsCount: number;
     bio: string;
-    isPrivate?:boolean
+    isPrivate?:boolean;
+    token:string | null
 }
 
 export const defaultProfile: UserProfile = {
@@ -40,7 +41,8 @@ export const defaultProfile: UserProfile = {
     followersCount: 0,
     followingsCount: 0,
     bio: 'برای شخصی سازی این متن با ویرایش پروفایل بایو خود را تغییر دهید',
-    isPrivate:false
+    isPrivate:false,
+    token: null
 };
 
 export const userProfileAtom = atom<UserProfile>({

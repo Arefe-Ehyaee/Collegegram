@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -11,8 +11,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import ArrowLink from "./ArrowLink";
 import UserSvg from "../../assets/icons/user.svg";
 import keySvg from "../../assets/icons/key.svg";
-import { useSetRecoilState } from "recoil";
-import { authAtom } from "../../user-actions/atoms";
+import { useRecoilState } from "recoil";
+import {  userProfileAtom } from "../../user-actions/atoms";
 import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
@@ -32,9 +32,11 @@ interface LoginFormData {
   password: string;
 }
 
-const Login: React.FC = () => {
+const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [userProfile , setUserProfile] = useRecoilState(userProfileAtom);
+
   const {
     register,
     handleSubmit,
@@ -44,13 +46,13 @@ const Login: React.FC = () => {
   });
   const queryClient = useQueryClient();
   const fetchWrapper = useFetchWrapper();
-  const setAuth = useSetRecoilState(authAtom);
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     try {
       const response = await fetchWrapper.post(
-        "http://5.34.194.155:4000/auth/login",
+        `${API_BASE_URL}/auth/login`,
         {
           username: data.username,
           password: data.password,
@@ -61,7 +63,7 @@ const Login: React.FC = () => {
 
       if (response.ok) {
         localStorage.setItem("token", token);
-        setAuth({ token });
+        setUserProfile({...userProfile,token : token })
         navigate("/userprofile");
         queryClient.invalidateQueries({ queryKey: ['profileData'] })
         toast.success("با موفقیت وارد شدید!");
@@ -70,7 +72,6 @@ const Login: React.FC = () => {
       toast.error("نام کاربری یا رمز عبور اشتباهه!");
       console.error("Login error:", error);
     } finally {
-      
       setIsLoading(false);
     }
   };
