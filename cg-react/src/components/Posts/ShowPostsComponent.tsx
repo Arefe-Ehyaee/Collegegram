@@ -47,14 +47,13 @@ export default function ShowPostsComponent({ username }: ShowPostsProps) {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    setToken(storedToken || " ");
+    setToken(storedToken || "");
   }, []);
 
   const handleOnClick = (id: string) => {
     setSelectedPhotoId(id);
     setPostShowModal(true);
   };
-
 
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading, isError, error } = useInfiniteQuery({
     queryKey: ['posts', token, username],

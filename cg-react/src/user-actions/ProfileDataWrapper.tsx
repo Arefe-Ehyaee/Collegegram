@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { userProfileAtom, UserProfile as UserProfileInterface } from "./atoms";
+import { userProfileAtom } from "./atoms";
 import { useRecoilState } from "recoil";
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
@@ -52,11 +52,12 @@ const ProfileDataWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
     const response = await fetchWrapper.get('/users/profile');
     return response.data;
   };
-
+  const token = localStorage.getItem('token')
   const { data: profileData, error: profileError } = useQuery({
     queryKey: ['profileData'],
     queryFn: fetchUserProfile,
     retry: false,
+    enabled:!!token
   });
 
   useEffect(() => {

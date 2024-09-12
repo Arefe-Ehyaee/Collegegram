@@ -91,7 +91,10 @@ export default function UsersProfilePageComponent() {
 
   const { ref: followerRef, inView: followerInView } = useInView();
   const { ref: followingRef, inView: followingInView } = useInView();
-
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken || " ");
+  }, []);
   const navigate = useNavigate();
 
   const handleError = (error: any) => {
@@ -108,11 +111,10 @@ export default function UsersProfilePageComponent() {
         navigate("/error");
       } else if (error.response.data.message) {
         navigate("/error");
-      } else if ( statusCode === 404) {
+      } else if (statusCode === 404) {
         toast.error("نام کاربری مورد نظر پیدا نشد");
         navigate("/error");
-      }
-       else if (error.response.data.message) {
+      } else if (error.response.data.message) {
         toast.error(`Error: ${error.response.data.message}`);
       } else if (error.response.statusText) {
         toast.error(`Error: ${error.response.statusText}`);
@@ -207,7 +209,7 @@ export default function UsersProfilePageComponent() {
       });
       refetchFollowers();
     }
-    console.log("followersData", followersData?.pages[0]);
+    // console.log("followersData", followersData?.pages[0]);
   };
 
   const handleShowFollowings = () => {
@@ -218,8 +220,8 @@ export default function UsersProfilePageComponent() {
       });
       refetchFollowing();
     }
-    console.log("followingData", followingsData);
-    console.log("user data", userData.data);
+    // console.log("followingData", followingsData);
+    // console.log("user data", userData.data);
   };
   ////////////////////////////////////////////////////////////////////
   useEffect(() => {
@@ -234,10 +236,12 @@ export default function UsersProfilePageComponent() {
     setBlockModal((prevState) => !prevState);
   };
 
-  const handleBlockAUser = async() => {
-    try{
+  const handleBlockAUser = async () => {
+    try {
       await blockRefetch();
-      await queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
+      await queryClient.invalidateQueries({
+        queryKey: ["othersProfile", username],
+      });
     } finally {
       setBlockModal(false);
     }
@@ -255,14 +259,18 @@ export default function UsersProfilePageComponent() {
     setUnBlockModal((prevState) => !prevState);
   };
 
-  const handleUnBlockAUser = async() => {
+  const handleUnBlockAUser = async () => {
     try {
       await unblockRefetch();
-      await queryClient.invalidateQueries({ queryKey: ["posts", token, username] });
-      await queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
+      await queryClient.invalidateQueries({
+        queryKey: ["posts", token, username],
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ["othersProfile", username],
+      });
     } finally {
       setUnBlockModal(false);
-    }  
+    }
   };
   ////////////////////////////////////////////////////////////////
   useEffect(() => {
@@ -277,16 +285,17 @@ export default function UsersProfilePageComponent() {
     setCloseFriendModalState((prevState) => !prevState);
   };
 
-  const handleCloseFriendAUser = async() => {
+  const handleCloseFriendAUser = async () => {
     if (userData.data.followingStatus === "NotFollowing") {
       toast.warning("اول باید این کاربر رو دنبال کنی!");
     } else if (userData.data.followedStatus === "NotFollowing") {
       toast.warning("این کاربر باید دنبالت کنه!");
-    } 
-    else { 
+    } else {
       try {
         await closeFriendRefetch();
-        await queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
+        await queryClient.invalidateQueries({
+          queryKey: ["othersProfile", username],
+        });
       } finally {
         setCloseFriendModalState((prevState) => !prevState);
       }
@@ -307,11 +316,12 @@ export default function UsersProfilePageComponent() {
 
   const handleUnCloseFriendAUser = async () => {
     try {
-      await uncloseFriendRefetch(); 
-      await queryClient.invalidateQueries({ queryKey: ["othersProfile", username] }); 
-    } 
-    finally {
-      setUnCloseFriendModalState((prevState) => !prevState); 
+      await uncloseFriendRefetch();
+      await queryClient.invalidateQueries({
+        queryKey: ["othersProfile", username],
+      });
+    } finally {
+      setUnCloseFriendModalState((prevState) => !prevState);
     }
   };
 
@@ -336,12 +346,6 @@ export default function UsersProfilePageComponent() {
     }
   };
   //////////////////////////////////////////////////////////////////////////////////////////
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || " ");
-  }, []);
-
-  /////////////////////////////////////////////////////////////////////////////////////
   const {
     data: blockData,
     isError: blockError,
@@ -443,14 +447,12 @@ export default function UsersProfilePageComponent() {
     if (status === "Following") {
       return {
         text: "دنبال نکردن",
-        className:
-          "bg-grey-100 ml-1 border border-red-200 !text-red-200",
+        className: "bg-grey-100 ml-1 border border-red-200 !text-red-200",
       };
     } else if (status === "Pending") {
       return {
         text: "لغو درخواست",
-        className:
-          "bg-grey-100 ml-1 border border-red-200 !text-red-200",
+        className: "bg-grey-100 ml-1 border border-red-200 !text-red-200",
       };
     } else {
       return {
@@ -707,12 +709,13 @@ export default function UsersProfilePageComponent() {
           </h3>
         </div>
       )}
-      {((userData.data.isPrivate === false &&
-        (userData.data.followingStatus !== "Blocked" &&
-          userData.data.followedStatus !== "Blocked")) ||
-        followingStatus === "Following") && (
-        <ShowPostsComponent username={userData?.data.username} />
-      )}
+      {userData?.data.username &&
+        ((userData.data.isPrivate === false &&
+          userData.data.followingStatus !== "Blocked" &&
+          userData.data.followedStatus !== "Blocked") ||
+          followingStatus === "Following") && (
+          <ShowPostsComponent username={userData?.data.username} />
+        )}
 
       {FollowerListModal && (
         <ModalTemplate
