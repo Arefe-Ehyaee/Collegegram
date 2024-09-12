@@ -1,34 +1,30 @@
-import { useEffect, useState } from "react";
-import ShowPostModal from "./ShowPostModal";
-import ModalTemplatePost from "./ModalTemplatePost";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { FetchPosts } from "./FetchPosts";
-import { useInView } from "react-intersection-observer";
-import { BeatLoader } from "react-spinners";
-import { toast } from "react-toastify";
-
-interface ShowPostsProps {
-  username: string;
-}
+import { useInfiniteQuery } from '@tanstack/react-query';
+import React, { useEffect, useState } from 'react'
+import { useInView } from 'react-intersection-observer';
+import { toast } from 'react-toastify';
+import { BeatLoader } from 'react-spinners';
+import ModalTemplatePost from '../Posts/ModalTemplatePost';
+import ShowPostModal from '../Posts/ShowPostModal';
+import { fetchTaggedPosts } from './fetchTaggedPosts';
 
 interface Posts {
-  authorId: string;
-  caption: string;
-  createdAt: string;
-  id: string;
-  media: Media[];
-}
+    authorId: string;
+    caption: string;
+    createdAt: string;
+    id: string;
+    media: Media[];
+  }
+  
+  interface Media {
+    id: string;
+    mime: string;
+    name: string;
+    url: string;
+    size: number;
+  }
 
-interface Media {
-  id: string;
-  mime: string;
-  name: string;
-  url: string;
-  size: number;
-}
-
-export default function ShowPostsComponent({ username }: ShowPostsProps) {
-  const [showPostModal, setPostShowModal] = useState(false);
+const TaggedPostsComponent = () => {
+    const [showPostModal, setPostShowModal] = useState(false);
   const [selectedPhotoId, setSelectedPhotoId] = useState<string>("");
   const [token, setToken] = useState<string | null>(null);
 
@@ -36,7 +32,7 @@ export default function ShowPostsComponent({ username }: ShowPostsProps) {
 
   useEffect(() => {
     if (showPostModal) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = "hidden"; 
     } else {
       document.body.style.overflow = "unset";
     }
@@ -54,13 +50,13 @@ export default function ShowPostsComponent({ username }: ShowPostsProps) {
   };
 
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading, isError, error } = useInfiniteQuery({
-    queryKey: ['posts', token, username],
-    queryFn: async ({ pageParam = 1 }) => FetchPosts({ pageParam }, token || '', username),
+    queryKey: ['TaggedPosts', token],
+    queryFn: async ({ pageParam = 1 }) => fetchTaggedPosts({ pageParam }, token || ''),
     getNextPageParam: (lastPage) => {
         return lastPage?.data?.nextPage ?? undefined; 
     },
     initialPageParam: 1,
-    enabled: !!token && !!username,
+    enabled: !!token,
   });
 
   useEffect (() => {
@@ -69,19 +65,13 @@ export default function ShowPostsComponent({ username }: ShowPostsProps) {
     }
   } , [inView, hasNextPage, fetchNextPage])
 
-  // console.log(data.data.posts);
-
-  // if (isPending) {
-  //   return <span>Loading...</span>;
-  // }
-
   if (isError) {
     toast.error(error.message);
   }
-
-
   return (
-    <div className="my-8 grid rounded-3xl ">
+    <div dir='rtl'className='mt-12 mx-16'>
+      <h1 className='text-2xl font-bold font-isf'>تگ‌‌شده‌ها</h1>
+    <div className=" grid my-8 rounded-3xl ">
       <div className="grid grid-cols-2 gap-6 md:grid-cols-3 md:gap-4">
         {data && 
           data?.pages.flatMap((page) => 
@@ -90,7 +80,6 @@ export default function ShowPostsComponent({ username }: ShowPostsProps) {
               key={post.id}
               className="aspect-square object-cover max-h-[304px] w-full cursor-pointer rounded-3xl"
               src={`${post.media[0].url}`}
-              // alt={photo.alt}
               onClick={() => handleOnClick(post.id)}
             />
           )))}
@@ -111,5 +100,8 @@ export default function ShowPostsComponent({ username }: ShowPostsProps) {
         {isFetching && (<BeatLoader/>)}
       </div>
     </div>
+    </div>
   );
 }
+
+export default TaggedPostsComponent
