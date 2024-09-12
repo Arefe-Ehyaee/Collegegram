@@ -22,6 +22,8 @@ import NotificationPageComponent from "./components/Notification/MyNotificationP
 import MyNotificationPageComponent from "./components/Notification/MyNotificationPageComponent";
 import MyNotificationPage from "./components/Notification/MyNotificationPage";
 import MyFriendsNotifPage from "./components/Notification/MyFriendsNotifPage ";
+import BookmarksPage from "./components/bookmarks/BookmarksPage";
+import TaggedPostsPage from "./components/TaggedPosts/TaggedPostsPage";
 
 
 const queryClient = new QueryClient() ;
@@ -67,6 +69,22 @@ export default function App() {
               element={
                 <PrivateRoute>
                   <ProfilePage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/bookmarks"
+              element={
+                <PrivateRoute>
+                  <BookmarksPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/taggedPosts"
+              element={
+                <PrivateRoute>
+                  <TaggedPostsPage />
                 </PrivateRoute>
               }
             />
