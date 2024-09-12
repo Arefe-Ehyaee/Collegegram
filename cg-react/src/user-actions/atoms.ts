@@ -32,10 +32,10 @@ export interface UserProfile {
 
 export const defaultProfile: UserProfile = {
     id: 'defaultID',
-    username: 'defaultID',
+    username: '',
     avatar: defaultAvatar, 
-    firstName: 'نام',
-    lastName:'نشان',
+    firstName: '',
+    lastName:'',
     postsCount: 0,
     followersCount: 0,
     followingsCount: 0,

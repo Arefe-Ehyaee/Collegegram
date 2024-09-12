@@ -63,13 +63,14 @@ const Login: React.FC = () => {
         localStorage.setItem("token", token);
         setAuth({ token });
         navigate("/userprofile");
+        queryClient.invalidateQueries({ queryKey: ['profileData'] })
         toast.success("با موفقیت وارد شدید!");
       }
     } catch (error) {
       toast.error("نام کاربری یا رمز عبور اشتباهه!");
       console.error("Login error:", error);
     } finally {
-      queryClient.invalidateQueries({ queryKey: ["profileData"] });
+      
       setIsLoading(false);
     }
   };
