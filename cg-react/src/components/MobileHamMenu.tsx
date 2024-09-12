@@ -5,6 +5,7 @@ import chat from "../assets/icons/chat.svg"
 import bell from "../assets/icons/bell.svg"
 import tags from "../assets/icons/tag.svg"
 import { useNavigate } from 'react-router-dom';
+import SwitchAccountComponent from "./nav-bar/SwitchAccountComponent";
 
 export default function MobileHamMenu() {
   const navigate = useNavigate();
@@ -12,7 +13,8 @@ export default function MobileHamMenu() {
   return (
     <div className='absolute bottom-0 w-full'>
     <nav className=" bg-white border border-grey-400 rounded-t-3xl p-9" dir="rtl" aria-label="mobile-nav">
-      <ul >
+      <SwitchAccountComponent/>
+      <ul className="border-t border-grey-400 pt-4 mt-4">
         <li className='flex items-center hover:bg-grey-500 p-4'>
           <img src={angledpin} alt="my page icon" className="ml-2" />
           <button onClick={()=>navigate("/userprofile")}>صفحه من</button>
