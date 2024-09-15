@@ -1,7 +1,7 @@
 import PosterInfo from "../../explore/PosterInfo";
 
 interface BlockingModalProps {
-    name?: string;
+    name: string ;
     avatar?: string;
     followersCount?: number;
 }

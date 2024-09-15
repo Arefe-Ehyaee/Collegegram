@@ -86,7 +86,6 @@ const token: string = localStorage.getItem("token") ?? ""
               key={post.id}
               className="aspect-square object-cover max-h-[304px] w-full cursor-pointer rounded-3xl"
               src={`${post.media[0].url}`}
-              // alt={photo.alt}
               onClick={() => handleOnClick(post.id)}
             />
           )))}

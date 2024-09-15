@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 export interface Follower {
   id?: string;
   avatar: {url:string};
-  username?: string;
+  username: string;
   first_name?: string;
   last_name?: string;
   bio?: string;
@@ -31,7 +31,7 @@ export interface Follower {
 export interface Following {
   id?: string;
   avatar: {url:string};
-  username?: string;
+  username: string;
   first_name?: string;
   last_name?: string;
   bio?: string;
