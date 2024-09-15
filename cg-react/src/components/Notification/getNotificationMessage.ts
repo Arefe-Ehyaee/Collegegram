@@ -1,6 +1,6 @@
 export const getNotificationMessage = (
   notifType:
-    | "tag"
+    | "mention"
     | "comment"
     | "like"
     | "accept"
@@ -8,25 +8,26 @@ export const getNotificationMessage = (
     | "request"
     | "followedYou"
     | "followedOthers",
-  subject: string | undefined,
-  user: string | undefined,
+  actor: string | undefined,
+  reciever: string | undefined,
 ) => {
   switch (notifType) {
-    case "tag":
-      return `${subject} توی اون یکی عکس تگت کرده!`;
+    case "mention":
+      return `${actor} توی اون یکی عکس تگت کرده!`;
     case "comment":
-      return ` ${subject} برای  اون یکی عکس کامنت داده  !`;
+      return ` ${actor} برای  اون یکی عکس کامنت داده  !`;
     case "like":
-      return `${subject} این عکس رو لایک کرده!`;
+      return `${actor} این عکس رو لایک کرده!`;
     case "accept":
-      return `${subject} درخواست دوستی ات رو قبول کرده!`;
+      return `${actor} درخواست دوستی ات رو قبول کرده!`;
     case "reject":
-      return `${subject} درخواستت رو رد کرده!`;
+      return `${actor} درخواستت رو رد کرده!`;
       case "request":
-        return `${subject} درخواست دوستی داده!`;
+        return `${actor} درخواست دوستی داده!`;
     case "followedOthers":
-      return `${user}، ${subject} رو دنبال کرده!`;
+      return `${reciever}، ${actor} رو دنبال کرده!`;
     case "followedYou":
-      return `${subject} دنبالت کرده!`;
+      return `${actor} دنبالت کرده!`;
   }
 };
+

@@ -1,64 +1,159 @@
-import defaultAvatar from "../../../assets/icons/defaultavatar.svg";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { BeatLoader } from "react-spinners";
-import NotificationComponent from "./NotificationComponent";
+import NotificationComponent, {
+  NotificationComponentprops,
+} from "./NotificationComponent";
 import NotifBadge from "./NotifBadge";
+import { fetchMyFriendsNotifications } from "./fetch-requests/fetchMyFriendsNotifications";
+import { ApiNotification } from "./MyNotificationPageComponent";
+import defaultAvatar from "../../assets/icons/defaultavatar.svg";
+import { fetchFriendsNotificationCount } from "./fetch-requests/fetchFriendsNotificationsCount";
+import { fetchPersonalNotificationCount } from "./fetch-requests/fetchPersonalNotificationsCount";
+import { markNotificationsAsSeen } from "./fetch-requests/patchNotifications";
 
 export interface Notif {
   notifCounts: number;
 }
 
 export default function MyFriendssNotificationPageComponent() {
-  const [token, setToken] = useState<string | null>(null);
+  const token: string = localStorage.getItem("token") ?? ""
   const { ref, inView } = useInView();
 
+ 
+  const { data: personalNotifData } = useQuery({
+    queryKey: ["personal notification count"],
+    queryFn: fetchPersonalNotificationCount,
+    refetchOnWindowFocus: true,
+  });
+  const { data: friendsNotifData } = useQuery({
+    queryKey: ["friends notification count"],
+    queryFn: fetchFriendsNotificationCount,
+    refetchOnWindowFocus: true,
+  });
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isLoading,
+    isError,
+    error,
+  } = useInfiniteQuery({
+    queryKey: ["friendsNotifications", token],
+    queryFn: async ({ pageParam = 1 }) =>
+      fetchMyFriendsNotifications({ pageParam }, token ),
+    getNextPageParam: (lastPage) => {
+      return lastPage?.data?.nextPage ?? undefined;
+    },
+    initialPageParam: 1,
+    enabled: !!token,
+  });
+
+const mutation = useMutation({
+  mutationFn: (notificationIds: string[]) => markNotificationsAsSeen(notificationIds, token), 
+  onSuccess: () => {
+    console.log("Notifications marked as seen successfully");
+  },
+  onError: (error) => {
+    console.error("Failed to mark notifications as seen", error);
+  },
+});
+
+useEffect(() => {
+  const unseenNotificationIds: string[] | undefined = data?.pages
+    .flatMap((page) => page.data?.notifications)
+    .filter((notification: ApiNotification) => !notification.isSeen)
+    .map((notification: ApiNotification) => notification.id);
+
+  if (unseenNotificationIds && unseenNotificationIds.length > 0) {
+    mutation.mutate(unseenNotificationIds); 
+  }
+}, [data]);
+
+
+
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || " ");
-  }, []);
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
-  const NotifTest = {
-    notifCounts: 13,
-  };
-
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
   return (
     <div dir="rtl" className="px-[72px] max-sm:pr-2">
       <div className="mt-10 flex justify-start max-sm:justify-center">
         <NavLink to="/myNotifications">
           <div className="flex">
-            <h2 className="block px-7 font-isf text-xl max-sm:px-2">
+            <h2 className="block px-7 font-isf text-xl text-grey-400 max-sm:px-2">
               اعلانات من
             </h2>
-            {NotifTest.notifCounts > 0 && (
-              <NotifBadge notifCounts={NotifTest.notifCounts}></NotifBadge>
-            )}
+            {personalNotifData &&
+              personalNotifData.data.countUnseenNotifications > 0 && (
+                <NotifBadge
+                  notifCounts={personalNotifData.data.countUnseenNotifications}
+                ></NotifBadge>
+              )}
           </div>
         </NavLink>
 
         <span className="px-4">|</span>
 
         <NavLink to="/myFriendsNotifications">
-          <h2 className="block px-7 font-isf text-xl text-grey-400 max-sm:px-2">
-            اعلانات دوستان من
-          </h2>
+          <div className="flex">
+            <h2 className="block px-7 font-isf text-xl max-sm:px-2">
+              اعلانات دوستان من
+            </h2>
+            {friendsNotifData &&
+              friendsNotifData.data.countUnseenNotifications > 0 && (
+                <NotifBadge
+                  notifCounts={friendsNotifData.data.countUnseenNotifications}
+                ></NotifBadge>
+              )}
+          </div>
         </NavLink>
       </div>
-
       <div className="pt-16">
-        <NotificationComponent
-          notifType={"request"}
-          seen={true}
-        ></NotificationComponent>
-        <NotificationComponent
-          notifType={"reject"}
-          seen={true}
-        ></NotificationComponent>
+        {data?.pages.flatMap((page) =>
+          page.data?.notifications.map((notification: ApiNotification) => {
+            const {
+              action: { type },
+              actor,
+              isSeen,
+              receiver,
+              content: { comment },
+            } = notification;
+
+            const notificationProps: NotificationComponentprops = {
+              notifType: type as NotificationComponentprops["notifType"],
+              actor: actor
+                ? actor.firstName || actor.lastName
+                  ? `${actor.firstName ?? ""} ${actor.lastName ?? ""}`.trim()
+                  : actor.username
+                : undefined,
+              avatar: comment?.post.media[0].url || defaultAvatar,
+              seen: isSeen,
+              receiver: receiver
+                ? `${receiver.firstName} ${receiver.lastName}`
+                : "",
+              comment: comment?.description || "",
+            };
+
+            return (
+              <NotificationComponent
+                key={notification.id}
+                {...notificationProps}
+              />
+            );
+          }),
+        )}
 
         <div className="flex justify-center" ref={ref}>
-          {/* {isFetching && <BeatLoader />} */}
+          {isFetching && <BeatLoader />}
         </div>
       </div>
     </div>

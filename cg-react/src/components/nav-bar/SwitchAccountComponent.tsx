@@ -62,6 +62,7 @@ const SwitchAccountComponent = () => {
         localStorage.setItem('token', selectedProfile.token || ''); 
         localStorage.setItem('userProfiles', JSON.stringify(newProfiles));
         setUserProfiles(newProfiles);
+        navigate('/userprofile')
       };
   
     return (

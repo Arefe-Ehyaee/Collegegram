@@ -18,6 +18,7 @@ const ProfileDataWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
       const statusCode = error.response.status;
   
       if (statusCode === 401) {
+        localStorage.clear()
         navigate("/login"); 
         toast.error("نیاز به ورود مجدد دارید!");
       } else if (statusCode === 400) {

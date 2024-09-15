@@ -33,14 +33,11 @@ interface Posts {
 const ExploreComponent = () => {
   const [showPostModal, setPostShowModal] = useState(false);
   const [selectedPhotoId, setSelectedPhotoId] = useState<string>("");
-  const [token, setToken] = useState<string | null>(null);
 
   const { ref, inView } = useInView();
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || " ");
-  }, []);
+  const token: string = localStorage.getItem("token") ?? ""
+
 
   const handleOnClick = (id: string) => {
     setSelectedPhotoId(id);
