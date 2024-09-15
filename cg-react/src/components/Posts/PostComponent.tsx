@@ -72,7 +72,7 @@ const PostComponent = (props: PostsPageProps) => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    setToken(storedToken || " ");
+    setToken(storedToken || "");
   }, []);
 
   const {

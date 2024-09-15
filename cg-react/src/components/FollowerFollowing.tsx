@@ -13,13 +13,13 @@ import UnCloseFriendModal from "./profile-page/closeFriend/UnCloseFriendModal";
 import UnBlockingModal from "./profile-page/Blocking/UnBlockingModal";
 
 interface FollowerFollowingProps {
-    name?: string;
+    name: string;
     followersNumber?: number;
     avatar?: string;
 }
 export interface Follower {
     id?: string;
-    avatar: string;
+    avatar: { url: string };
     username: string;
     first_name?: string;
     last_name?: string;
@@ -28,19 +28,6 @@ export interface Follower {
     followersCount: number;
     followingsCount?: number;
   }
-  
-
-export const defaultProfile: Follower = {
-    id: 'defaultID',
-    username: 'defaultID',
-    avatar: defaultAvatar, 
-    first_name: 'نام',
-    last_name:'نشان',
-    postsCount: 0,
-    followersCount: 0,
-    followingsCount: 0,
-};
-
 
 const FollowerFollowing: React.FC<FollowerFollowingProps> = ({name, followersNumber, avatar}) => {
 
