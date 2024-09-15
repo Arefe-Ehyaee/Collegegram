@@ -30,7 +30,6 @@ interface Media {
 export default function ShowPostsComponent({ username }: ShowPostsProps) {
   const [showPostModal, setPostShowModal] = useState(false);
   const [selectedPhotoId, setSelectedPhotoId] = useState<string>("");
-  const [token, setToken] = useState<string | null>(null);
 
   const { ref, inView } = useInView();
 
@@ -43,10 +42,7 @@ export default function ShowPostsComponent({ username }: ShowPostsProps) {
   }, [showPostModal]);
 
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || "");
-  }, []);
+const token: string = localStorage.getItem("token") ?? ""
 
   const handleOnClick = (id: string) => {
     setSelectedPhotoId(id);
@@ -55,7 +51,7 @@ export default function ShowPostsComponent({ username }: ShowPostsProps) {
 
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading, isError, error } = useInfiniteQuery({
     queryKey: ['posts', token, username],
-    queryFn: async ({ pageParam = 1 }) => FetchPosts({ pageParam }, token || '', username),
+    queryFn: async ({ pageParam = 1 }) => FetchPosts({ pageParam }, token , username),
     getNextPageParam: (lastPage) => {
         return lastPage?.data?.nextPage ?? undefined; 
     },

@@ -15,9 +15,11 @@ import { useNavigate } from "react-router-dom";
 import CustomButton from "../CustomButton";
 import NotifBadge from "../Notification/NotifBadge";
 import SideNavbarToggleMenu from "./SideNavbarToggleMenu";
+import { useQuery } from "@tanstack/react-query";
+import { fetchNotificationCount } from "./fetchNotificationCount";
 
 export interface Notif {
-  notifCounts: number;
+  countUnseenNotifications: number;
 }
 
 export default function SideNavbarComponent() {
@@ -25,17 +27,19 @@ export default function SideNavbarComponent() {
   const avatar = userProfile.avatar;
   const username = userProfile.username;
   const [uploadModal, setUploadModal] = useState(false);
-
+  const token: string = localStorage.getItem("token") ?? ""
   const navigate = useNavigate();
 
   const handleCreatePostClick = () => {
     setUploadModal(true);
   };
 
-  const NotifTest = {
-    notifCounts: 333,
-  };
+;
 
+  const {data:notifDataTotal} = useQuery({queryKey:['navbar notification count'],
+    queryFn:fetchNotificationCount,
+    refetchOnWindowFocus:true
+  })
   return (
     <div dir="rtl" className="flex flex-col items-center justify-center">
       <div className="fixed right-0 top-16 mr-24 flex flex-col items-center">
@@ -75,10 +79,10 @@ export default function SideNavbarComponent() {
                 <li className="flex items-center rounded-3xl p-4 hover:bg-grey-500"> 
                   <img src={bell} alt="notifications icon" className="ml-2" />
                   <div className="flex">
-                    <a href="#" className="pl-4">اعلانات</a>
-                    {NotifTest.notifCounts > 0 && (
+                    <button onClick={() => navigate("/myNotifications")} className="pl-4">اعلانات</button>
+                    { notifDataTotal && notifDataTotal.data.countUnseenNotifications > 0 && (
                       <NotifBadge
-                        notifCounts={NotifTest.notifCounts}
+                        notifCounts={notifDataTotal.data.countUnseenNotifications}
                       ></NotifBadge>
                     )}
                   </div>

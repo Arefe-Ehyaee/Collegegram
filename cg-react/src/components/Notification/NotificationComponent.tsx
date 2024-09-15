@@ -3,11 +3,11 @@ import CustomButton from "../CustomButton";
 import { getNotificationMessage } from "./getNotificationMessage";
 
 export interface NotificationComponentprops {
-  subject?: string;
+  actor?: string;
   followersNumber?: number;
   avatar?: string;
   notifType:
-    | "tag"
+    | "mention"
     | "comment"
     | "like"
     | "accept"
@@ -15,27 +15,19 @@ export interface NotificationComponentprops {
     | "reject"
     | "followedYou"
     | "followedOthers";
-  user?: string;
+  receiver?: string;
   comment?: string;
   seen: boolean;
 }
 
-export const defaultProfile: NotificationComponentprops = {
-  subject: "سیمین سحابی",
-  avatar: defaultAvatar,
-  followersNumber: 0,
-  notifType: "reject",
-  user: "علی حلقه گیلاس",
-  comment: "چه عکس قشنگی!قشنگی قشنگیقشنگی قشنگیرقشنگی قشنگی قشنگیقشنگی قشنگی قشنگی قشنگی قشنگی قشنگی قشنگی قشنگیقشنگی قشنگ  قشنگیقشنگیقشنگیقشنگیقشنگیقشنگیقش قشنگی قشنگی قشنگی ",
-  seen: true,
-};
+
 
 const MyNotificationComponent = ({
-  subject,
+  actor,
   avatar,
   followersNumber,
   notifType,
-  user,
+  receiver,
   comment,
   seen
 }: NotificationComponentprops) => {
@@ -46,26 +38,26 @@ const MyNotificationComponent = ({
     >
       <div className="flex items-center gap-[27px]">
         <img
-          src={defaultAvatar}
+          src={avatar}
           alt="avatar"
           className="h-[64px] w-[64px] rounded-full"
         />
         <div>
           <div className="font-isf text-[13px] font-bold leading-[21.48px] text-green-400">
-            {getNotificationMessage(notifType, defaultProfile.subject, defaultProfile.user)}
+            {getNotificationMessage(notifType, actor, receiver)}
           </div>
           {notifType === "comment" && (
             <>
               <div
                 className="pt-1 font-isf text-[11px] font-normal leading-[14.3px] text-green-400 line-clamp-1"
                 dir="rtl"
-              >{defaultProfile.comment}</div>
+              >{comment}</div>
             </>
           )}
           <div
             className="pt-2 font-isf text-[11px] font-normal leading-[14.3px] text-green-400"
             dir="rtl"
-          >{`${0}دنبال کننده `}</div>
+          >{/*CreatedDate*/}</div>
         </div>
         {(notifType === "followedYou" || notifType === "followedOthers") && (
           <CustomButton

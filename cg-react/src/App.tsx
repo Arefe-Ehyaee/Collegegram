@@ -101,8 +101,8 @@ export default function App() {
             <Route path="/myNotifications" element={<MyNotificationPage/>}/>
             <Route path="/myFriendsNotifications" element={<MyFriendsNotifPage/>}/>
             <Route path="/closeFriendsList" element={<CloseFriendsPage/>}/>
-            <Route path="/users/profile" element={<UsersProfilePage />} />
-            <Route path="/users/:username" element={<ParamToQueryNavigate baseUrl="/users/profile" paramKey="username"/>}/>
+            <Route path="/users/profile" element={<PrivateRoute><UsersProfilePage /></PrivateRoute>} />
+            <Route path="/users/:username" element={<PrivateRoute><ParamToQueryNavigate baseUrl="/users/profile" paramKey="username"/></PrivateRoute>}/>
             <Route path="/error"  element={<ErrorLayout/>}/>
             <Route path="*" element={<Navigate to='/error' replace/>} />
           </Routes>
