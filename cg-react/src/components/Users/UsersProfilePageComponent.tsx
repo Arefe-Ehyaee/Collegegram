@@ -37,6 +37,7 @@ export default function UsersProfilePageComponent() {
     | "Pending"
     | "isBlocked"
     | "Blocked";
+  const token: string = localStorage.getItem("token") ?? "";
   const [searchParams] = useSearchParams();
   const username = searchParams.get("username");
   const [userId, setUserId] = useState<string | null>(null);
@@ -55,8 +56,6 @@ export default function UsersProfilePageComponent() {
   const loggedUserData = useRecoilValue(userProfileAtom);
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
   const [closeFriendStatus, setCloseFriendStatus] = useState(false);
-
-  const token: string = localStorage.getItem("token") ?? "";
 
   const navigate = useNavigate();
   //////////////////////////////////////////////////////////////////////////////////////////
