@@ -26,18 +26,13 @@ interface ShowPostModalProps {
   id: string;
 }
 
-const ShowPostModal = ({ onClose, id, children }: ShowPostModalProps) => {
+const ShowPostModal = ({ onClose, id }: ShowPostModalProps) => {
   const userProfile = useRecoilValue(userProfileAtom);
   console.log("profileData", userProfile);
 
-  const [token, setToken] = useState<string | null>(null);
+  const token: string = localStorage.getItem("token") ?? "";
   const [editPostModal, setEditPostModal] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || " ");
-  }, []);
 
   const handleEditPostClick = () => {
     setEditPostModal(true);
@@ -51,7 +46,7 @@ const ShowPostModal = ({ onClose, id, children }: ShowPostModalProps) => {
 
   const { data, error, isPending, isError } = useQuery({
     queryKey: ["post", id],
-    queryFn: () => FetchPost(token || "", id),
+    queryFn: () => FetchPost(token, id),
     enabled: !!token,
   });
 

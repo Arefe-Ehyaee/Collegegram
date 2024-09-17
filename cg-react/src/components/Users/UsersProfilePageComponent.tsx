@@ -5,15 +5,12 @@ import ToggleMenu from "../ToggleMenu";
 import Dots from "../../assets/icons/Dots.svg";
 import ModalTemplate from "../ModalTemplate";
 import {
-  useInfiniteQuery,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
 import { FetchOthersProfile } from "./FetchOthersProfile";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { followUser } from "./followUser";
 import { BeatLoader, ClipLoader } from "react-spinners";
-import { unfollowUser } from "./unfollowUser";
 import ShowPostsComponent from "../Posts/ShowPostsComponent";
 import { defaultProfile, userProfileAtom } from "../../user-actions/atoms";
 import CustomButton from "../CustomButton";
@@ -21,13 +18,7 @@ import blockingIcon from "../../assets/icons/blockUser.svg";
 import addToCloseFriendsIcon from "../../assets/icons/addToCloseFriends.svg";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { toast } from "react-toastify";
-import FollowerFollowing from "../FollowerFollowing";
-import { FetchFollowers } from "../profile-page/FetchFollowers";
-import { FetchFollowings } from "../profile-page/FetchFollowings";
-import { useInView } from "react-intersection-observer";
 import MenuLiOptionComponent from "../MenuLiOptionComponent";
-import { UnBlockAUser } from "../profile-page/Blocking/UnBlockAUser";
-import UnBlockingModal from "../profile-page/Blocking/UnBlockingModal";
 import verified from "../../assets/icons/_Verified.svg";
 import { HandleError } from "./UserProfileErrorHandler";
 import UsersCloseFriendModal from "./UsersCloseFriendModal";
@@ -46,7 +37,6 @@ export default function UsersProfilePageComponent() {
     | "Pending"
     | "isBlocked"
     | "Blocked";
-  const [token, setToken] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
   const username = searchParams.get("username");
   const [userId, setUserId] = useState<string | null>(null);
@@ -66,10 +56,8 @@ export default function UsersProfilePageComponent() {
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
   const [closeFriendStatus, setCloseFriendStatus] = useState(false);
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || " ");
-  }, []);
+  const token: string = localStorage.getItem("token") ?? "";
+
   const navigate = useNavigate();
   //////////////////////////////////////////////////////////////////////////////////////////
   const {
@@ -79,7 +67,7 @@ export default function UsersProfilePageComponent() {
     error: userErrorMsg,
   } = useQuery({
     queryKey: ["othersProfile", username],
-    queryFn: () => FetchOthersProfile(token || "", username as string),
+    queryFn: () => FetchOthersProfile(token , username as string),
     enabled: !!username,
   });
   useEffect(() => {

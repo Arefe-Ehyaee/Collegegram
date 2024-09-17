@@ -18,8 +18,6 @@ import { ParamToQueryNavigate } from "./components/ParamToQueryNavigate";
 import ExplorePage from "./components/explore/ExplorePage";
 import BlackListPage from "./components/profile-page/Blocking/BlackListPage";
 import CloseFriendsPage from "./components/profile-page/closeFriend/CloseFriendsPage";
-import NotificationPageComponent from "./components/Notification/MyNotificationPageComponent";
-import MyNotificationPageComponent from "./components/Notification/MyNotificationPageComponent";
 import MyNotificationPage from "./components/Notification/MyNotificationPage";
 import MyFriendsNotifPage from "./components/Notification/MyFriendsNotifPage ";
 import BookmarksPage from "./components/bookmarks/BookmarksPage";

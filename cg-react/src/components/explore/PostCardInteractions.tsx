@@ -23,13 +23,9 @@ const PostCardInteractions = (props: PostInteractionsProps) => {
   const { comments, likes, bookmarks, id, isBookmarked, isLiked } = props;
   const [isLikedButton, setIsLikedButton] = useState(false);
   const [isBookmarkedButton, setIsBookmarkedButton] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
+  const token: string = localStorage.getItem("token") ?? "";
   const queryClient = useQueryClient();
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || " ");
-  }, []);
 
   const {
     data: likeData,
@@ -38,7 +34,7 @@ const PostCardInteractions = (props: PostInteractionsProps) => {
     refetch: likeRefetch,
   } = useQuery({
     queryKey: ["likePost", id],
-    queryFn: () => likePost(token || "", id as string),
+    queryFn: () => likePost(token , id as string),
     enabled: false,
   });
   const {
@@ -49,7 +45,7 @@ const PostCardInteractions = (props: PostInteractionsProps) => {
     refetch: unlikeRefetch,
   } = useQuery({
     queryKey: ["unlikePost", id],
-    queryFn: () => unlikePost(token || "", id as string),
+    queryFn: () => unlikePost(token , id as string),
     enabled: false,
   });
   const {
@@ -60,7 +56,7 @@ const PostCardInteractions = (props: PostInteractionsProps) => {
     refetch: bookmarkRefetch,
   } = useQuery({
     queryKey: ["bookmarkPost", id],
-    queryFn: () => bookmarkPost(token || "", id as string),
+    queryFn: () => bookmarkPost(token , id as string),
     enabled: false,
   });
   const {
@@ -70,7 +66,7 @@ const PostCardInteractions = (props: PostInteractionsProps) => {
     refetch: unbookmarkRefetch,
   } = useQuery({
     queryKey: ["unbookmarkPost", id],
-    queryFn: () => unbookmarkPost(token || "", id as string),
+    queryFn: () => unbookmarkPost(token , id as string),
     enabled: false,
   });
 

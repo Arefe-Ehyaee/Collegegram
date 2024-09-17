@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import { useInView } from 'react-intersection-observer';
 import { toast } from 'react-toastify';
 import { BeatLoader } from 'react-spinners';
@@ -26,7 +26,7 @@ interface Posts {
 const TaggedPostsComponent = () => {
     const [showPostModal, setPostShowModal] = useState(false);
   const [selectedPhotoId, setSelectedPhotoId] = useState<string>("");
-  const [token, setToken] = useState<string | null>(null);
+  const token: string = localStorage.getItem("token") ?? "";
 
   const { ref, inView } = useInView();
 
@@ -39,11 +39,6 @@ const TaggedPostsComponent = () => {
   }, [showPostModal]);
 
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || "");
-  }, []);
-
   const handleOnClick = (id: string) => {
     setSelectedPhotoId(id);
     setPostShowModal(true);
@@ -51,7 +46,7 @@ const TaggedPostsComponent = () => {
 
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading, isError, error } = useInfiniteQuery({
     queryKey: ['TaggedPosts', token],
-    queryFn: async ({ pageParam = 1 }) => fetchTaggedPosts({ pageParam }, token || ''),
+    queryFn: async ({ pageParam = 1 }) => fetchTaggedPosts({ pageParam }, token),
     getNextPageParam: (lastPage) => {
         return lastPage?.data?.nextPage ?? undefined; 
     },
