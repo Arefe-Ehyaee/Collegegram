@@ -15,8 +15,7 @@ import { FetchFollowings } from "./FetchFollowings";
 import CustomButton from "../CustomButton";
 import { useInView } from "react-intersection-observer";
 import { BeatLoader } from "react-spinners";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+
 
 export interface Follower {
   id?: string;
@@ -41,21 +40,11 @@ export interface Following {
 export default function ProfilePageComponent() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
-
-  const [token, setToken] = useState<string | null>(null);
-
+  const token: string = localStorage.getItem("token") ?? "";
   const [FollowerListModal, setFollowerListModal] = useState(false);
   const [FollowingListModal, setFollowingListModal] = useState(false);
-
   const { ref: followerRef, inView: followerInView } = useInView();
   const { ref: followingRef, inView: followingInView } = useInView();
-  const navigate = useNavigate();
-
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || " ");
-  }, []);
 
   useEffect(() => {
     if (FollowerListModal || FollowingListModal) {
@@ -78,7 +67,7 @@ export default function ProfilePageComponent() {
   } = useInfiniteQuery({
     queryKey: ["followers", userProfile.id],
     queryFn: async ({ pageParam = 1 }) =>
-      FetchFollowers({ pageParam }, userProfile.id || "", token || ""),
+      FetchFollowers({ pageParam }, userProfile.id , token ),
     getNextPageParam: (lastPage) => {
       return lastPage?.data?.nextPage ?? undefined;
     },
@@ -103,7 +92,7 @@ export default function ProfilePageComponent() {
   } = useInfiniteQuery({
     queryKey: ["followings", userProfile.id],
     queryFn: async ({ pageParam = 1 }) =>
-      FetchFollowings({ pageParam }, userProfile.id || "", token || ""),
+      FetchFollowings({ pageParam }, userProfile.id , token),
     getNextPageParam: (lastPage) => {
       return lastPage?.data?.nextPage ?? undefined;
     },

@@ -1,9 +1,6 @@
-import { useRecoilState } from "recoil";
-import avatar107 from "../../assets/Images/Frame 107.png"
 import send from "../../../assets/icons/send.svg"
-import { userProfileAtom } from "../../../user-actions/atoms";
-import { useEffect, useRef, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRef } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { PostAComment } from "./PostAComments";
 
 
@@ -19,19 +16,12 @@ const CommentingComponent = (props: CommentingComponentProps) => {
   const { avatar, id, styling, commnetUsername, parentId } = props;
 
   const comment = useRef<HTMLInputElement | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || "");
-  }, []);
-
+  const token: string = localStorage.getItem("token") ?? "";
   const queryClient = useQueryClient();
 
   const handleSendClick = async () => {
     const commentValue = comment.current?.value ?? '';
     console.log(commentValue);
-    console.log("parentId in commentingComponent", parentId);
     if (token && comment.current) {
       try {
         await PostAComment(token, id, commentValue, parentId ?? null);

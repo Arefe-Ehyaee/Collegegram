@@ -30,7 +30,7 @@ interface Media {
 export default function ShowPostsComponent({ username }: ShowPostsProps) {
   const [showPostModal, setPostShowModal] = useState(false);
   const [selectedPhotoId, setSelectedPhotoId] = useState<string>("");
-
+  const token: string = localStorage.getItem("token") ?? "";
   const { ref, inView } = useInView();
 
   useEffect(() => {
@@ -40,9 +40,6 @@ export default function ShowPostsComponent({ username }: ShowPostsProps) {
       document.body.style.overflow = "unset";
     }
   }, [showPostModal]);
-
-
-const token: string = localStorage.getItem("token") ?? ""
 
   const handleOnClick = (id: string) => {
     setSelectedPhotoId(id);

@@ -26,8 +26,7 @@ interface Posts {
 const BookmarksComponent = () => {
     const [showPostModal, setPostShowModal] = useState(false);
   const [selectedPhotoId, setSelectedPhotoId] = useState<string>("");
-  const [token, setToken] = useState<string | null>(null);
-
+  const token: string = localStorage.getItem("token") ?? "";
   const { ref, inView } = useInView();
 
   useEffect(() => {
@@ -39,10 +38,7 @@ const BookmarksComponent = () => {
   }, [showPostModal]);
 
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || "");
-  }, []);
+
 
   const handleOnClick = (id: string) => {
     setSelectedPhotoId(id);
@@ -51,7 +47,7 @@ const BookmarksComponent = () => {
 
   const { data, fetchNextPage, hasNextPage, isFetching, isLoading, isError, error } = useInfiniteQuery({
     queryKey: ['Bookmarks', token],
-    queryFn: async ({ pageParam = 1 }) => fetchBookmarks({ pageParam }, token || ''),
+    queryFn: async ({ pageParam = 1 }) => fetchBookmarks({ pageParam }, token ),
     getNextPageParam: (lastPage) => {
         return lastPage?.data?.nextPage ?? undefined; 
     },

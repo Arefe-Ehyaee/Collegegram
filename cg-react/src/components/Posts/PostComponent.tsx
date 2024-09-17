@@ -62,18 +62,13 @@ const PostComponent = (props: PostsPageProps) => {
   const avatar = userProfile.avatar;
   const username = userProfile.username;
 
-  const [token, setToken] = useState<string | null>(null);
+  const token: string = localStorage.getItem("token") ?? "";
 
   const [editPostModal, setEditPostModal] = useState(false);
 
   const handleEditPostClick = () => {
     setEditPostModal(true);
   };
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || "");
-  }, []);
 
   const {
     data: commentData,

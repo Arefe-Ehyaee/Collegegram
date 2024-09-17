@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import stepper1 from "../../assets/icons/stepper1.svg";
 import stepper2 from "../../assets/icons/stepper2.svg";
 import stepper3 from "../../assets/icons/stepper3.svg";
@@ -8,12 +8,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import InputField from "../TextInputComponent";
-import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import Delete from "../../assets/icons/close.svg";
 import CustomButton from "../CustomButton";
-import { useRecoilValue } from "recoil";
-import { userProfileAtom } from "../../user-actions/atoms";
 
 interface EditModalProps {
   onClose: Function;
@@ -75,12 +72,8 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
   const [selectedPhotos, setSelectedPhotos] = useState<File[]>([]);
   const [deletedPhotos, setDeletedPhotos] = useState<string[]>([]);
   const [currentStep, setCurrentStep] = useState(1);
-  const [token, setToken] = useState<string | null>(null);
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || " ");
-  }, []);
-  
+  const token: string = localStorage.getItem("token") ?? "";
+ 
 
   useEffect(() => {
     if (postData) {
@@ -91,18 +84,12 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
 
 
   const handleDeleteEditImage = (index: number, id?: string) => {
-    // setclickedDelete((prevState) => !prevState);
-
-    console.log("deletedPhotos", deletedPhotos);
 
     if (id) {
     setDeletedPhotos((prevState) => {
-      // Check if the ID already exists in the array.
       if (prevState.includes(id)) {
-        // If it exists, remove it (toggle off).
         return prevState.filter((photoId) => photoId !== id);
       } else {
-        // If it doesn't exist, add it (toggle on).
         return [...prevState, id];
       }
     });

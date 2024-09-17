@@ -21,28 +21,20 @@ export interface User {
 
 
 export default function CloseFriendsPageComponent() {
-
-  const [token, setToken] = useState<string | null>(null);
+  const token: string = localStorage.getItem("token") ?? "";
   const { ref, inView } = useInView();
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || " ");
-    console.log("CloseFriendListData", CloseFriendListData);
-  }, []);
 
   const {
     data: CloseFriendListData,
     fetchNextPage: fetchNextPageCloseFriendList,
     hasNextPage: hasNextPageCloseFriendList,
     isFetching: isFetchingCloseFriendList,
-    isLoading: isLoadingCloseFriendList,
     isError: isErrorCloseFriendList,
     error: CloseFriendListError,
   } = useInfiniteQuery({
     queryKey: ["CloseFriendList", token],
     queryFn: async ({ pageParam = 1 }) =>
-      GetCloseFriendList({ pageParam }, token || ""),
+      GetCloseFriendList({ pageParam }, token ),
     getNextPageParam: (lastPage) => {
       return lastPage?.data?.nextPage ?? undefined;
     },

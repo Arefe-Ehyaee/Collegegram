@@ -1,7 +1,7 @@
 import FollowerFollowing from "../../FollowerFollowing";
 import defaultAvatar from "../../../assets/icons/defaultavatar.svg";
 import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { BeatLoader } from "react-spinners";
@@ -21,14 +21,8 @@ export interface User {
 
 
 export default function BlackListPageComponent() {
-  const [token, setToken] = useState<string | null>(null);
+  const token: string = localStorage.getItem("token") ?? "";
   const { ref, inView } = useInView();
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    setToken(storedToken || " ");
-    console.log("blackListData", blackListData);
-  }, []);
 
   const {
     data: blackListData,
@@ -41,7 +35,7 @@ export default function BlackListPageComponent() {
   } = useInfiniteQuery({
     queryKey: ["blackList", token],
     queryFn: async ({ pageParam = 1 }) =>
-      GetBlackList({ pageParam }, token || ""),
+      GetBlackList({ pageParam }, token),
     getNextPageParam: (lastPage) => {
       return lastPage?.data?.nextPage ?? undefined;
     },
