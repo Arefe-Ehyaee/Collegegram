@@ -87,7 +87,7 @@ export default function App() {
               }
             />
             <Route
-              path="/posts"
+              path="/posts/:postId"
               element={
                 <PrivateRoute>
                   <PostsPage />
