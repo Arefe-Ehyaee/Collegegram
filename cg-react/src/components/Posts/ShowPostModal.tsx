@@ -40,7 +40,7 @@ const ShowPostModal = ({ onClose, id }: ShowPostModalProps) => {
 
   const handleOnClick = () => {
     if (data && id) {
-      navigate("/posts", { state: { post: data, postId: id } });
+      navigate(`/posts/${id}`, { state: { post: data, postId: id } });
     }
   };
 
