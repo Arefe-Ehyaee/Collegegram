@@ -26,7 +26,7 @@ const CommentingComponent = (props: CommentingComponentProps) => {
       try {
         await PostAComment(token, id, commentValue, parentId ?? null);
         comment.current.value = '';
-        queryClient.invalidateQueries({ queryKey: ["comments", token] });
+        queryClient.invalidateQueries({ queryKey: ["comments", token, id] });
       } catch (error) {
         console.error('Error sending comment:', error);
       }
