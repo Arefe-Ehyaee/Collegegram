@@ -91,7 +91,7 @@ const PostComponent = (props: PostsPageProps) => {
     isError: isErrorComment,
     error: commentError,
   } = useInfiniteQuery({
-    queryKey: ["comments", token],
+    queryKey: ["comments", token, id],
     queryFn: async ({ pageParam = 1 }) =>
       FetchComments({ pageParam }, token || "", id),
     getNextPageParam: (lastPage) => {

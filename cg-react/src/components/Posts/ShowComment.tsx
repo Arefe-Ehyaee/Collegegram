@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import replyButton from "../../assets/icons/reply.svg";
 import likeButton from "../../assets/icons/commentHeart.svg";
 import likeButtonActive from "../../assets/icons/commentHeartActive.svg";
 import timeTranslate from "../../utilities/timeTranslationFunction";
+import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
+import { CommentLike } from "./comment/CommentLike";
+import { CommentUnLike } from "./comment/CommentUnLike";
 
 export interface ShowCommentProps {
   id: string;
@@ -13,7 +16,7 @@ export interface ShowCommentProps {
   description: string;
   parentId: string | null;
   postId: string;
-  likeCount: number;
+  likeCommentsCount: number;
   replies?: ShowCommentProps[];
   user: User;
   onReplyClick: (username: string | null, commentId: string) => void;
@@ -26,35 +29,56 @@ export interface User {
   lastname: string;
 }
 
-// function handleSendClick(id: string) {
-//   const commentValue = (comment.current?.value ?? '');
-//   // SetEnteredComment(commentValue);
-//   console.log(comment.current?.value);
-
-//   if(comment.current){
-//     PostAComment(token || "", id, commentValue, '');
-//     comment.current.value = '';
-//   }
-// }
 
 const ShowComment= (props: ShowCommentProps) => {
 
   const [isLiked, setIsLiked] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
 
   const [isReplyClicked, setIsReplyClicked] = useState(false);
+  const queryClient = useQueryClient();
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken || " ");
+  }, []);
 
-  const handleLikeClick = () => {
-    setIsLiked((prevLiked) => !prevLiked); 
+  const {
+    data: commnetlikeData,
+    isError: commentlikeError,
+    error: commentlikeErrorMsg,
+    refetch: commentlikeRefetch,
+  } = useQuery({
+    queryKey: ["likeComment", props.id],
+    queryFn: () => CommentLike(token || "",props.postId, props.id),
+    enabled: false,
+  });
+
+  const {
+    data: uncommnetlikeData,
+    isError: uncommentlikeError,
+    error: uncommentlikeErrorMsg,
+    refetch: uncommentlikeRefetch,
+  } = useQuery({
+    queryKey: ["unlikeComment", props.id],
+    queryFn: () => CommentUnLike(token || "",props.postId, props.id),
+    enabled: false,
+  });
+
+  const handleLikeClick = async () => {
+    if (!isLiked) {
+      await commentlikeRefetch();
+      setIsLiked(true);
+    } else {
+      await uncommentlikeRefetch();
+      setIsLiked(false);
+    }
+    queryClient.invalidateQueries({ queryKey: ["comments", token, props.postId] });
   };
 
   const handleReplyClick = () => {
-
     setIsReplyClicked((prevReply) => !prevReply);
-   
-
     props.onReplyClick(props.user.username, props.id);
-    console.log("comment id", props.id);
   }
 
   const commentStyle = props.parentId 
@@ -74,7 +98,7 @@ const ShowComment= (props: ShowCommentProps) => {
         </div>
         <div className="flex flex-row items-center gap-4">
           <button onClick={handleLikeClick} className="flex flex-row items-center">
-            <p className="mx-2 text-red-200 leading-4">{props.likeCount}</p>
+            <p className="mx-2 text-red-300 text-sm leading-4">{props.likeCommentsCount}</p>
             <img
               src={isLiked ? likeButtonActive : likeButton}
               alt="like Button"
