@@ -29,14 +29,13 @@ import FollowerListModalComponent from "../FollowerListModalComponent";
 import FollowingListModalComponent from "../FollowingListModalComponent";
 import { getButtonProperties } from "./UsersGetButtonProperties";
 import useFollowUnfollow from "./useFollowUnfollow";
-
+export type FollowStatus =
+| "Following"
+| "NotFollowing "
+| "Pending"
+| "isBlocked"
+| "Blocked";
 export default function UsersProfilePageComponent() {
-  type FollowStatus =
-    | "Following"
-    | "NotFollowing "
-    | "Pending"
-    | "isBlocked"
-    | "Blocked";
   const token: string = localStorage.getItem("token") ?? "";
   const [searchParams] = useSearchParams();
   const username = searchParams.get("username");
@@ -100,7 +99,6 @@ export default function UsersProfilePageComponent() {
   };
   ////////////////////////////////////////////////////////////////
   const handleButtonClicked = async () => {
-    console.log("followingStatus", userData.data.followingStatus);
     if (followingStatus === "Blocked") {
       toast.error("این کاربر بلاکت کرده، پس نمیتونی دنبالش کنی!");
       return;
@@ -120,12 +118,8 @@ export default function UsersProfilePageComponent() {
   };
   /////////////////////////////////////////////////////////////////////////////////////
   const {
-    followData,
-    followError,
     followFetching,
     followRefetch,
-    unfollowData,
-    unfollowError,
     unfollowFetching,
     unfollowRefetch,
   } = useFollowUnfollow(token, userId);

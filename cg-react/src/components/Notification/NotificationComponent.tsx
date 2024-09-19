@@ -1,17 +1,28 @@
+import { toast } from "react-toastify";
 import defaultAvatar from "../../assets/icons/defaultavatar.svg";
 import CustomButton from "../CustomButton";
+import { getButtonProperties } from "../Users/UsersGetButtonProperties";
+import { FollowStatus } from "../Users/UsersProfilePageComponent";
 import { getNotificationMessage } from "./getNotificationMessage";
+import useFollowUnfollow from "../Users/useFollowUnfollow";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import timeTranslate from "../../utilities/timeTranslationFunction";
+import { acceptFollow } from "./follow-requests/acceptFollow";
+import { rejectFollow } from "./follow-requests/rejectFollow";
 
 export interface NotificationComponentprops {
   actor?: string;
-  followersNumber?: number;
+  userId?: string;
+  followingStatus: FollowStatus;
+  followedStatus: FollowStatus;
+  actionDate: string;
   avatar?: string;
   notifType:
     | "mention"
     | "comment"
-    | "like"
-    | "accept"
-    | "request"
+    | "likePost"
+    | "acceptFollow"
+    | "requestFollow"
     | "reject"
     | "followedYou"
     | "followedOthers";
@@ -20,27 +31,105 @@ export interface NotificationComponentprops {
   seen: boolean;
 }
 
-
-
 const MyNotificationComponent = ({
   actor,
   avatar,
-  followersNumber,
+  followingStatus,
+  followedStatus,
+  actionDate,
   notifType,
   receiver,
   comment,
-  seen
+  seen,
+  userId,
 }: NotificationComponentprops) => {
+  const token: string = localStorage.getItem("token") ?? "";
+  const queryClient = useQueryClient();
+  const { followRefetch, unfollowRefetch } = useFollowUnfollow(
+    token,
+    userId as string,
+  );
+  const {
+    data: acceptData,
+    isError: acceptError,
+    isFetching: acceptFetching,
+    refetch: acceptRefetch,
+  } = useQuery({
+    queryKey: ["acceptUser", userId],
+    queryFn: () => acceptFollow(token || "", userId as string),
+    enabled: false,
+  });
+  const {
+    data: rejectData,
+    isError: rejectError,
+    isFetching: rejectFetching,
+    refetch: rejectRefetch,
+  } = useQuery({
+    queryKey: ["rejectUser", userId],
+    queryFn: () => rejectFollow(token || "", userId as string),
+    enabled: false,
+  });
+  const handleAcceptButtonClicked = async () => {
+    await acceptRefetch();
+    queryClient.invalidateQueries({
+      queryKey: ["friendsNotifications", token],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ["personalNotifications", token],
+    });
+  };
+  const handleRejectButtonClicked = async () => {
+    await rejectRefetch();
+    queryClient.invalidateQueries({
+      queryKey: ["friendsNotifications", token],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ["personalNotifications", token],
+    });
+  };
+
+  const handleFollowButtonClicked = async () => {
+    if (followingStatus === "Blocked") {
+      toast.error("این کاربر بلاکت کرده، پس نمیتونی دنبالش کنی!");
+      return;
+    } else if (followedStatus === "Blocked") {
+      toast.error("این کاربر رو بلاک کردی، پس نمیتونی دنبالش کنی!");
+      return;
+    } else if (
+      followingStatus === "Following" ||
+      followingStatus === "Pending"
+    ) {
+      await unfollowRefetch();
+      queryClient.invalidateQueries({
+        queryKey: ["friendsNotifications", token],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["personalNotifications", token],
+      });
+    } else {
+      await followRefetch();
+      queryClient.invalidateQueries({
+        queryKey: ["friendsNotifications", token],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["personalNotifications", token],
+      });
+    }
+  };
+  const { text, className } = getButtonProperties(
+    followingStatus,
+    followedStatus,
+  );
   return (
     <div
-      className={`${seen ? "bg-grey-100 border-none" : "bg-lavender border-grey-700"} my-4 flex h-[64px] items-center justify-between gap-[93px] rounded-full border-b`}
+      className={`${seen ? "border-none bg-grey-100" : "border-grey-700 bg-lavender"} my-4 flex h-[64px] items-center justify-between gap-[93px] rounded-full border-b`}
       dir="rtl"
     >
       <div className="flex items-center gap-[27px]">
         <img
           src={avatar}
           alt="avatar"
-          className="h-[64px] w-[64px] rounded-full"
+          className="aspect-square h-[64px] w-[64px] rounded-full object-cover"
         />
         <div>
           <div className="font-isf text-[13px] font-bold leading-[21.48px] text-green-400">
@@ -49,35 +138,39 @@ const MyNotificationComponent = ({
           {notifType === "comment" && (
             <>
               <div
-                className="pt-1 font-isf text-[11px] font-normal leading-[14.3px] text-green-400 line-clamp-1"
+                className="line-clamp-1 pt-1 font-isf text-[11px] font-normal leading-[14.3px] text-green-400"
                 dir="rtl"
-              >{comment}</div>
+              >
+                {comment}
+              </div>
             </>
           )}
           <div
             className="pt-2 font-isf text-[11px] font-normal leading-[14.3px] text-green-400"
             dir="rtl"
-          >{/*CreatedDate*/}</div>
+          >
+            {timeTranslate(actionDate)}
+          </div>
         </div>
         {(notifType === "followedYou" || notifType === "followedOthers") && (
           <CustomButton
-            text="+ دنبال کردن"
-            className="bg-red-200"
-            // handleOnClick={}
+            text={text}
+            className={className}
+            handleOnClick={handleFollowButtonClicked}
           ></CustomButton>
         )}
 
-        {notifType === "request" && (
+        {notifType === "requestFollow" && followedStatus === "Pending" && (
           <>
             <CustomButton
               text="قبولههه"
               className="bg-red-200"
-              // handleOnClick={}
+              handleOnClick={handleAcceptButtonClicked}
             ></CustomButton>
             <CustomButton
               text="خوشم نمیاد ازش"
-              className="bg-red-200"
-              // handleOnClick={}
+              className="border border-red-200 !text-red-200"
+              handleOnClick={handleRejectButtonClicked}
             ></CustomButton>
           </>
         )}

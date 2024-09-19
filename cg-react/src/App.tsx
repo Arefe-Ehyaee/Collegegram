@@ -94,11 +94,11 @@ export default function App() {
                 </PrivateRoute>
               }
             />
-            <Route path="/explore" element={<ExplorePage/>}/>
-            <Route path="/balckList" element={<BlackListPage/>}/>
-            <Route path="/myNotifications" element={<MyNotificationPage/>}/>
-            <Route path="/myFriendsNotifications" element={<MyFriendsNotifPage/>}/>
-            <Route path="/closeFriendsList" element={<CloseFriendsPage/>}/>
+            <Route path="/explore" element={<PrivateRoute><ExplorePage/></PrivateRoute>}/>
+            <Route path="/balckList" element={<PrivateRoute><BlackListPage/></PrivateRoute>}/>
+            <Route path="/myNotifications" element={<PrivateRoute><MyNotificationPage/></PrivateRoute>}/>
+            <Route path="/myFriendsNotifications" element={<PrivateRoute><MyFriendsNotifPage/></PrivateRoute>}/>
+            <Route path="/closeFriendsList" element={<PrivateRoute><CloseFriendsPage/></PrivateRoute>}/>
             <Route path="/users/profile" element={<PrivateRoute><UsersProfilePage /></PrivateRoute>} />
             <Route path="/users/:username" element={<PrivateRoute><ParamToQueryNavigate baseUrl="/users/profile" paramKey="username"/></PrivateRoute>}/>
             <Route path="/error"  element={<ErrorLayout/>}/>

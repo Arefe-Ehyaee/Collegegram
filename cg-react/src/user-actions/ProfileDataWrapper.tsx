@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-
+import defaultavatar from '../assets/icons/defaultavatar.svg';
 
 const ProfileDataWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
@@ -69,7 +69,7 @@ const ProfileDataWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     if (profileData ) {
-      const avatarURL = profileData.data.avatar ? `${profileData.data.avatar.url}` : undefined;
+      const avatarURL = profileData.data.avatar ? `${profileData.data.avatar.url}` : defaultavatar;
       setUserProfile(prevProfile => ({
         ...prevProfile,
         username: profileData.data.username || "",
@@ -82,7 +82,8 @@ const ProfileDataWrapper: React.FC<{ children: React.ReactNode }> = ({ children 
         postsCount: profileData.data.postsCount || prevProfile.postsCount,
         followersCount: profileData.data.followersCount || prevProfile.followersCount,
         followingsCount: profileData.data.followingsCount || prevProfile.followingsCount,
-        isPrivate: profileData.data.isPrivate || prevProfile.isPrivate
+        isPrivate: profileData.data.isPrivate || prevProfile.isPrivate,
+        token: token ?? prevProfile.token
       }));
     }
   }, [profileData]);
