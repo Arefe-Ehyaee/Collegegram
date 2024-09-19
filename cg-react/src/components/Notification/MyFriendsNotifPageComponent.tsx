@@ -19,10 +19,9 @@ export interface Notif {
 }
 
 export default function MyFriendssNotificationPageComponent() {
-  const token: string = localStorage.getItem("token") ?? ""
+  const token: string = localStorage.getItem("token") ?? "";
   const { ref, inView } = useInView();
 
- 
   const { data: personalNotifData } = useQuery({
     queryKey: ["personal notification count"],
     queryFn: fetchPersonalNotificationCount,
@@ -44,7 +43,7 @@ export default function MyFriendssNotificationPageComponent() {
   } = useInfiniteQuery({
     queryKey: ["friendsNotifications", token],
     queryFn: async ({ pageParam = 1 }) =>
-      fetchMyFriendsNotifications({ pageParam }, token ),
+      fetchMyFriendsNotifications({ pageParam }, token),
     getNextPageParam: (lastPage) => {
       return lastPage?.data?.nextPage ?? undefined;
     },
@@ -52,28 +51,27 @@ export default function MyFriendssNotificationPageComponent() {
     enabled: !!token,
   });
 
-const mutation = useMutation({
-  mutationFn: (notificationIds: string[]) => markNotificationsAsSeen(notificationIds, token), 
-  onSuccess: () => {
-    console.log("Notifications marked as seen successfully");
-  },
-  onError: (error) => {
-    console.error("Failed to mark notifications as seen", error);
-  },
-});
+  const mutation = useMutation({
+    mutationFn: (notificationIds: string[]) =>
+      markNotificationsAsSeen(notificationIds, token),
+    onSuccess: () => {
+      console.log("Notifications marked as seen successfully");
+    },
+    onError: (error) => {
+      console.error("Failed to mark notifications as seen", error);
+    },
+  });
 
-useEffect(() => {
-  const unseenNotificationIds: string[] | undefined = data?.pages
-    .flatMap((page) => page.data?.notifications)
-    .filter((notification: ApiNotification) => !notification.isSeen)
-    .map((notification: ApiNotification) => notification.id);
+  useEffect(() => {
+    const unseenNotificationIds: string[] | undefined = data?.pages
+      .flatMap((page) => page.data?.notifications)
+      .filter((notification: ApiNotification) => !notification.isSeen)
+      .map((notification: ApiNotification) => notification.id);
 
-  if (unseenNotificationIds && unseenNotificationIds.length > 0) {
-    mutation.mutate(unseenNotificationIds); 
-  }
-}, [data]);
-
-
+    if (unseenNotificationIds && unseenNotificationIds.length > 0) {
+      mutation.mutate(unseenNotificationIds);
+    }
+  }, [data]);
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -117,30 +115,40 @@ useEffect(() => {
           </div>
         </NavLink>
       </div>
-      <div className="pt-16">
+      <div className="overflow-y-auto pt-16">
         {data?.pages.flatMap((page) =>
           page.data?.notifications.map((notification: ApiNotification) => {
             const {
-              action: { type },
+              actionDate,
+              actionType,
               actor,
               isSeen,
+              media,
               receiver,
               content: { comment },
             } = notification;
 
             const notificationProps: NotificationComponentprops = {
-              notifType: type as NotificationComponentprops["notifType"],
+              followedStatus: receiver.followedStatus,
+              followingStatus: receiver.followingStatus,
+              notifType:
+                actionType === "follow"
+                  ? "followedOthers"
+                  : (actionType as NotificationComponentprops["notifType"]),
               actor: actor
                 ? actor.firstName || actor.lastName
                   ? `${actor.firstName ?? ""} ${actor.lastName ?? ""}`.trim()
                   : actor.username
                 : undefined,
-              avatar: comment?.post.media[0].url || defaultAvatar,
+              avatar: media?.url ? media.url : defaultAvatar,
               seen: isSeen,
               receiver: receiver
                 ? `${receiver.firstName} ${receiver.lastName}`
                 : "",
               comment: comment?.description || "",
+              userId:actor.id,
+              actionDate: actionDate
+
             };
 
             return (

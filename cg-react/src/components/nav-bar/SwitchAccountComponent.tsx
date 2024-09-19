@@ -4,12 +4,13 @@ import AccountAvatarName from "./AccountAvatarName";
 import addAccount from "../../assets/icons/addToCloseFriends.svg";
 import { defaultProfile, UserProfile, userProfileAtom } from '../../user-actions/atoms';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 const SwitchAccountComponent = () => {
     const [currentUser, setCurrentUser] = useRecoilState(userProfileAtom);
     const [userProfiles, setUserProfiles] = useState<UserProfile[]>([]);
     const navigate = useNavigate()
-
+    const queryClient = useQueryClient();
     useEffect(() => {
       const storedProfiles: UserProfile[] = JSON.parse(localStorage.getItem('userProfiles') || '[]');
       const currentToken = localStorage.getItem('token');
@@ -59,10 +60,11 @@ const SwitchAccountComponent = () => {
         }
         const newProfiles = [selectedProfile, ...storedProfiles.filter(profile => profile.id !== selectedProfile.id)];
         setCurrentUser(selectedProfile);
-        localStorage.setItem('token', selectedProfile.token || ''); 
+        localStorage.setItem('token', selectedProfile.token ); 
         localStorage.setItem('userProfiles', JSON.stringify(newProfiles));
         setUserProfiles(newProfiles);
         navigate('/userprofile')
+        queryClient.invalidateQueries({ queryKey: ["profileData"] });
       };
   
     return (

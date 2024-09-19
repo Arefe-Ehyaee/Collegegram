@@ -29,7 +29,7 @@ const TestPage = () => {
     }
 
   return (
-    <MainLayout mainComponents={<div><NotificationComponent notifType={"request"} seen={false}></NotificationComponent></div>} navBar={SideNavbarComponent()}/>
+    <MainLayout  navBar={SideNavbarComponent()}/>
   );
 };
 
