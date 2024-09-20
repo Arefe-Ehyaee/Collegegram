@@ -8,7 +8,7 @@ import { useState } from "react";
 import MobileHamMenu from "./MobileHamMenu";
 import { userProfileAtom } from "../user-actions/atoms";
 import { useRecoilState } from "recoil";
-
+import  defaultAvatar from "../assets/icons/defaultavatar.svg"
 interface NavbarMobileProps {
   isMenuOpen: boolean;
   toggleMenu: () => void;
@@ -27,7 +27,7 @@ const NavbarMobile: React.FC<NavbarMobileProps> = ({ isMenuOpen, toggleMenu }) =
         <button onClick={toggleMenu}>
           <img src={hamMenu} alt="menu" />
         </button>
-        <img src={userProfile.avatar} alt="user" className="w-[47px] h-[47px] rounded-full border border-grey-300" />
+        <img src={userProfile.avatar || defaultAvatar} alt="user" className="w-[47px] h-[47px] rounded-full border border-grey-300" />
       
       </div>
       <div className="fixed bottom-0 w-full">

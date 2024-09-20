@@ -4,7 +4,7 @@ import AvatarName from "../AvatarName";
 import DesktopCaption from "./DesktopCaption";
 import BottomNavbarMobile from "../BottonNavbarMobile";
 import { userProfileAtom } from "../../user-actions/atoms";
-
+import defaultAvatar from "../../assets/icons/defaultavatar.svg"
 import CommentSection from "./comment/CommentSection";
 import mockData from "./mockCommentData.json";
 import { useRecoilValue } from "recoil";
@@ -126,7 +126,7 @@ const PostComponent = (props: PostsPageProps) => {
       };
   return (
     <div
-      className="mx-auto mt-4 max-md:h-full max-md:w-full max-sm:overflow-y-auto"
+      className="mx-auto mt-8 max-md:h-full max-md:w-full max-sm:overflow-y-auto"
       dir="rtl"
     >
       <div className="grid grid-cols-1 gap-1 md:grid-cols-2">
@@ -155,7 +155,7 @@ const PostComponent = (props: PostsPageProps) => {
           <div className="flex items-center justify-between max-md:mt-0">
             <AvatarName
               name={postData?.data?.author?.username}
-              avatar={postData?.data?.author?.avatar?.url}
+              avatar={postData?.data?.author?.avatar?.url || defaultAvatar}
               className="py-4 pr-1"
             ></AvatarName>
             {userProfile?.username === postData?.data.author.username && (

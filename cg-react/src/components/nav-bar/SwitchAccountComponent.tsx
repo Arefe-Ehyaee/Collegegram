@@ -5,6 +5,7 @@ import addAccount from "../../assets/icons/addToCloseFriends.svg";
 import { defaultProfile, UserProfile, userProfileAtom } from '../../user-actions/atoms';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
+import defaultAvatar from "../../assets/icons/defaultavatar.svg"
 
 const SwitchAccountComponent = () => {
     const [currentUser, setCurrentUser] = useRecoilState(userProfileAtom);
@@ -73,14 +74,14 @@ const SwitchAccountComponent = () => {
           userProfiles.map(profile => (
             <AccountAvatarName
               key={profile.id}
-              avatar={profile.avatar}
+              avatar={profile.avatar || defaultAvatar}
               username={profile.username}
               onClick={() => handleSwitchAccount(profile)}
             />
           ))
         ) : (
           <AccountAvatarName
-            avatar={currentUser.avatar}
+            avatar={currentUser.avatar || defaultAvatar}
             username={currentUser.username}
           />
         )}
