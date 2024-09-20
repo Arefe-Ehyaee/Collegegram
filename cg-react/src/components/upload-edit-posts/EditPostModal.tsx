@@ -11,6 +11,9 @@ import InputField from "../TextInputComponent";
 import { useQueryClient } from "@tanstack/react-query";
 import Delete from "../../assets/icons/close.svg";
 import CustomButton from "../CustomButton";
+import ToggleSwitch from "../ToggleButton";
+import PostToggleButton from "./PostToggleButton";
+
 
 interface EditModalProps {
   onClose: Function;
@@ -24,6 +27,7 @@ interface EditPostProps {
   mentions?: string;
   media: Media[];
   deletedMedia: string[];
+  closeFriendsOnly: boolean;
 }
 
 interface Media {
@@ -45,16 +49,18 @@ const EditPostSchema = z.object({
         }
         return files.every(
           (file: File) =>
-            file?.type.startsWith("image/") && file?.size <= 5 * 1024 * 1024
+            file?.type.startsWith("image/") && file?.size <= 5 * 1024 * 1024,
         );
       },
       {
-        message: "فقط می‌توانید عکس انتخاب کنید و حجم عکس‌ها باید کمتر از ۵ مگابایت باشد",
-      }
+        message:
+          "فقط می‌توانید عکس انتخاب کنید و حجم عکس‌ها باید کمتر از ۵ مگابایت باشد",
+      },
     )
     .optional(),
   mentions: z.string().optional(),
   deletedPhotos: z.array(z.string()).optional(),
+  closeFriendsOnly: z.boolean().optional(),
 });
 
 const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
@@ -62,6 +68,7 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<EditPostProps>({
     resolver: zodResolver(EditPostSchema),
@@ -72,27 +79,29 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
   const [selectedPhotos, setSelectedPhotos] = useState<File[]>([]);
   const [deletedPhotos, setDeletedPhotos] = useState<string[]>([]);
   const [currentStep, setCurrentStep] = useState(1);
+
+
   const token: string = localStorage.getItem("token") ?? "";
- 
+
 
   useEffect(() => {
+    console.log(postData);
     if (postData) {
       setValue("caption", postData.caption || "");
-      setValue("mentions", postData.mentions ?`@${postData.mentions}` : "");
+      setValue("mentions", postData.mentions ? `@${postData.mentions}` : "");
+      setValue("closeFriendsOnly", postData.closeFriendsOnly);
     }
   }, [postData, setValue]);
 
-
   const handleDeleteEditImage = (index: number, id?: string) => {
-
     if (id) {
-    setDeletedPhotos((prevState) => {
-      if (prevState.includes(id)) {
-        return prevState.filter((photoId) => photoId !== id);
-      } else {
-        return [...prevState, id];
-      }
-    });
+      setDeletedPhotos((prevState) => {
+        if (prevState.includes(id)) {
+          return prevState.filter((photoId) => photoId !== id);
+        } else {
+          return [...prevState, id];
+        }
+      });
     }
 
     setSelectedPhotos((prevState) => {
@@ -119,6 +128,8 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
 
     formData.append("caption", data.caption || "");
     formData.append("mentions", data.mentions || "");
+    formData.append("closeFriendsOnly", String(data.closeFriendsOnly));
+
 
     if (deletedPhotos.length > 0) {
       deletedPhotos.forEach((id) => {
@@ -148,7 +159,6 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
       onClose();
     }
   };
-  
 
   ///////////////////////////////////////////////////////////////////////////////////////
   return (
@@ -277,6 +287,12 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
               placeholder=""
               register={register}
               error={errors.mentions?.message}
+            />
+            <ToggleSwitch
+              label="فقط نمایش به دوستان نزدیک"
+              register={register}
+              name="closeFriendsOnly"
+              defaultChecked={false}
             />
             <div className="mt-8 flex flex-row self-end">
               <CustomButton

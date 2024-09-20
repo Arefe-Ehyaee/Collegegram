@@ -12,6 +12,8 @@ import { useFetchWrapper } from "../../user-actions/fetch-wrapper";
 import { useQueryClient } from "@tanstack/react-query";
 import Delete from "../../assets/icons/close.svg";
 import CustomButton from "../CustomButton";
+import ToggleSwitch from "../ToggleButton";
+import PostToggleButton from "./PostToggleButton";
 
 interface UploadModalProps {
   onClose: Function;
@@ -21,6 +23,7 @@ interface UploadPostProps {
   pictures: File[];
   caption?: string;
   mentions?: string;
+  closeFriendsOnly: boolean;
 }
 
 const UploadPostSchema = z.object({
@@ -36,6 +39,7 @@ const UploadPostSchema = z.object({
       "حجم عکس‌ها باید کمتر از ۵ مگابایت باشد",
     ),
   mentions: z.string().optional(),
+  closeFriendsOnly: z.boolean().default(false),
 });
 
 const UploadPostsModal = ({ onClose }: UploadModalProps) => {
@@ -64,21 +68,21 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
 
   const onSubmit = async (data: UploadPostProps) => {
     const formData = new FormData();
-    
+
     if (data.pictures) {
       data.pictures.forEach((file) => {
         formData.append("pictures", file);
       });
     }
-  
-    
+
     formData.append("caption", data.caption || "");
     formData.append("mentions", data.mentions || "");
-  
+    formData.append("closeFriendsOnly", String(data.closeFriendsOnly));
+
     for (let [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
-  
+
     try {
       const response = await fetchWrapper.post(
         "http://5.34.194.155:4000/posts",
@@ -96,7 +100,6 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
       onClose();
     }
   };
-  
 
   return (
     <div dir="rtl" className="flex min-w-[360px] flex-col items-center">
@@ -174,7 +177,7 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
               name="caption"
               label="کپشن:"
               register={register}
-              className="!h-[156px] !min-w-[320px] !my-auto"
+              className="!my-auto !h-[156px] !min-w-[320px]"
               error={errors.caption?.message}
             />
             <div className="mt-8 flex flex-row self-end">
@@ -205,6 +208,12 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
               placeholder=""
               register={register}
               error={errors.mentions?.message}
+            />
+            <ToggleSwitch
+              label="فقط نمایش به دوستان نزدیک"
+              register={register}
+              name="closeFriendsOnly"
+              defaultChecked={false}
             />
             <div className="mt-8 flex flex-row self-end">
               <CustomButton

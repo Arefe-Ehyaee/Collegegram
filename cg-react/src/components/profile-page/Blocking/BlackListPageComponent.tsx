@@ -76,7 +76,7 @@ export default function BlackListPageComponent() {
                 key={user.id}
                 name={user.username}
                 followersNumber={user.followersCount}
-                avatar={user?.avatar.url}
+                avatar={user?.avatar.url || defaultAvatar}
                 isCloseFriend={user.isCloseFriend}
               />
             )),

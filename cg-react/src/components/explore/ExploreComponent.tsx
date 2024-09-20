@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { fetchExplore } from "./fetchExplore";
 import { useInView } from "react-intersection-observer";
 import BlankExploreComponent from "./BlankExploreComponent";
+import defaultAvatar from "../../assets/icons/defaultavatar.svg"
 
 interface Avatar {
   url: string;
@@ -90,7 +91,7 @@ const ExploreComponent = () => {
             const posterInfoProps = {
               name: post.author.username,
               followersCount: post.author.followersCount,
-              avatar: post.author.avatar?.url || "",
+              avatar: post.author.avatar?.url || defaultAvatar,
             };
   
             const postCardInteractionProps = {

@@ -6,6 +6,7 @@ import { useInView } from "react-intersection-observer";
 import { FetchFollowings } from "./profile-page/FetchFollowings";
 import { useEffect } from "react";
 import FollowerFollowing from "./FollowerFollowing";
+import defaultAvatar from "../assets/icons/defaultavatar.svg"
 
 interface FollowingListModalComponentProps {
     userId: string;
@@ -67,7 +68,7 @@ const FollowingListModalComponent = ({userId, token, onClick, FollowingListModal
                 key={follower.id}
                 name={follower.username}
                 followersNumber={follower.followersCount}
-                avatar={follower?.avatar?.url}
+                avatar={follower?.avatar?.url || defaultAvatar}
                 isCloseFriend={follower.isCloseFriend}
               />
             )),

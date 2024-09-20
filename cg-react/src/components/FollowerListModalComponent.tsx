@@ -4,6 +4,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { FetchFollowers } from "./profile-page/FetchFollowers";
 import { useInView } from "react-intersection-observer";
 import FollowerFollowing from "./FollowerFollowing";
+import defaultAvatar from "../assets/icons/defaultavatar.svg"
 
 interface FollowerListModalComponentProps {
     userId: string;
@@ -61,7 +62,7 @@ const FollowerListModalComponent = ({userId, token, onClick, FollowerListModal} 
                 name={follower.username}
                 isCloseFriend={follower.isCloseFriend}
                 followersNumber={follower.followersCount}
-                avatar={follower?.avatar?.url}
+                avatar={follower?.avatar?.url || defaultAvatar}
               />
             )),
           )}

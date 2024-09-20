@@ -15,6 +15,7 @@ import { FetchFollowings } from "./FetchFollowings";
 import CustomButton from "../CustomButton";
 import { useInView } from "react-intersection-observer";
 import { BeatLoader } from "react-spinners";
+import defaultAvatar from "../../assets/icons/defaultavatar.svg"
 
 
 export interface Follower {
@@ -155,7 +156,7 @@ export default function ProfilePageComponent() {
         <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
           <div className="flex items-center gap-8">
             <img
-              src={userProfile.avatar}
+              src={userProfile.avatar || defaultAvatar}
               alt="avatar"
               className="aspect-square h-[136px] w-[136px] rounded-full border-2 border-grey-400 object-cover max-sm:h-[56px] max-sm:w-[56px] max-sm:self-baseline"
             />
@@ -199,7 +200,7 @@ export default function ProfilePageComponent() {
           mainComponent={
             <EditProfileModal
               onClose={() => setShowEditModal(false)}
-              profileImage={userProfile.avatar}
+              profileImage={userProfile.avatar || defaultAvatar}
             />
           }
           showModal={showEditModal}
@@ -221,9 +222,8 @@ export default function ProfilePageComponent() {
                     key={follower.id}
                     name={follower.username}
                     followersNumber={follower.followersCount}
-                     avatar={ follower?.avatar?.url}
+                     avatar={ follower?.avatar?.url || defaultAvatar}
                      isCloseFriend={follower.isCloseFriend}
-
                   />
                 )),
               )}
@@ -254,8 +254,12 @@ export default function ProfilePageComponent() {
                     key={following.id}
                     name={following.username}
                     followersNumber={following.followersCount}
+<<<<<<< cg-react/src/components/profile-page/ProfilePageComponent.tsx
+                    avatar={following?.avatar?.url || defaultAvatar}
+=======
                     avatar={following?.avatar?.url}
                     isCloseFriend={following.isCloseFriend}
+>>>>>>> cg-react/src/components/profile-page/ProfilePageComponent.tsx
                   />
                 )),
               )}

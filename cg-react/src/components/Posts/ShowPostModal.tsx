@@ -19,6 +19,7 @@ import CustomButton from "../CustomButton";
 import ModalTemplate from "../ModalTemplate";
 import EditPostsModal from "../upload-edit-posts/EditPostModal";
 import { PostInteractionsProps } from "../explore/PostCardInteractions";
+import defaultAvatar from "../../assets/icons/defaultavatar.svg"
 
 interface ShowPostModalProps {
   onClose: () => void;
@@ -100,7 +101,7 @@ const ShowPostModal = ({ onClose, id }: ShowPostModalProps) => {
           <div className="flex items-center justify-between gap-12">
             <AvatarName
               name={data?.data?.author?.username ?? ""}
-              avatar={data?.data?.author?.avatar?.url ?? ""}
+              avatar={data?.data?.author?.avatar?.url || defaultAvatar}
             />
 
             {userProfile?.username === data?.data.author.username && (

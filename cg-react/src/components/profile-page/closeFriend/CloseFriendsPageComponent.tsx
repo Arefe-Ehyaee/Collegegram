@@ -73,7 +73,7 @@ export default function CloseFriendsPageComponent() {
                 key={user.id}
                 name={user.username}
                 followersNumber={user.followersCount}
-                avatar={user?.avatar.url}
+                avatar={user?.avatar.url || defaultAvatar}
                 isCloseFriend={user.isCloseFriend}
               />
             )),
