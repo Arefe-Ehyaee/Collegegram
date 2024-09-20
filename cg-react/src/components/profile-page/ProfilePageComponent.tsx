@@ -254,12 +254,8 @@ export default function ProfilePageComponent() {
                     key={following.id}
                     name={following.username}
                     followersNumber={following.followersCount}
-<<<<<<< cg-react/src/components/profile-page/ProfilePageComponent.tsx
                     avatar={following?.avatar?.url || defaultAvatar}
-=======
-                    avatar={following?.avatar?.url}
                     isCloseFriend={following.isCloseFriend}
->>>>>>> cg-react/src/components/profile-page/ProfilePageComponent.tsx
                   />
                 )),
               )}
