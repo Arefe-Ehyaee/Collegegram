@@ -148,7 +148,7 @@ const PostComponent = (props: PostsPageProps) => {
               ))}
           </Swiper>
         </div>
-        <div className="h-[700px] overflow-auto pl-8 max-sm:pl-2">
+        <div className="h-[600px] overflow-auto pl-8 max-sm:pl-2">
           <div className="flex items-center justify-between max-md:mt-0">
             <AvatarName
               name={postData?.data?.author?.username}
@@ -184,7 +184,7 @@ const PostComponent = (props: PostsPageProps) => {
             ></CommentSection>
           )}
 
-          <div className="flex justify-center" ref={ref}>
+          <div className="flex justify-center h-12" ref={ref}>
             {isFetchingComment && <BeatLoader />}
           </div>
         </div>

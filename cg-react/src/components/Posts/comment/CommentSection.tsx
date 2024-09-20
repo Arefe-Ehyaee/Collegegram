@@ -35,6 +35,7 @@ const CommentSection = (props: CommentSectionProps) => {
       />
       {showProps.map((comment: ShowCommentProps) => (
         <ShowComment
+          // isLiked={comment.isLiked}
           key={comment.id}
           {...comment}
           onReplyClick={handleReplyClick}
