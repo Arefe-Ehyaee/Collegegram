@@ -67,6 +67,7 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
   };
 
   const onSubmit = async (data: UploadPostProps) => {
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const formData = new FormData();
 
     if (data.pictures) {
@@ -85,7 +86,7 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
 
     try {
       const response = await fetchWrapper.post(
-        "http://5.34.194.155:4000/posts",
+        `${API_BASE_URL}/posts`,
         formData,
       );
       if (response.ok) {

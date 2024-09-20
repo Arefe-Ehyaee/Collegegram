@@ -67,7 +67,7 @@ export default function ToggleMenu({
         <div
           ref={menuRef}
           style={{ zIndex: 0 }}
-          className={`absolute ${borderRounding} ${className} left-full mt-2 min-w-80 max-w-96 w-max border border-grey-700 bg-white z-10 px-8 py-6`}
+          className={`absolute ${borderRounding} ${className} left-0 mt-6 min-w-80 max-w-96 w-max border border-grey-700 bg-white z-10 px-8 py-6`}
         >
           {children}
         </div>

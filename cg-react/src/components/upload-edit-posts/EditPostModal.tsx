@@ -116,6 +116,7 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
 
   ///////////////////////////////////////////////////////////////////////////////////////
   const onSubmit = async (data: EditPostProps) => {
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const formData = new FormData();
 
     // data.deletedMedia = deletedPhotos;
@@ -138,7 +139,7 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
     }
 
     try {
-      const response = await fetch(`http://5.34.194.155:4000/posts/${postId}`, {
+      const response = await fetch(`${API_BASE_URL}/posts/${postId}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,

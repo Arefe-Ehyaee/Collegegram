@@ -144,14 +144,25 @@ export default function SearchPagePeopleComponent() {
   if (searchPostIsError) {
     toast.error(searchPostCardError.message);
   }
-
-  const getColumnSpan = (index: number) => {
+  const getResponsiveColumnSpan = (index: number) => {
     if (index < 3) {
-      return "col-span-4";
+      return "md:col-span-4"; 
     } else if (index >= 3 && index < 7) {
-      return "col-span-3";
+      return "md:col-span-3"; 
     } else {
-      return "col-span-2";
+      return "md:col-span-2"; 
+    }
+  };
+  
+  const getSmallScreenColumnSpan = (index: number) => {
+    if (index === 0) {
+      return "col-span-12"; 
+    } else if (index === 1 || index === 2) {
+      return "col-span-6";
+    } else if (index >= 3 && index <= 5) {
+      return "col-span-4"; 
+    } else {
+      return "col-span-3"; 
     }
   };
 
@@ -177,11 +188,12 @@ export default function SearchPagePeopleComponent() {
   };
 
   return (
-    <div dir="rtl" className="px-[72px] max-sm:pr-2">
+    <div dir="rtl" className="px-[72px] max-sm:px-2">
       <div className="relative">
         <div className="justify-center pr-4">
           <form id="searchForm" onSubmit={handleFormSubmit}>
             <input
+              autoComplete="off"
               id="username"
               name="username"
               type="text"
@@ -189,7 +201,7 @@ export default function SearchPagePeopleComponent() {
               onChange={handleChange}
               onFocus={handleFocus}
               onKeyDown={handleKeyDown}
-              className="bg-transparent text-gray-900 placeholder:text-gray-400 border-1 mt-4 block w-80 flex-1 rounded-full px-2 py-2 focus:ring-0 sm:text-sm sm:leading-6"
+              className="bg-transparent text-gray-900 placeholder:text-gray-400 border-1 mt-9 block w-80 flex-1 rounded-full px-2 py-2 focus:ring-0 sm:text-sm sm:leading-6"
             />
           </form>
         </div>
@@ -268,19 +280,21 @@ export default function SearchPagePeopleComponent() {
       )}
 
       {searchPostData && (
-        <div className="my-8 grid rounded-3xl">
-          <div className="grid grid-cols-12 gap-6">
-            {allPosts.map((post: Posts, globalIndex: number) => (
-              <img
-                key={post.id}
-                className={`aspect-square max-h-[304px] w-full cursor-pointer rounded-3xl object-cover ${
-                  globalIndex >= 7 ? "col-span-2" : getColumnSpan(globalIndex)
-                }`}
-                src={`${post.media[0].url}`}
-                onClick={() => handleOnClick(post.id)}
-              />
-            ))}
-          </div>
+         <div className="my-8 grid rounded-3xl">
+         <div className="grid grid-cols-12 gap-6">
+           {allPosts.map((post: Posts, globalIndex: number) => (
+             <img
+               key={post.id}
+               className={`aspect-square max-h-[304px] w-full cursor-pointer rounded-3xl object-cover ${
+                 globalIndex >= 7
+                   ? "md:col-span-2"
+                   : `${getResponsiveColumnSpan(globalIndex)} ${getSmallScreenColumnSpan(globalIndex)}`
+               }`}
+               src={`${post.media[0].url}`}
+               onClick={() => handleOnClick(post.id)}
+             />
+           ))}
+         </div>
 
           {showPostModal && (
             <ModalTemplatePost

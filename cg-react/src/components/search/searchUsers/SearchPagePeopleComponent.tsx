@@ -168,6 +168,7 @@ export default function SearchPagePeopleComponent() {
         <div className="justify-center pr-4">
           <form id="searchForm" onSubmit={handleFormSubmit}>
             <input
+            autoComplete="off"
               id="username"
               name="username"
               type="text"
@@ -175,7 +176,7 @@ export default function SearchPagePeopleComponent() {
               onChange={handleChange}
               onFocus={handleFocus}
               onKeyDown={handleKeyDown} 
-              className="bg-transparent text-gray-900 placeholder:text-gray-400 border-1 mt-4 block w-80 flex-1 rounded-full px-2 py-2 focus:ring-0 sm:text-sm sm:leading-6"
+              className="bg-transparent text-gray-900 placeholder:text-gray-400 border-1 mt-9 block w-80 flex-1 rounded-full px-2 py-2 focus:ring-0 sm:text-sm sm:leading-6"
             />
           </form>
         </div>

@@ -48,7 +48,7 @@ interface SignupFormData {
   repeatpassword: string;
 }
 
-const SignUp: React.FC = () => {
+const SignUp = () => {
   const {
     register,
     handleSubmit,
@@ -60,10 +60,11 @@ const SignUp: React.FC = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data: SignupFormData) => {
+    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     try {
       console.log(data);
       axios
-        .post("http://5.34.194.155:4000/auth/sign-up", {
+        .post(`${API_BASE_URL}/auth/sign-up`, {
           username: data.username,
           email: data.email,
           password: data.password,

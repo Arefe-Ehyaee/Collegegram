@@ -83,6 +83,7 @@ interface ProfileFormProps {
 
 const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const [defaultChecked,setDefaultChecked] = useState<boolean>(false)
   useEffect(()=>{
     userProfile.isPrivate && setDefaultChecked(userProfile.isPrivate)
@@ -127,7 +128,7 @@ console.log('105',userProfile)
     console.log("filteredData", filteredData);
     try {
       const response = await fetchWrapper.patch(
-        "http://5.34.194.155:4000/users/profile",
+        `${API_BASE_URL}/users/profile`,
         filteredData,
       );
 

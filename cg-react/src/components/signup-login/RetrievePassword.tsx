@@ -31,6 +31,7 @@ const RetrievePassword: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const navigate = useNavigate();
 
@@ -40,7 +41,7 @@ const RetrievePassword: React.FC = () => {
 
     try {
       const response = await fetch(
-        "http://5.34.194.155:4000/auth/forgot-password",
+        `${API_BASE_URL}/auth/forgot-password`,
         {
           method: "POST",
           headers: {
