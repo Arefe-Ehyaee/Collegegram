@@ -20,7 +20,7 @@ const BottomNavbarMobile: React.FC = () => {
             <img src={add} alt="add" />
         </button>
         <div className="md:hidden flex justify-between space-x-44">
-            <img src={mag} alt="magnifier" className="cursor-pointer"/>
+            <img src={mag} alt="magnifier" className="cursor-pointer" onClick={() => navigate("/searchUsers")}/>
             <img src={overview} alt="overview" className="cursor-pointer" onClick={() => navigate('/explore')}/>
         </div>
         {uploadModal && <ModalTemplate onClose={() => setUploadModal(false)} showModal={uploadModal}>

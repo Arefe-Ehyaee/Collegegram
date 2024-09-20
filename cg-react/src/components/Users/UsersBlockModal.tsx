@@ -7,8 +7,8 @@ import BlockingModal from "../profile-page/Blocking/BlockingModal";
 
 interface UsersBlockModalProps {
   username: string;
-  avatar?: string;
-  followersCount?: number;
+  avatar: string;
+  followersCount: number;
   userId: string | null;
   token: string | null;
   onClick: () => void;

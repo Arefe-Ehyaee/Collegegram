@@ -100,7 +100,7 @@ export default function SideNavbarComponent() {
                 </li>
                 <li className="flex items-center rounded-3xl p-4 hover:bg-grey-500">
                   <img src={search} alt="search icon" className="ml-2" />
-                  <a href="">جست‌و‌جو</a>
+                  <button onClick={() => navigate("/searchUsers")}>جستجو</button>
                 </li>
               </ul>
             </div>

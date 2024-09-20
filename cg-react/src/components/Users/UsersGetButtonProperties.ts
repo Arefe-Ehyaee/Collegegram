@@ -1,4 +1,4 @@
-type FollowStatus =
+export type FollowStatus =
 | "Following"
 | "NotFollowing "
 | "Pending"

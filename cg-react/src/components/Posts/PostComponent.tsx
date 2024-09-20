@@ -67,7 +67,7 @@ const PostComponent = (props: PostsPageProps) => {
 
   const [editPostModal, setEditPostModal] = useState(false);
 
-  const handleEditPostClick = () => {
+  const handleEditPostClick : () => void = () => {
     setEditPostModal(true);
   };
 
@@ -125,10 +125,7 @@ const PostComponent = (props: PostsPageProps) => {
         isBookmarked: false,
       };
   return (
-    <div
-      className="mx-auto mt-8 max-md:h-full max-md:w-full max-sm:overflow-y-auto"
-      dir="rtl"
-    >
+    <div className="mx-auto mt-4 max-md:h-full max-md:w-full max-sm:h-[770px] max-sm:overflow-y-auto no-scrollbar" dir="rtl">
       <div className="grid grid-cols-1 gap-1 md:grid-cols-2">
         <div className="w-[520px] max-sm:w-[100%]">
           <Swiper
@@ -151,7 +148,7 @@ const PostComponent = (props: PostsPageProps) => {
               ))}
           </Swiper>
         </div>
-        <div className="h-[680px] overflow-auto pl-8 max-sm:pl-2">
+        <div className="h-[700px] overflow-auto pl-8 max-sm:pl-2">
           <div className="flex items-center justify-between max-md:mt-0">
             <AvatarName
               name={postData?.data?.author?.username}
@@ -182,7 +179,7 @@ const PostComponent = (props: PostsPageProps) => {
           {commentData && (
             <CommentSection
               id={id}
-              showProps={commentData.pages[0].data.comments}
+              showProps={commentData.pages.flatMap((page) => page.data.comments)}
               commentingProps={commentingProps}
             ></CommentSection>
           )}

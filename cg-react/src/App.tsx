@@ -22,6 +22,9 @@ import MyNotificationPage from "./components/Notification/MyNotificationPage";
 import MyFriendsNotifPage from "./components/Notification/MyFriendsNotifPage ";
 import BookmarksPage from "./components/bookmarks/BookmarksPage";
 import TaggedPostsPage from "./components/TaggedPosts/TaggedPostsPage";
+import SearchPage from "./components/search/searchUsers/SearchPagePeople";
+import SearchPagePeople from "./components/search/searchUsers/SearchPagePeople";
+import SearchPagePosts from "./components/search/searchTags/SearchPagePosts";
 
 
 const queryClient = new QueryClient() ;
@@ -98,6 +101,8 @@ export default function App() {
             <Route path="/balckList" element={<PrivateRoute><BlackListPage/></PrivateRoute>}/>
             <Route path="/myNotifications" element={<PrivateRoute><MyNotificationPage/></PrivateRoute>}/>
             <Route path="/myFriendsNotifications" element={<PrivateRoute><MyFriendsNotifPage/></PrivateRoute>}/>
+            <Route path="/searchUsers" element={<PrivateRoute><SearchPagePeople/></PrivateRoute>}/>
+            <Route path="/searchPosts" element={<PrivateRoute><SearchPagePosts/></PrivateRoute>}/>
             <Route path="/closeFriendsList" element={<PrivateRoute><CloseFriendsPage/></PrivateRoute>}/>
             <Route path="/users/profile" element={<PrivateRoute><UsersProfilePage /></PrivateRoute>} />
             <Route path="/users/:username" element={<PrivateRoute><ParamToQueryNavigate baseUrl="/users/profile" paramKey="username"/></PrivateRoute>}/>

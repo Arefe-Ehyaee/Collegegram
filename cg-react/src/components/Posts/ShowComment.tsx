@@ -88,7 +88,7 @@ const ShowComment= (props: ShowCommentProps) => {
 
 
   return (
-    <div dir="rtl" className={`flex flex-col my-6 self-baseline ${commentStyle}`}>
+    <div dir="rtl" className={`flex flex-col my-2 self-baseline ${commentStyle}`}>
       <div className="flex flex-row justify-between items-center">
         <div className="flex flex-row items-center">
           <p className="font-bold">{props.user.username}</p>
@@ -110,10 +110,10 @@ const ShowComment= (props: ShowCommentProps) => {
           </button>
         </div>
       </div>
-      <p className="pt-4 leading-8 text-black-100">{props.description}</p>
+      <p className="pt-2 leading-8 text-black-100">{props.description}</p>
 
       {props.replies && props.replies.length > 0 && (
-        <div >
+        <div>
           {props.replies.map((reply) => (
             <ShowComment key={reply.id} {...reply} onReplyClick={props.onReplyClick} />
           ))}

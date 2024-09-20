@@ -1,11 +1,10 @@
-import send from "../../../assets/icons/send.svg"
+import send from "../../../assets/icons/send.svg";
 import { useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { PostAComment } from "./PostAComments";
 
-
 export interface CommentingComponentProps {
-  avatar:string;
+  avatar: string;
   styling?: string;
   id: string;
   commnetUsername?: string | null;
@@ -20,15 +19,17 @@ const CommentingComponent = (props: CommentingComponentProps) => {
   const queryClient = useQueryClient();
 
   const handleSendClick = async () => {
-    const commentValue = comment.current?.value ?? '';
+    const commentValue = comment.current?.value ?? "";
     console.log(commentValue);
     if (token && comment.current) {
       try {
         await PostAComment(token, id, commentValue, parentId ?? null);
-        comment.current.value = '';
-        queryClient.invalidateQueries({ queryKey: ["comments", token, id] });
+        comment.current.value = "";
+        queryClient.invalidateQueries({ queryKey: ["comments", token] });
+        queryClient.invalidateQueries({ queryKey: ["post", id] });
+        queryClient.refetchQueries({ queryKey: ["post", id] });
       } catch (error) {
-        console.error('Error sending comment:', error);
+        console.error("Error sending comment:", error);
       }
     }
   };
@@ -37,20 +38,46 @@ const CommentingComponent = (props: CommentingComponentProps) => {
     ? `در پاسخ به ${commnetUsername} نظر خود را بنویسید...`
     : "نظر خود را بنویسید...";
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        e.preventDefault(); 
+        handleSendClick();
+      }
+    };
+
+    const handleFormSubmit = (e: React.FormEvent) => {
+      e.preventDefault(); 
+      handleSendClick(); 
+    };
+
   return (
-    <div className="w-[100%] flex gap-2 pt-8 px-4 max-md:gap-1 items-center" dir="rtl">
-      <img src={avatar} alt="avatar" className="h-[40px] w-[40px] rounded-full border border-grey-400"/>
-      <input
-        ref={comment}
-        type="text"
-        id='comment'
-        name='comment'
-        className={`flex flex-col items-center w-[100%] h-[100%] border pr-2 border-grey-400 py-2 rounded-3xl text-xs font-normal placeholder-grey-400 font-isf ${styling}`}
-        dir="rtl"
-        placeholder={placeholderText}
+    <div
+      className="flex w-[100%] items-center gap-2 px-4 pb-2 pt-8 max-md:gap-1"
+      dir="rtl"
+    >
+      <img
+        src={avatar}
+        alt="avatar"
+        className="h-[40px] w-[40px] rounded-full border border-grey-400"
       />
+      <form onSubmit={handleFormSubmit} className="h-[100%] w-[100%]">
+        <input
+          ref={comment}
+          type="text"
+          id="comment"
+          name="comment"
+          className={`flex h-[100%] w-[100%] flex-col items-center rounded-3xl border border-grey-400 py-2 pr-2 font-isf text-xs font-normal placeholder-grey-400 ${styling}`}
+          dir="rtl"
+          placeholder={placeholderText}
+          onKeyDown={handleKeyDown} 
+        />
+      </form>
       <button onClick={handleSendClick}>
-        <img src={send} alt="send" className="max-md:h-[40px] max-md:w-[40px]" />
+        <img
+          src={send}
+          alt="send"
+          className="max-md:h-[40px] max-md:w-[40px]"
+        />
       </button>
     </div>
   );

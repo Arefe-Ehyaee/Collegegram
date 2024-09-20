@@ -152,7 +152,7 @@ export default function UsersProfilePageComponent() {
     followedStatus,
   );
   return (
-    <div dir="rtl" className="md:px-16">
+    <div dir="rtl" className="md:px-16 max-sm:h-[530px] overflow-y-scroll">
       <div className="border-b border-grey-400 py-9 max-sm:ml-8 max-sm:mr-8">
         <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
           <div className="flex w-full items-center gap-8">
@@ -260,6 +260,8 @@ export default function UsersProfilePageComponent() {
             >
               <UsersCloseFriendModal
                 username={userData.data.username}
+                avatar = {userData.data.avatar.url}
+                followersCount={userData.data.followersCount} 
                 userId={userId}
                 token={token}
                 followingStatus={followingStatus}
@@ -276,6 +278,8 @@ export default function UsersProfilePageComponent() {
             >
               <UsersUnCloseFriendModal
                 username={userData.data.username}
+                avatar = {userData.data.avatar.url}
+                followersCount={userData.data.followersCount} 
                 userId={userId}
                 token={token}
                 followingStatus={followingStatus}
@@ -292,6 +296,8 @@ export default function UsersProfilePageComponent() {
             >
               <UsersBlockModal
                 username={userData.data.username}
+                avatar = {userData.data.avatar.url}
+                followersCount={userData.data.followersCount} 
                 userId={userId}
                 token={token}
                 onClick={() => setShowBlockModal(false)}
@@ -306,6 +312,8 @@ export default function UsersProfilePageComponent() {
             >
               <UsersUnBlockModal
                 username={userData.data.username}
+                avatar = {userData.data.avatar.url}
+                followersCount={userData.data.followersCount} 
                 userId={userId}
                 token={token}
                 onClick={() => setShowUnBlockModal(false)}
