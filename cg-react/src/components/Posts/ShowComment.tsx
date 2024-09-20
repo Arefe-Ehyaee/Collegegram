@@ -19,6 +19,7 @@ export interface ShowCommentProps {
   likeCommentsCount: number;
   replies?: ShowCommentProps[];
   user: User;
+  isLiked: boolean;
   onReplyClick: (username: string | null, commentId: string) => void;
 }
 
@@ -29,12 +30,8 @@ export interface User {
   lastname: string;
 }
 
-
-const ShowComment= (props: ShowCommentProps) => {
-
-  const [isLiked, setIsLiked] = useState(false);
+const ShowComment = (props: ShowCommentProps) => {
   const [token, setToken] = useState<string | null>(null);
-
   const [isReplyClicked, setIsReplyClicked] = useState(false);
   const queryClient = useQueryClient();
 
@@ -50,7 +47,7 @@ const ShowComment= (props: ShowCommentProps) => {
     refetch: commentlikeRefetch,
   } = useQuery({
     queryKey: ["likeComment", props.id],
-    queryFn: () => CommentLike(token || "",props.postId, props.id),
+    queryFn: () => CommentLike(token || "", props.postId, props.id),
     enabled: false,
   });
 
@@ -61,52 +58,57 @@ const ShowComment= (props: ShowCommentProps) => {
     refetch: uncommentlikeRefetch,
   } = useQuery({
     queryKey: ["unlikeComment", props.id],
-    queryFn: () => CommentUnLike(token || "",props.postId, props.id),
+    queryFn: () => CommentUnLike(token || "", props.postId, props.id),
     enabled: false,
   });
 
   const handleLikeClick = async () => {
-    if (!isLiked) {
+    if (!props.isLiked) {
       await commentlikeRefetch();
-      setIsLiked(true);
     } else {
       await uncommentlikeRefetch();
-      setIsLiked(false);
     }
-    queryClient.invalidateQueries({ queryKey: ["comments", token, props.postId] });
+    queryClient.invalidateQueries({
+      queryKey: ["comments", token, props.postId],
+    });
   };
 
   const handleReplyClick = () => {
     setIsReplyClicked((prevReply) => !prevReply);
     props.onReplyClick(props.user.username, props.id);
-  }
+  };
 
-  const commentStyle = props.parentId 
-    ? "mr-8 w-[90%]  " 
-    : "w-full"; 
-
-
+  const commentStyle = props.parentId ? "mr-8 w-[90%]  " : "w-full";
 
   return (
-    <div dir="rtl" className={`flex flex-col my-2 self-baseline ${commentStyle}`}>
-      <div className="flex flex-row justify-between items-center">
+    <div
+      dir="rtl"
+      className={`my-2 flex flex-col self-baseline ${commentStyle}`}
+    >
+      <div className="flex flex-row items-center justify-between">
         <div className="flex flex-row items-center">
           <p className="font-bold">{props.user.username}</p>
-          <p className="pr-5 text-xs">
-            {timeTranslate(props.createdAt)}
-          </p>
+          <p className="pr-5 text-xs">{timeTranslate(props.createdAt)}</p>
         </div>
         <div className="flex flex-row items-center gap-4">
-          <button onClick={handleLikeClick} className="flex flex-row items-center">
-            <p className="mx-2 text-red-300 text-sm leading-4">{props.likeCommentsCount}</p>
+          <button
+            onClick={handleLikeClick}
+            className="flex flex-row items-center"
+          >
+            <p className="mx-2 text-sm leading-4 text-red-300">
+              {props.likeCommentsCount}
+            </p>
             <img
-              src={isLiked ? likeButtonActive : likeButton}
+              src={props.isLiked ? likeButtonActive : likeButton}
               alt="like Button"
               className="h-[16px]"
             />
           </button>
-          <button onClick={handleReplyClick} className={`${isReplyClicked ? "bg-grey-400 p-2 rounded-md " : ""}`}>
-            <img src={replyButton} alt="reply button" className="h-[19px]"/>
+          <button
+            onClick={handleReplyClick}
+            className={`${isReplyClicked ? "rounded-md bg-grey-400 p-2" : ""}`}
+          >
+            <img src={replyButton} alt="reply button" className="h-[19px]" />
           </button>
         </div>
       </div>
@@ -115,11 +117,14 @@ const ShowComment= (props: ShowCommentProps) => {
       {props.replies && props.replies.length > 0 && (
         <div>
           {props.replies.map((reply) => (
-            <ShowComment key={reply.id} {...reply} onReplyClick={props.onReplyClick} />
+            <ShowComment
+              key={reply.id}
+              {...reply}
+              onReplyClick={props.onReplyClick}
+            />
           ))}
         </div>
       )}
-
     </div>
   );
 };
