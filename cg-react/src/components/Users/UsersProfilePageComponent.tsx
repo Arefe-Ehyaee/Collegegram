@@ -156,7 +156,7 @@ export default function UsersProfilePageComponent() {
       <div className="border-b border-grey-400 py-9 max-sm:ml-8 max-sm:mr-8">
         <div className="flex items-center justify-between space-x-4 max-sm:flex-col">
           <div className="flex w-full items-center gap-8">
-            <div className="relative aspect-square h-[136px] rounded-full object-cover">
+            <div className="relative aspect-square h-[136px] rounded-full object-cover max-sm:h-[56px]  max-sm:self-baseline">
               <img
                 src={
                   userData.data.avatar && userData.data.avatar.url
@@ -171,7 +171,7 @@ export default function UsersProfilePageComponent() {
                 <img
                   src={verified}
                   alt="verified"
-                  className="absolute bottom-2 left-4 h-[20px] w-[20px]"
+                  className="absolute bottom-2 left-4 h-[20px] w-[20px] max-sm:bottom-0 max-sm:left-0"
                 />
               )}
             </div>

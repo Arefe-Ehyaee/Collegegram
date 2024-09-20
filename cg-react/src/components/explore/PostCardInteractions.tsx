@@ -17,6 +17,7 @@ export interface PostInteractionsProps {
   id: string;
   isLiked: boolean;
   isBookmarked: boolean;
+  isCloseFriend?: boolean
 }
 
 const PostCardInteractions = (props: PostInteractionsProps) => {

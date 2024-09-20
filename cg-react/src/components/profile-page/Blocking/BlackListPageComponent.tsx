@@ -17,6 +17,7 @@ export interface User {
   bio?: string;
   followersCount?: number;
   followingsCount?: number;
+  isCloseFriend: boolean;
 }
 
 
@@ -76,6 +77,7 @@ export default function BlackListPageComponent() {
                 name={user.username}
                 followersNumber={user.followersCount}
                 avatar={user?.avatar.url}
+                isCloseFriend={user.isCloseFriend}
               />
             )),
           )}

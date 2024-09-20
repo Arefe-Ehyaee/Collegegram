@@ -17,6 +17,7 @@ export interface User {
   bio?: string;
   followersCount?: number;
   followingsCount?: number;
+  isCloseFriend: boolean
 }
 
 
@@ -73,6 +74,7 @@ export default function CloseFriendsPageComponent() {
                 name={user.username}
                 followersNumber={user.followersCount}
                 avatar={user?.avatar.url}
+                isCloseFriend={user.isCloseFriend}
               />
             )),
           )}

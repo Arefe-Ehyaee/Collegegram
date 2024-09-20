@@ -20,6 +20,7 @@ export interface Follower {
   last_name?: string;
   bio?: string;
   followersCount?: number;
+  isCloseFriend:boolean
 }
 
 const FollowerListModalComponent = ({userId, token, onClick, FollowerListModal} : FollowerListModalComponentProps) => {
@@ -58,6 +59,7 @@ const FollowerListModalComponent = ({userId, token, onClick, FollowerListModal} 
               <FollowerFollowing
                 key={follower.id}
                 name={follower.username}
+                isCloseFriend={follower.isCloseFriend}
                 followersNumber={follower.followersCount}
                 avatar={follower?.avatar?.url}
               />
