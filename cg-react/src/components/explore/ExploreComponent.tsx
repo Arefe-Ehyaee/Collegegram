@@ -28,6 +28,7 @@ interface Posts {
   commentsCount: number;
   isBookmarked: boolean;
   isLiked: boolean;
+  isCloseFriend: boolean;
 }
 
 const ExploreComponent = () => {
@@ -82,7 +83,7 @@ const ExploreComponent = () => {
 
 
   return data ? (
-    <div className="my-8 mx-8 grid rounded-3xl border border-grey-400">
+    <div className="my-8 mx-8 grid rounded-3xl ">
       <div className="grid grid-cols-2 gap-6 md:grid-cols-3 md:gap-4">
         {data.pages.flatMap((page) =>
           page.data?.posts.map((post: Posts) => {
@@ -99,6 +100,7 @@ const ExploreComponent = () => {
               id: post.id,
               isLiked: post.isLiked,
               isBookmarked: post.isBookmarked,
+              isCloseFriend: post.isCloseFriend,
             };
   
             const postImageSrc = post.media[0] || "";

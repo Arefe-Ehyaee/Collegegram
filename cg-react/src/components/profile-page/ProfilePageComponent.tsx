@@ -25,6 +25,7 @@ export interface Follower {
   last_name?: string;
   bio?: string;
   followersCount?: number;
+  isCloseFriend:boolean
 }
 
 export interface Following {
@@ -35,6 +36,7 @@ export interface Following {
   last_name?: string;
   bio?: string;
   followersCount?: number;
+  isCloseFriend:boolean
 }
 
 export default function ProfilePageComponent() {
@@ -220,6 +222,8 @@ export default function ProfilePageComponent() {
                     name={follower.username}
                     followersNumber={follower.followersCount}
                      avatar={ follower?.avatar?.url}
+                     isCloseFriend={follower.isCloseFriend}
+
                   />
                 )),
               )}
@@ -251,6 +255,7 @@ export default function ProfilePageComponent() {
                     name={following.username}
                     followersNumber={following.followersCount}
                     avatar={following?.avatar?.url}
+                    isCloseFriend={following.isCloseFriend}
                   />
                 )),
               )}

@@ -17,14 +17,12 @@ interface Posts {
   createdAt: string;
   id: string;
   media: Media[];
+  closeFriendsOnly: boolean;
 }
 
 interface Media {
   id: string;
-  mime: string;
-  name: string;
   url: string;
-  size: number;
 }
 
 export default function ShowPostsComponent({ username }: ShowPostsProps) {
@@ -81,7 +79,7 @@ export default function ShowPostsComponent({ username }: ShowPostsProps) {
           page.data?.posts.map((post: Posts) => (
             <img
               key={post.id}
-              className="aspect-square object-cover max-h-[304px] w-full cursor-pointer rounded-3xl"
+              className={`aspect-square object-cover max-h-[304px] w-full cursor-pointer rounded-3xl ${post.closeFriendsOnly ? "border-2 border-green-500" : "border border-grey-400"}`}
               src={`${post.media[0].url}`}
               onClick={() => handleOnClick(post.id)}
             />
