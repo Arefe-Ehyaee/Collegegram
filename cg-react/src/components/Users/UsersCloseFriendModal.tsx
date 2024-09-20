@@ -9,8 +9,8 @@ import { toast } from "react-toastify";
 
 interface UsersCloseFriendModalProps {
   username: string;
-  avatar?: string;
-  followersCount?: number;
+  avatar: string;
+  followersCount: number;
   userId: string | null;
   token: string | null;
   followingStatus: string;

@@ -70,7 +70,7 @@ const ShowPostModal = ({ onClose, id }: ShowPostModalProps) => {
       };
 
   return (
-    <div className="max-w-[1200px] max-sm:pt-[120px] max-sm:h-[900px] max-sm:overflow-y-auto" dir="rtl">
+    <div className="max-w-[1200px] max-sm:pt-[120px] max-sm:h-[900px] max-sm:overflow-y-auto no-scrollbar" dir="rtl">
       <button onClick={handleOnClick}>
         <img src={openPostPage} alt="Open Post" />
       </button>

@@ -69,7 +69,7 @@ const SwitchAccountComponent = () => {
       };
   
     return (
-      <ul className="flex flex-col gap-y-4 justify-center">
+      <ul className="flex flex-col gap-y-1 justify-center">
         {userProfiles.length > 0 ? (
           userProfiles.map(profile => (
             <AccountAvatarName
@@ -86,7 +86,7 @@ const SwitchAccountComponent = () => {
           />
         )}
 
-      <li className="flex flex-row gap-3 items-center cursor-pointer rounded-3xl p-4 hover:bg-grey-500" onClick={handleAddAccount}>
+      <li className="flex flex-row gap-3 items-center cursor-pointer rounded-3xl py-1 px-4 hover:bg-grey-500" onClick={handleAddAccount}>
         <img src={addAccount} alt="add account button"  className='h-5 w-5'/>
         <p>افزودن اکانت</p>
       </li>

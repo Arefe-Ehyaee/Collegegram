@@ -12,8 +12,8 @@ import { UnBlockAUser } from "../profile-page/Blocking/UnBlockAUser";
 
 interface UsersUnBlockModalProps {
   username: string;
-  avatar?: string;
-  followersCount?: number;
+  avatar: string;
+  followersCount: number;
   userId: string | null;
   token: string | null;
   onClick: () => void;

@@ -87,7 +87,7 @@ export default function MyFriendssNotificationPageComponent() {
       <div className="mt-10 flex justify-start max-sm:justify-center">
         <NavLink to="/myNotifications">
           <div className="flex">
-            <h2 className="block px-7 font-isf text-xl text-grey-400 max-sm:px-2">
+            <h2 className="block px-5 font-isf text-xl text-grey-400 max-sm:px-2 max-sm:text-sm">
               اعلانات من
             </h2>
             {personalNotifData &&
@@ -103,7 +103,7 @@ export default function MyFriendssNotificationPageComponent() {
 
         <NavLink to="/myFriendsNotifications">
           <div className="flex">
-            <h2 className="block px-7 font-isf text-xl max-sm:px-2">
+            <h2 className="block px-5 font-isf text-xl max-sm:px-2 max-sm:text-sm">
               اعلانات دوستان من
             </h2>
             {friendsNotifData &&

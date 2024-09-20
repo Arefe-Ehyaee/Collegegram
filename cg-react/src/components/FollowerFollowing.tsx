@@ -7,7 +7,8 @@ import ModalTemplatePost from "./Posts/ModalTemplatePost";
 import CloseFriendModal from "./profile-page/closeFriend/CloseFriendModal";
 import CustomButton from "./CustomButton";
 import BlockingModal from "./profile-page/Blocking/BlockingModal";
-import defaultAvatar from "../assets/icons/defaultavatar.svg";
+import defaultAvatar from '../assets/icons/defaultavatar.svg'
+import { ClipLoader } from "react-spinners";
 import UnCloseFriendModal from "./profile-page/closeFriend/UnCloseFriendModal";
 import UnBlockingModal from "./profile-page/Blocking/UnBlockingModal";
 import verified from "../assets/icons/_Verified.svg";
@@ -40,7 +41,7 @@ const FollowerFollowing = ({
   const [UnBlockModal, setUnBlockModal] = useState(false);
   const [CloseFriendModalState, setCloseFriendModalState] = useState(false);
   const [UnCloseFriendModalState, setUnCloseFriendModalState] = useState(false);
-  console.log("closeFriendStatus", isCloseFriend);
+
   useEffect(() => {
     if (BlockModal) {
       document.body.style.overflow = "hidden";
@@ -55,13 +56,13 @@ const FollowerFollowing = ({
 
   /////////////////////////////////////////////////////////////////////
 
-  // useEffect(() => {
-  //   if (CloseFriendModalState) {
-  //     document.body.style.overflow = "hidden";
-  //   } else {
-  //     document.body.style.overflow = "unset";
-  //   }
-  // }, [CloseFriendModalState]);
+  useEffect(() => {
+    if (CloseFriendModalState) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [CloseFriendModalState]);
 
   const handleCloseFriendModal = () => {
     setCloseFriendModalState((prevState) => !prevState);

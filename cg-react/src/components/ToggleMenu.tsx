@@ -86,7 +86,7 @@ export default function ToggleMenu({
   return (
     <div className="relative">
       <button onClick={handleToggle} ref={buttonRef} className="relative flex flex-row gap-x-2">
-        <img src={imgSrc} alt="Toggle Menu" /> <p>{label}</p>
+        <img src={imgSrc} alt="Toggle Menu" className="max-h-[54px] max-w-[24px]" /> <p>{label}</p>
       </button>
       {isOpen && (
         <div

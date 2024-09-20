@@ -11,12 +11,14 @@ import { z } from "zod";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import CustomButton from "../CustomButton";
+import { toast } from "react-toastify";
 
 const signupSchema = z
   .object({
     username: z
       .string({ required_error: "نام کاربری مورد نیاز است" })
-      .min(3, { message: "نام کاربری باید حداقل 3 کاراکتر باشد" }),
+      .min(3, { message: "نام کاربری باید حداقل 3 کاراکتر باشد" })
+      .refine(s => !s.includes(' '), { message: "نام کاربری نباید شامل فاصله باشد" }),
     email: z
       .string({ required_error: "ایمیل مورد نیاز است" })
       .min(3, { message: "ایمیل نامعتبر است" }),
@@ -71,6 +73,7 @@ const SignUp: React.FC = () => {
           const result = res;
           console.log(result, res.status, res.data);
           navigate("/login");
+          toast.success("با موفقیت ثبت نام شدید!");
         });
     } catch (error) {
       console.error("There was an error!", error);
