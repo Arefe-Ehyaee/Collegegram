@@ -98,12 +98,12 @@ export default function SearchPagePeopleComponent() {
     }
   }, [searchTagsData]);
 
-  const handleSelectHistoryTerm = async (tag: string) => {
-    setSearchPostsInput(tag);
-    await searchPostRefetch();
-    setShowSearchTerm(true);
-    setShowDropDown(false);
-  };
+  // const handleSelectHistoryTerm = async (tag: string) => {
+  //   setSearchPostsInput(tag);
+  //   await searchPostRefetch();
+  //   setShowSearchTerm(true);
+  //   setShowDropDown(false);
+  // };
 
   const handleTagsSearchResult = () => {
     setIsToggleMenuClicked((prevState) => !prevState);
