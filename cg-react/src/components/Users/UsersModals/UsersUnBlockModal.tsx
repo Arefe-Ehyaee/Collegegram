@@ -1,21 +1,20 @@
 import { useEffect, useState } from "react";
-import CustomButton from "../CustomButton";
-import ModalTemplatePost from "../Posts/ModalTemplatePost";
-import CloseFriendModal from "../profile-page/closeFriend/CloseFriendModal";
+import CustomButton from "../../CustomButton";
+import ModalTemplatePost from "../../Posts/ModalTemplatePost";
+import CloseFriendModal from "../../profile-page/closeFriend/CloseFriendModal";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { CloseFriendAUser } from "../profile-page/closeFriend/CloseFriendAUser";
+import { CloseFriendAUser } from "../../profile-page/closeFriend/CloseFriendAUser";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import { BlockAUser } from "../profile-page/Blocking/BlockAUser";
-import UnBlockingModal from "../profile-page/Blocking/UnBlockingModal";
-import { UnBlockAUser } from "../profile-page/Blocking/UnBlockAUser";
+import { BlockAUser } from "../../profile-page/Blocking/BlockAUser";
+import UnBlockingModal from "../../profile-page/Blocking/UnBlockingModal";
+import { UnBlockAUser } from "../../profile-page/Blocking/UnBlockAUser";
 
 interface UsersUnBlockModalProps {
   username: string;
   avatar: string;
   followersCount: number;
   userId: string | null;
-  token: string | null;
   onClick: () => void;
 }
 
@@ -24,10 +23,10 @@ const UsersUnBlockModal: React.FC<UsersUnBlockModalProps> = ({
   avatar,
   followersCount,
   userId,
-  token,
   onClick,
 }) => {
   const queryClient = useQueryClient();
+  const token: string = localStorage.getItem("token") ?? "";
 
   const {
     data: unblockData,

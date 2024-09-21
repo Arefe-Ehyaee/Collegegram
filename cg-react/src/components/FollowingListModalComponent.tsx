@@ -16,13 +16,13 @@ interface FollowingListModalComponentProps {
 }
 
 export interface Following {
-  id?: string;
+  id: string;
   avatar: { url: string };
   username: string;
   first_name?: string;
   last_name?: string;
   bio?: string;
-  followersCount?: number;
+  followersCount: number;
   isCloseFriend: boolean;
 }
 
@@ -59,12 +59,13 @@ const FollowingListModalComponent = ({userId, token, onClick, FollowingListModal
     <div dir="rtl">
       <div className="pb-8 text-xl font-bold">دنبال کننده ها</div>
       {isFetchingFollowing && <BeatLoader />}
-      <div className="max-h-[450px] overflow-y-scroll">
+      <div className="max-h-[450px] min-h-[400px] overflow-y-scroll">
         {followingsData &&
           !isFetchingFollowing &&
           followingsData.pages.map((page) =>
             page.map((follower: Following) => (
               <FollowerFollowing
+                id={follower.id}
                 key={follower.id}
                 name={follower.username}
                 followersNumber={follower.followersCount}

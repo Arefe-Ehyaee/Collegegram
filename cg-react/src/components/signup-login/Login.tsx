@@ -21,10 +21,17 @@ import CustomButton from "../CustomButton";
 const loginSchema = z.object({
   username: z
     .string({ required_error: "نام کاربری مورد نیاز است" })
-    .min(3, { message: "نام کاربری باید حداقل 3 کاراکتر باشد" }),
+    .min(3, { message: "نام کاربری باید حداقل 3 کاراکتر باشد" })
+    .max(30,{ message: "نام کاربری باید حداکثر 30 کاراکتر باشد" } )
+    .regex(/^[a-zA-Z0-9]+$/, { message: "نام کاربری فقط باید شامل حروف بزرگ و کوچک و اعداد باشد" })
+    .refine(s => !s.includes(' '), { message: "نام کاربری نباید شامل فاصله باشد" }),
   password: z
     .string({ required_error: "رمز عبور مورد نیاز است" })
-    .min(8, { message: "رمز عبور باید حداقل 8 کاراکتر باشد" }),
+    .min(8, { message: "رمز عبور باید حداقل 8 کاراکتر باشد" })
+    .max(50,{ message: "نام کاربری باید حداکثر 50 کاراکتر باشد" } )
+    .regex(/[A-Z]/, { message: "رمز عبور باید شامل حداقل یک حرف بزرگ باشد" })
+    .regex(/[a-z]/, { message: "رمز عبور باید شامل حداقل یک حرف کوچک باشد" })
+    .regex(/[0-9]/, { message: "رمز عبور باید شامل حداقل یک عدد باشد" }),
 });
 
 interface LoginFormData {
@@ -59,7 +66,6 @@ const Login = () => {
         },
       );
       const { token } = response.data;
-      // const token = response.data.token;
 
       if (response.ok) {
         localStorage.setItem("token", token);
@@ -81,7 +87,6 @@ const Login = () => {
       <Box height="w-full">
         <div className="rahnema-logo absolute top-10"></div>
         <EnterSignup />
-        {/* <div className="mt-16"> */}
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="mt-14 flex flex-col items-center"
@@ -117,8 +122,6 @@ const Login = () => {
             </NavLink>
           </div>
         </form>
-
-        {/* </div> */}
       </Box>
     </div>
   );

@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
-import CustomButton from "../CustomButton";
-import ModalTemplatePost from "../Posts/ModalTemplatePost";
-import CloseFriendModal from "../profile-page/closeFriend/CloseFriendModal";
+import CustomButton from "../../CustomButton";
+import ModalTemplatePost from "../../Posts/ModalTemplatePost";
+import CloseFriendModal from "../../profile-page/closeFriend/CloseFriendModal";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { CloseFriendAUser } from "../profile-page/closeFriend/CloseFriendAUser";
+import { CloseFriendAUser } from "../../profile-page/closeFriend/CloseFriendAUser";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
-import { UnCloseFriendAUser } from "../profile-page/closeFriend/UnCloseFriendAUser";
-import UnCloseFriendModal from "../profile-page/closeFriend/UnCloseFriendModal";
+import { UnCloseFriendAUser } from "../../profile-page/closeFriend/UnCloseFriendAUser";
+import UnCloseFriendModal from "../../profile-page/closeFriend/UnCloseFriendModal";
 
 interface UsersCloseFriendModalProps {
   username: string;
   avatar: string;
   followersCount: number;
   userId: string | null;
-  token: string | null;
-  followingStatus: string;
-  followedStatus: string;
+  followingStatus?: string;
+  followedStatus?: string;
   onClick: Function;
 }
 
@@ -25,13 +24,13 @@ const UsersUnCloseFriendModal = ({
   avatar,
   followersCount,
   userId,
-  token,
   followingStatus,
   followedStatus,
   onClick,
 } : UsersCloseFriendModalProps) => {
   // const [UnCloseFriendModalState, setUnCloseFriendModalState] = useState(false);
   const queryClient = useQueryClient();
+  const token: string = localStorage.getItem("token") ?? "";
 
   const {
     data: uncloseFriendData,

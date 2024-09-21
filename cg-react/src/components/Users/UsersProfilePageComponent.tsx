@@ -21,10 +21,10 @@ import { toast } from "react-toastify";
 import MenuLiOptionComponent from "../MenuLiOptionComponent";
 import verified from "../../assets/icons/_Verified.svg";
 import { HandleError } from "./UserProfileErrorHandler";
-import UsersCloseFriendModal from "./UsersCloseFriendModal";
-import UsersUnCloseFriendModal from "./UsersUncloseFriendModal";
-import UsersBlockModal from "./UsersBlockModal";
-import UsersUnBlockModal from "./UsersUnBlockModal";
+import UsersCloseFriendModal from "./UsersModals/UsersCloseFriendModal";
+import UsersUnCloseFriendModal from "./UsersModals/UsersUncloseFriendModal";
+import UsersBlockModal from "./UsersModals/UsersBlockModal";
+import UsersUnBlockModal from "./UsersModals/UsersUnBlockModal";
 import FollowerListModalComponent from "../FollowerListModalComponent";
 import FollowingListModalComponent from "../FollowingListModalComponent";
 import { getButtonProperties } from "./UsersGetButtonProperties";
@@ -263,7 +263,6 @@ export default function UsersProfilePageComponent() {
                 avatar = {userData.data.avatar.url}
                 followersCount={userData.data.followersCount} 
                 userId={userId}
-                token={token}
                 followingStatus={followingStatus}
                 followedStatus={followedStatus}
                 onClick={() => setShowCloseFriendModal(false)}
@@ -281,7 +280,6 @@ export default function UsersProfilePageComponent() {
                 avatar = {userData.data.avatar.url}
                 followersCount={userData.data.followersCount} 
                 userId={userId}
-                token={token}
                 followingStatus={followingStatus}
                 followedStatus={followedStatus}
                 onClick={() => setShowUnCloseFriendModal(false)}
@@ -299,7 +297,6 @@ export default function UsersProfilePageComponent() {
                 avatar = {userData.data.avatar.url}
                 followersCount={userData.data.followersCount} 
                 userId={userId}
-                token={token}
                 onClick={() => setShowBlockModal(false)}
               ></UsersBlockModal>
             </ModalTemplatePost>
@@ -315,7 +312,6 @@ export default function UsersProfilePageComponent() {
                 avatar = {userData.data.avatar.url}
                 followersCount={userData.data.followersCount} 
                 userId={userId}
-                token={token}
                 onClick={() => setShowUnBlockModal(false)}
               ></UsersUnBlockModal>
             </ModalTemplatePost>

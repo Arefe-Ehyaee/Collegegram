@@ -66,6 +66,7 @@ const SwitchAccountComponent = () => {
         setUserProfiles(newProfiles);
         navigate('/userprofile')
         queryClient.invalidateQueries({ queryKey: ["profileData"] });
+        queryClient.invalidateQueries({queryKey:['navbar notification count']})
       };
   
     return (

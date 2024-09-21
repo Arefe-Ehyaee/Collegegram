@@ -4,23 +4,28 @@ import addToCloseFriendsIcon from "../assets/icons/addToCloseFriends.svg";
 import Dots from "../assets/icons/Dots.svg";
 import { useEffect, useState } from "react";
 import ModalTemplatePost from "./Posts/ModalTemplatePost";
-import CloseFriendModal from "./profile-page/closeFriend/CloseFriendModal";
-import CustomButton from "./CustomButton";
-import BlockingModal from "./profile-page/Blocking/BlockingModal";
-import defaultAvatar from '../assets/icons/defaultavatar.svg'
-import { ClipLoader } from "react-spinners";
-import UnCloseFriendModal from "./profile-page/closeFriend/UnCloseFriendModal";
-import UnBlockingModal from "./profile-page/Blocking/UnBlockingModal";
+import defaultAvatar from "../assets/icons/defaultavatar.svg";
 import verified from "../assets/icons/_Verified.svg";
+import MenuLiOptionComponent from "./MenuLiOptionComponent";
+import UsersUnCloseFriendModal from "./Users/UsersModals/UsersUncloseFriendModal";
+import UsersCloseFriendModal from "./Users/UsersModals/UsersCloseFriendModal";
+import UsersBlockModal from "./Users/UsersModals/UsersBlockModal";
+import UsersUnBlockModal from "./Users/UsersModals/UsersUnBlockModal";
+import UsersUnFollowModal from "./Users/UsersModals/UsersUnFollowModal";
+import Minus from "../assets/icons/Layer 1.svg";
+import UsersRemoveFollowerModal from "./Users/UsersModals/UsersRemoveFollowerModal";
 
 interface FollowerFollowingProps {
   name: string;
-  followersNumber?: number;
-  avatar?: string;
+  followersNumber: number;
+  avatar: string;
   isCloseFriend: boolean;
+  id: string;
+  FollowerFollowingList?: "FollowerList" | "FollowingList";
+  CloseBlackList?: "CloseFriendList" | "BlackList";
 }
 export interface Follower {
-  id?: string;
+  id: string;
   avatar: { url: string };
   username: string;
   first_name?: string;
@@ -28,7 +33,7 @@ export interface Follower {
   postsCount: number;
   bio?: string;
   followersCount: number;
-  followingsCount?: number;
+  followingsCount: number;
 }
 
 const FollowerFollowing = ({
@@ -36,11 +41,23 @@ const FollowerFollowing = ({
   followersNumber,
   avatar,
   isCloseFriend,
+  id,
+  FollowerFollowingList,
+  CloseBlackList,
 }: FollowerFollowingProps) => {
   const [BlockModal, setBlockModal] = useState(false);
   const [UnBlockModal, setUnBlockModal] = useState(false);
   const [CloseFriendModalState, setCloseFriendModalState] = useState(false);
   const [UnCloseFriendModalState, setUnCloseFriendModalState] = useState(false);
+
+  const [showBlockModal, setShowBlockModal] = useState(false);
+  const [showUnBlockModal, setShowUnBlockModal] = useState(false);
+  const [showCloseFriendModal, setShowCloseFriendModal] = useState(false);
+  const [showUnCloseFriendModal, setShowUnCloseFriendModal] = useState(false);
+  const [showUnFollowModal, setShowUnFollowModal] = useState(false);
+  const [showRemoveFollowerModal, setShowRemoveFollowerModal] = useState(false);
+
+  const token: string = localStorage.getItem("token") ?? "";
 
   useEffect(() => {
     if (BlockModal) {
@@ -80,7 +97,7 @@ const FollowerFollowing = ({
   // };
   return (
     <div
-      className="flex items-center justify-between gap-[93px] border-b border-grey-700 py-4"
+      className="flex items-center justify-between gap-[130px] border-b border-grey-700 py-4"
       dir="rtl"
     >
       <div className="flex items-center gap-[27px]">
@@ -94,7 +111,7 @@ const FollowerFollowing = ({
             <img
               src={verified}
               alt="verified"
-              className="absolute h-[20px] w-[20px] bottom-0 left-0"
+              className="absolute bottom-0 left-0 h-[20px] w-[20px]"
             />
           )}
         </div>
@@ -110,7 +127,7 @@ const FollowerFollowing = ({
       </div>
 
       <ToggleMenu imgSrc={Dots}>
-        <ul>
+        {/* <ul>
           <li className="flex cursor-pointer flex-row items-center rounded-md px-4 py-2 hover:bg-grey-600">
             <button onClick={handleCloseFriendModal}>
               <img
@@ -127,118 +144,144 @@ const FollowerFollowing = ({
               <p className="pr-4">بلاک کردن</p>
             </button>
           </li>
+        </ul> */}
+        <ul>
+          {CloseBlackList === "CloseFriendList" || isCloseFriend ? (
+            <MenuLiOptionComponent
+              text="حذف از دوستان نزدیک"
+              iconsrc={addToCloseFriendsIcon}
+              handleOnClick={() => setShowUnCloseFriendModal(true)}
+            />
+          ) : (
+            !isCloseFriend &&
+            !CloseBlackList && (
+              <MenuLiOptionComponent
+                text="افزودن به دوستان نزدیک"
+                iconsrc={addToCloseFriendsIcon}
+                handleOnClick={() => setShowCloseFriendModal(true)}
+              />
+            )
+          )}
+
+          {CloseBlackList === "BlackList" && (
+            <MenuLiOptionComponent
+              text="حذف از بلاک ها"
+              iconsrc={addToCloseFriendsIcon}
+              handleOnClick={() => setShowUnBlockModal(true)}
+            />
+          )}
+
+          {CloseBlackList === "CloseFriendList" && (
+            <MenuLiOptionComponent
+              text="بلاک کردن"
+              iconsrc={addToCloseFriendsIcon}
+              handleOnClick={() => setShowBlockModal(true)}
+            />
+          )}
+
+          {FollowerFollowingList === "FollowingList" ? (
+            <MenuLiOptionComponent
+              text="حذف از دنبال شونده ها"
+              iconsrc={Minus}
+              handleOnClick={() => setShowUnFollowModal(true)}
+            ></MenuLiOptionComponent>
+          ) : FollowerFollowingList === "FollowerList" ? (
+            <MenuLiOptionComponent
+              text="حذف از دنبال کننده ها"
+              iconsrc={Minus}
+              handleOnClick={() => setShowRemoveFollowerModal(true)}
+            ></MenuLiOptionComponent>
+          ) : null}
         </ul>
       </ToggleMenu>
 
-      {CloseFriendModalState && (
+      {showCloseFriendModal && (
         <ModalTemplatePost
-          onClose={() => setCloseFriendModalState(false)}
-          showModal={CloseFriendModalState}
+          showModal={showCloseFriendModal}
+          onClose={() => setShowCloseFriendModal(false)}
         >
-          <CloseFriendModal
-            name={name}
+          <UsersCloseFriendModal
+            username={name}
             avatar={avatar}
             followersCount={followersNumber}
-          ></CloseFriendModal>
-          <div className="mt-8 flex flex-row self-end">
-            <CustomButton
-              text="پشیمون شدم"
-              className="ml-4 !text-black-100"
-              handleOnClick={() => setCloseFriendModalState(false)}
-            ></CustomButton>
-            <CustomButton
-              text="آره حتما"
-              className="bg-red-200"
-              // handleOnClick={handleCloseFriendAUser}
-            >
-              {/* {closeFriendFetching && (
-                    <ClipLoader color="#9b9b9b" size={20} />
-                  )} */}
-            </CustomButton>
-          </div>
+            userId={id}
+            onClick={() => setShowCloseFriendModal(false)}
+          ></UsersCloseFriendModal>
         </ModalTemplatePost>
       )}
 
-      {UnCloseFriendModalState && (
+      {showUnCloseFriendModal && (
         <ModalTemplatePost
-          onClose={() => setUnCloseFriendModalState(false)}
-          showModal={UnCloseFriendModalState}
+          showModal={showUnCloseFriendModal}
+          onClose={() => setShowUnCloseFriendModal(false)}
         >
-          <UnCloseFriendModal
-            name={name}
+          <UsersUnCloseFriendModal
+            username={name}
             avatar={avatar}
             followersCount={followersNumber}
-          ></UnCloseFriendModal>
-          <div className="mt-8 flex flex-row self-end">
-            <CustomButton
-              text="پشیمون شدم"
-              className="ml-4 !text-black-100"
-              // handleOnClick={handleUnCloseFriendAUser}
-            ></CustomButton>
-            <CustomButton
-              text="آره حتما"
-              className="bg-red-200"
-              // handleOnClick={handleUnCloseFriendAUser}
-            >
-              {/* {uncloseFriendFetching && (
-                    <ClipLoader color="#9b9b9b" size={20} />
-                  )} */}
-            </CustomButton>
-          </div>
+            userId={id}
+            onClick={() => setShowUnCloseFriendModal(false)}
+          ></UsersUnCloseFriendModal>
         </ModalTemplatePost>
       )}
 
-      {BlockModal && (
+      {showBlockModal && (
         <ModalTemplatePost
-          onClose={() => setBlockModal(false)}
-          showModal={BlockModal}
+          showModal={showBlockModal}
+          onClose={() => setShowBlockModal(false)}
         >
-          <BlockingModal
-            name={name}
+          <UsersBlockModal
+            username={name}
             avatar={avatar}
             followersCount={followersNumber}
-          ></BlockingModal>
-          <div className="mt-8 flex flex-row self-end">
-            <CustomButton
-              text="پشیمون شدم"
-              className="ml-4 !text-black-100"
-              handleOnClick={() => setBlockModal(false)}
-            ></CustomButton>
-            <CustomButton
-              text="آره حتما"
-              className="bg-red-200"
-              // handleOnClick={handleBlockAUser}
-            >
-              {/* {blockFetching && <ClipLoader color="#9b9b9b" size={20} />} */}
-            </CustomButton>
-          </div>
+            userId={id}
+            onClick={() => setShowBlockModal(false)}
+          ></UsersBlockModal>
         </ModalTemplatePost>
       )}
 
-      {UnBlockModal && (
+      {showUnBlockModal && (
         <ModalTemplatePost
-          onClose={() => setBlockModal(false)}
-          showModal={UnBlockModal}
+          showModal={showUnBlockModal}
+          onClose={() => setShowUnBlockModal(false)}
         >
-          <UnBlockingModal
-            name={name}
+          <UsersUnBlockModal
+            username={name}
             avatar={avatar}
             followersCount={followersNumber}
-          ></UnBlockingModal>
-          <div className="mt-8 flex flex-row self-end">
-            <CustomButton
-              text="پشیمون شدم"
-              className="ml-4 !text-black-100"
-              handleOnClick={() => setUnBlockModal(false)}
-            ></CustomButton>
-            <CustomButton
-              text="آره حتما"
-              className="bg-red-200"
-              // handleOnClick={handleUnBlockAUser}
-            >
-              {/* {unblockFetching && <ClipLoader color="#9b9b9b" size={20} />} */}
-            </CustomButton>
-          </div>
+            userId={id}
+            onClick={() => setShowUnBlockModal(false)}
+          ></UsersUnBlockModal>
+        </ModalTemplatePost>
+      )}
+
+      {showUnFollowModal && (
+        <ModalTemplatePost
+          showModal={showUnFollowModal}
+          onClose={() => setShowUnFollowModal(false)}
+        >
+          <UsersUnFollowModal
+            username={name}
+            avatar={avatar}
+            followersCount={followersNumber}
+            userId={id}
+            onClick={() => setShowUnFollowModal(false)}
+          ></UsersUnFollowModal>
+        </ModalTemplatePost>
+      )}
+
+      {showRemoveFollowerModal && (
+        <ModalTemplatePost
+          showModal={showRemoveFollowerModal}
+          onClose={() => setShowRemoveFollowerModal(false)}
+        >
+          <UsersRemoveFollowerModal
+            username={name}
+            avatar={avatar}
+            followersCount={followersNumber}
+            userId={id}
+            onClick={() => setShowRemoveFollowerModal(false)}
+          ></UsersRemoveFollowerModal>
         </ModalTemplatePost>
       )}
     </div>
