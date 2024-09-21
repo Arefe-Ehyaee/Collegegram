@@ -14,6 +14,8 @@ import UsersUnBlockModal from "./Users/UsersModals/UsersUnBlockModal";
 import UsersUnFollowModal from "./Users/UsersModals/UsersUnFollowModal";
 import Minus from "../assets/icons/Layer 1.svg";
 import UsersRemoveFollowerModal from "./Users/UsersModals/UsersRemoveFollowerModal";
+import { useNavigate } from "react-router-dom";
+
 
 interface FollowerFollowingProps {
   name: string;
@@ -23,6 +25,7 @@ interface FollowerFollowingProps {
   id: string;
   FollowerFollowingList?: "FollowerList" | "FollowingList";
   CloseBlackList?: "CloseFriendList" | "BlackList";
+  fromOthersProfile?: boolean;
 }
 export interface Follower {
   id: string;
@@ -44,12 +47,13 @@ const FollowerFollowing = ({
   id,
   FollowerFollowingList,
   CloseBlackList,
+  fromOthersProfile,
 }: FollowerFollowingProps) => {
   const [BlockModal, setBlockModal] = useState(false);
   const [UnBlockModal, setUnBlockModal] = useState(false);
   const [CloseFriendModalState, setCloseFriendModalState] = useState(false);
   const [UnCloseFriendModalState, setUnCloseFriendModalState] = useState(false);
-
+  const navigate = useNavigate();
   const [showBlockModal, setShowBlockModal] = useState(false);
   const [showUnBlockModal, setShowUnBlockModal] = useState(false);
   const [showCloseFriendModal, setShowCloseFriendModal] = useState(false);
@@ -67,9 +71,6 @@ const FollowerFollowing = ({
     }
   }, [BlockModal]);
 
-  const handleBlockModal = () => {
-    setBlockModal((prevState) => !prevState);
-  };
 
   /////////////////////////////////////////////////////////////////////
 
@@ -81,20 +82,10 @@ const FollowerFollowing = ({
     }
   }, [CloseFriendModalState]);
 
-  const handleCloseFriendModal = () => {
-    setCloseFriendModalState((prevState) => !prevState);
+  const handleShowUserProfile = (username: string) => {
+    navigate(`/users/profile?username=${username}`);
   };
 
-  // const handleCloseFriendAUser = () => {
-  //   if (userData.data.followedStatus === "NotFollowing") {
-  //     toast.warning("اول باید این کاربر رو دنبال کنی!");
-  //   } else {
-  //     closeFriendRefetch();
-  //     queryClient.invalidateQueries({ queryKey: ["closeFriendUser", userId] });
-  //     queryClient.invalidateQueries({ queryKey: ["othersProfile", username] });
-  //     setCloseFriendModalState((prevState) => !prevState);
-  //   }
-  // };
   return (
     <div
       className="flex items-center justify-between gap-[130px] border-b border-grey-700 py-4"
@@ -127,24 +118,6 @@ const FollowerFollowing = ({
       </div>
 
       <ToggleMenu imgSrc={Dots}>
-        {/* <ul>
-          <li className="flex cursor-pointer flex-row items-center rounded-md px-4 py-2 hover:bg-grey-600">
-            <button onClick={handleCloseFriendModal}>
-              <img
-                src={addToCloseFriendsIcon}
-                alt="add to close friends"
-                className="h-5 w-5"
-              />
-              <p className="pr-4">افزودن به دوستان نزدیک</p>
-            </button>
-          </li>
-          <li className="flex cursor-pointer flex-row items-center rounded-md px-4 py-2 hover:bg-grey-600">
-            <button onClick={handleBlockModal}>
-              <img src={blockingIcon} alt="block user" className="h-5 w-5" />
-              <p className="pr-4">بلاک کردن</p>
-            </button>
-          </li>
-        </ul> */}
         <ul>
           {CloseBlackList === "CloseFriendList" || isCloseFriend ? (
             <MenuLiOptionComponent
@@ -176,6 +149,13 @@ const FollowerFollowing = ({
               text="بلاک کردن"
               iconsrc={addToCloseFriendsIcon}
               handleOnClick={() => setShowBlockModal(true)}
+            />
+          )}
+
+          {fromOthersProfile && (
+            <MenuLiOptionComponent
+              text="مشاهده پروفایل"
+              handleOnClick={() => handleShowUserProfile(name)}
             />
           )}
 

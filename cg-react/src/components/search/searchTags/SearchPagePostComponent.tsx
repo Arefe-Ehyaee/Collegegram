@@ -34,7 +34,7 @@ export default function SearchPagePeopleComponent() {
     isFetching: isFetchingSearchPost,
     isError: searchPostIsError,
     error: searchPostCardError,
-    refetch: searchPostIsFetching,
+    refetch: searchPostRefetch,
   } = useInfiniteQuery({
     queryKey: ["searchPeopleCard", searchPostsInput],
     queryFn: async ({ pageParam = 1 }) =>
@@ -98,6 +98,13 @@ export default function SearchPagePeopleComponent() {
     }
   }, [searchTagsData]);
 
+  const handleSelectHistoryTerm = async (tag: string) => {
+    setSearchPostsInput(tag);
+    await searchPostRefetch();
+    setShowSearchTerm(true);
+    setShowDropDown(false);
+  };
+
   const handleTagsSearchResult = () => {
     setIsToggleMenuClicked((prevState) => !prevState);
     setShowDropDown(false);
@@ -112,9 +119,9 @@ export default function SearchPagePeopleComponent() {
       localStorage.setItem("searchedTags", JSON.stringify(updatedStoredTags));
     }
     try {
-      await searchTagsRefetch();
+      await searchPostRefetch();
     } finally {
-      // navigate(`/posts/${id}`);
+      setShowDropDown(false);
       setShowSearchTerm(true);
     }
   };
@@ -147,7 +154,7 @@ export default function SearchPagePeopleComponent() {
   }, [inView, hasNextPageSearchPost, fetchNextPageSearchPost]);
 
   if (searchPostIsError) {
-    toast.error(searchPostCardError.message);
+    toast.error("خطا در جستجو");
   }
   const getResponsiveColumnSpan = (index: number) => {
     if (index < 3) {

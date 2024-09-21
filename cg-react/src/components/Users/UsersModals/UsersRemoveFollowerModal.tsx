@@ -26,7 +26,7 @@ const UsersRemoveFollowerModal = ({
 }: UsersRemoveFollowerModalProps) => {
   const queryClient = useQueryClient();
   const token: string = localStorage.getItem("token") ?? "";
-  
+
   const {
     data: removeFollowerData,
     isError: removeFollowerError,
@@ -35,18 +35,20 @@ const UsersRemoveFollowerModal = ({
     isFetching: removeFollowerFetching,
   } = useQuery({
     queryKey: ["deleteFollower", userId],
-    queryFn: () => DeleteFromFollowers(token , userId),
+    queryFn: () => DeleteFromFollowers(token, userId),
     enabled: false,
   });
 
-
-  const handleUnFollowAUser = async () => {
+  const handleRemoveFollower = async () => {
     try {
       await removeFollowerRefetch();
-    } finally {
       queryClient.invalidateQueries({
         queryKey: ["othersProfile", username],
-      })
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["followers", userId],
+      });
+    } finally {
       onClick();
     }
   };
@@ -67,7 +69,7 @@ const UsersRemoveFollowerModal = ({
         <CustomButton
           text="آره حتما"
           className="bg-red-200"
-          handleOnClick={handleUnFollowAUser}
+          handleOnClick={handleRemoveFollower}
         >
           {removeFollowerFetching && <ClipLoader color="#9b9b9b" size={20} />}
         </CustomButton>

@@ -13,6 +13,7 @@ interface FollowingListModalComponentProps {
   token: string | null;
   onClick: () => void;
   FollowingListModal: Boolean;
+  formOthersProfile?: boolean;
 }
 
 export interface Following {
@@ -31,6 +32,7 @@ const FollowingListModalComponent = ({
   token,
   onClick,
   FollowingListModal,
+  formOthersProfile
 }: FollowingListModalComponentProps) => {
   const { ref: followingRef, inView: followingInView } = useInView();
 
@@ -61,9 +63,9 @@ const FollowingListModalComponent = ({
 
   return (
     <div dir="rtl">
-      <div className="pb-8 text-xl text-center font-bold">دنبال کننده ها</div>
+      <div className="pb-8 text-center text-xl font-bold">دنبال کننده ها</div>
       {isFetchingFollowing && <BeatLoader />}
-      <div className="max-h-[450px] min-h-[300px] overflow-y-scroll">
+      <div className="max-h-[500px] min-h-[300px] overflow-y-scroll">
         {followingsData &&
           !isFetchingFollowing &&
           followingsData.pages.map((page) =>
@@ -75,15 +77,17 @@ const FollowingListModalComponent = ({
                 followersNumber={follower.followersCount}
                 avatar={follower?.avatar?.url || defaultAvatar}
                 isCloseFriend={follower.isCloseFriend}
+                fromOthersProfile = {true}
               />
             )),
           )}
       </div>
       <div className="flex justify-center" ref={followingRef}></div>
+
       <div className="flex justify-center">
         <CustomButton
           text={"بستن"}
-          className="mt-[34px] bg-red-200"
+          className="mt-[34px] items-center justify-center bg-red-200"
           handleOnClick={() => onClick()}
         ></CustomButton>
       </div>

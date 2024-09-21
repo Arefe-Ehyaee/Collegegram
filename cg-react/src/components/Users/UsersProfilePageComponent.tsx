@@ -29,6 +29,7 @@ import FollowerListModalComponent from "../FollowerListModalComponent";
 import FollowingListModalComponent from "../FollowingListModalComponent";
 import { getButtonProperties } from "./UsersGetButtonProperties";
 import useFollowUnfollow from "./useFollowUnfollow";
+import defaultAvatar from "../../assets/icons/defaultavatar.svg"
 export type FollowStatus =
 | "Following"
 | "NotFollowing"
@@ -260,7 +261,7 @@ export default function UsersProfilePageComponent() {
             >
               <UsersCloseFriendModal
                 username={userData.data.username}
-                avatar = {userData.data.avatar.url}
+                avatar = {userData.data.avatar?.url || defaultAvatar}
                 followersCount={userData.data.followersCount} 
                 userId={userId}
                 followingStatus={followingStatus}
@@ -277,7 +278,7 @@ export default function UsersProfilePageComponent() {
             >
               <UsersUnCloseFriendModal
                 username={userData.data.username}
-                avatar = {userData.data.avatar.url}
+                avatar = {userData.data.avatar?.url || defaultAvatar}
                 followersCount={userData.data.followersCount} 
                 userId={userId}
                 followingStatus={followingStatus}
@@ -294,7 +295,7 @@ export default function UsersProfilePageComponent() {
             >
               <UsersBlockModal
                 username={userData.data.username}
-                avatar = {userData.data.avatar.url}
+                avatar = {userData.data.avatar?.url || defaultAvatar}
                 followersCount={userData.data.followersCount} 
                 userId={userId}
                 onClick={() => setShowBlockModal(false)}
@@ -309,7 +310,7 @@ export default function UsersProfilePageComponent() {
             >
               <UsersUnBlockModal
                 username={userData.data.username}
-                avatar = {userData.data.avatar.url}
+                avatar = {userData.data.avatar?.url || defaultAvatar}
                 followersCount={userData.data.followersCount} 
                 userId={userId}
                 onClick={() => setShowUnBlockModal(false)}

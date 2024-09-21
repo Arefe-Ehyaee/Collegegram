@@ -109,7 +109,7 @@ export default function SearchPagePeopleComponent() {
     }
   }, [searchPeopleData]);
 
-  const handleSelectPerson = async (username: string) => {
+  const handleSelectPerson = (username: string) => {
     const storedUsernames = JSON.parse(
       localStorage.getItem("searchedUsernames") || "[]",
     );
@@ -121,11 +121,8 @@ export default function SearchPagePeopleComponent() {
         JSON.stringify(updatedStoredUsernames),
       );
     }
-    try {
-      await searchPeopleRefetch();
-    } finally {
-      navigate(`/users/profile?username=${username}`);
-    }
+    navigate(`/users/profile?username=${username}`);
+
   };
 
   useEffect(() => {
@@ -139,7 +136,6 @@ export default function SearchPagePeopleComponent() {
     setIsToggleMenuClicked((prevState) => !prevState);
     setShowDropDown(false);
     setShowSearchTerm(true);
-    console.log(searchPeopleCardData);
   };
 
   const handleClearSearch = () => {

@@ -14,6 +14,7 @@ import Delete from "../../assets/icons/close.svg";
 import CustomButton from "../CustomButton";
 import ToggleSwitch from "../ToggleButton";
 import PostToggleButton from "./PostToggleButton";
+import { toast } from "react-toastify";
 
 interface UploadModalProps {
   onClose: Function;
@@ -103,6 +104,7 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
     } finally {
       setIsUploading(false);
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+      toast.success("پست با موفقیت آپلود شد.")
       onClose();
     }
   };
