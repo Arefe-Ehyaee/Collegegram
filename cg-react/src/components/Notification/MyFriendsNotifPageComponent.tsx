@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import {  useEffect } from "react";
-import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { BeatLoader } from "react-spinners";
 import NotificationComponent, {
@@ -51,6 +51,7 @@ export default function MyFriendssNotificationPageComponent() {
     initialPageParam: 1,
     enabled: !!token,
   });
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (notificationIds: string[]) =>
@@ -71,6 +72,15 @@ export default function MyFriendssNotificationPageComponent() {
 
     if (unseenNotificationIds && unseenNotificationIds.length > 0) {
       mutation.mutate(unseenNotificationIds);
+      queryClient.invalidateQueries({
+        queryKey:['navbar notification count'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["friends notification count"]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ["personal notification count"]
+      })
     }
   }, [data]);
 

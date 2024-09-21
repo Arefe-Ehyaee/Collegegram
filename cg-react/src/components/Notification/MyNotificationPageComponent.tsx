@@ -6,7 +6,7 @@ import NotificationComponent, {
 } from "./NotificationComponent";
 import { BeatLoader } from "react-spinners";
 import NotifBadge from "./NotifBadge";
-import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchMyPersonalNotifications } from "./fetch-requests/fetchMyPersonalNotifications";
 import defaultAvatar from "../../assets/icons/defaultavatar.svg";
 import { fetchPersonalNotificationCount } from "./fetch-requests/fetchPersonalNotificationsCount";
@@ -62,7 +62,7 @@ export default function MyNotificationPageComponent() {
       console.error("Failed to mark notifications as seen", error);
     },
   });
-
+  const queryClient = useQueryClient();
   useEffect(() => {
     const unseenNotificationIds: string[] | undefined = data?.pages
       .flatMap((page) => page.data?.notifications)
@@ -71,6 +71,15 @@ export default function MyNotificationPageComponent() {
 
     if (unseenNotificationIds && unseenNotificationIds.length > 0) {
       mutation.mutate(unseenNotificationIds);
+      queryClient.invalidateQueries({
+        queryKey:['navbar notification count'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["friends notification count"]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ["personal notification count"]
+      })
     }
   }, [data]);
 
