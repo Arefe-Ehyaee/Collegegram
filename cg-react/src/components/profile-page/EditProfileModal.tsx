@@ -84,9 +84,8 @@ interface ProfileFormProps {
 const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
   const [isEditingProfile, setIsEditingProfile] = useState(false);
-
+  const [selectedImage, setSelectedImage] = useState<string>("");
   const [defaultChecked,setDefaultChecked] = useState<boolean>(false)
   useEffect(()=>{
     userProfile.isPrivate && setDefaultChecked(userProfile.isPrivate)
@@ -105,12 +104,14 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
       isPrivate: userProfile.isPrivate,
     },
   });
-console.log('104',defaultChecked)
-console.log('105',userProfile)
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedImage(URL.createObjectURL(file)); // Update the preview
+    }
+  };
   const queryClient = useQueryClient();
-
   const fetchWrapper = useFetchWrapper();
-
   const onSubmit = async (data: ProfileFormProps) => {
     console.log("Raw form data:", data);
 
@@ -140,13 +141,6 @@ console.log('105',userProfile)
 
       if (response.ok) {
         console.log(response.data);
-        setUserProfile((prevProfile) => ({
-          ...prevProfile,
-          ...Object.fromEntries(filteredData),
-          avatar: filteredData.get("avatar")
-            ? URL.createObjectURL(filteredData.get("avatar") as File)
-            : prevProfile.avatar,
-        }));
       } else {
         console.error("Failed to update profile", response.statusText);
       }
@@ -164,17 +158,24 @@ console.log('105',userProfile)
       <h2 className="pb-8 text-xl font-bold text-green-400">ویرایش حساب</h2>
       <label htmlFor="avatar" className="cursor-pointer">
         <img
-          src={profileImage}
+          src={selectedImage || profileImage}
           alt="profile image edit/upload"
           className="h-[91px] w-[91px] rounded-full border-2 border-golden"
         />
       </label>
       <input
-        type="file"
-        id="avatar"
-        className="hidden"
-        {...register("avatar")}
-      />
+  type="file"
+  id="avatar"
+  className="hidden"
+  {...register("avatar", {
+    onChange: (e) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        setSelectedImage(URL.createObjectURL(file)); 
+      }
+    }
+  })}
+/>
       {errors.avatar && (
         <p className="text-red-500">{errors.avatar.message as string}</p>
       )}

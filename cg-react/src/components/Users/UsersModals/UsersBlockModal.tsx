@@ -40,9 +40,16 @@ const UsersBlockModal = ({
     try {
       await blockRefetch();
     } finally {
-      queryClient.invalidateQueries({
-        queryKey: ["othersProfile", username],
-      })
+      await queryClient.invalidateQueries({
+        queryKey: ["othersProfile"],
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ["CloseFriendList"],
+      });
+      await queryClient.invalidateQueries({queryKey: ["followers"]});
+      await queryClient.invalidateQueries({queryKey: ["followings"]});
+      await queryClient.invalidateQueries({queryKey: ["closeFriendList"]});
+      await queryClient.invalidateQueries({queryKey: ["blackList"]});
       onClick();
     }
   };

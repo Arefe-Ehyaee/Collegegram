@@ -9,7 +9,6 @@ interface ToggleButtonProps {
 }
 
 const ToggleSwitch: React.FC<ToggleButtonProps> = ({ label, register, name, defaultChecked }) => {
-  console.log('def checked', defaultChecked)
   return (
     <label className="inline-flex cursor-pointer items-center space-x-4">
       <input

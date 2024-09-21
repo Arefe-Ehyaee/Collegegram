@@ -59,8 +59,14 @@ const UsersCloseFriendModal: React.FC<UsersCloseFriendModalProps> = ({
       try {
         await closeFriendRefetch();
         await queryClient.invalidateQueries({
-          queryKey: ["othersProfile", username],
+          queryKey: ["othersProfile"],
         });
+        await queryClient.invalidateQueries({
+          queryKey: ["CloseFriendList"],
+        });
+        await queryClient.invalidateQueries({queryKey: ["followers"]});
+        await queryClient.invalidateQueries({queryKey: ["followings"]});
+        await queryClient.invalidateQueries({queryKey: ["closeFriendList"]});
       } finally {
         onClick();
       }
