@@ -11,7 +11,7 @@ interface UsersBlockModalProps {
   username: string;
   avatar: string;
   followersCount: number;
-  userId: string | null;
+  userId: string;
   onClick: () => void;
 }
 
@@ -33,13 +33,17 @@ const UsersUnFollowModal = ({
     unfollowRefetch,
   } = useFollowUnfollow(token, userId);
 
+
   const handleUnFollowAUser = async () => {
     try {
       await unfollowRefetch();
     } finally {
       queryClient.invalidateQueries({
         queryKey: ["othersProfile", username],
-      })
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["followings", userId],
+      });
       onClick();
     }
   };

@@ -35,10 +35,10 @@ const CommentingComponent = (props: CommentingComponentProps) => {
       } catch (error) {
         console.error("Error sending comment:", error);
       } finally {
-        setIsSending(false); 
+        setIsSending(false);
       }
     } else {
-      setIsSending(false); 
+      setIsSending(false);
     }
   };
 

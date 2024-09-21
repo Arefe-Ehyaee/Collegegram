@@ -13,18 +13,27 @@ import Delete from "../../assets/icons/close.svg";
 import CustomButton from "../CustomButton";
 import ToggleSwitch from "../ToggleButton";
 import PostToggleButton from "./PostToggleButton";
+import { toast } from "react-toastify";
 
 
 interface EditModalProps {
   onClose: Function;
-  postData: EditPostProps;
+  postData: BackDataProps;
   postId: string;
 }
 
-interface EditPostProps {
+interface FrontDataProps {
   pictures?: File[];
   caption?: string;
   mentions?: string;
+  media: Media[];
+  deletedMedia: string[];
+  closeFriendsOnly: boolean;
+}
+interface BackDataProps {
+  pictures?: File[];
+  caption?: string;
+  mentions: string[];
   media: Media[];
   deletedMedia: string[];
   closeFriendsOnly: boolean;
@@ -70,7 +79,7 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
     setValue,
     watch,
     formState: { errors },
-  } = useForm<EditPostProps>({
+  } = useForm<FrontDataProps>({
     resolver: zodResolver(EditPostSchema),
   });
 
@@ -85,10 +94,13 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
 
 
   useEffect(() => {
-    console.log(postData);
+    console.log("postData", postData);
     if (postData) {
       setValue("caption", postData.caption || "");
-      setValue("mentions", postData.mentions ? `@${postData.mentions}` : "");
+      // setValue("mentions", postData.mentions ? `@${postData.mentions}` : "");
+      const m = postData.mentions ? postData.mentions.map(men =>`@${men}`).join(' ') : "" ;
+      setValue("mentions", m);
+
       setValue("closeFriendsOnly", postData.closeFriendsOnly);
     }
   }, [postData, setValue]);
@@ -115,7 +127,7 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
   };
 
   ///////////////////////////////////////////////////////////////////////////////////////
-  const onSubmit = async (data: EditPostProps) => {
+  const onSubmit = async (data: FrontDataProps) => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const formData = new FormData();
 
@@ -130,6 +142,7 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
     }
 
     formData.append("caption", data.caption || "");
+
     formData.append("mentions", data.mentions || "");
     formData.append("closeFriendsOnly", String(data.closeFriendsOnly));
 
@@ -148,10 +161,16 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
         },
         body: formData,
       });
+
+      const responseData = await response.json();
+
       if (response.ok) {
         console.log(response);
+        onClose();
       } else {
-        console.error("Failed to upload edit post", response.statusText);
+        if (responseData.message && responseData.message.includes("No users were found")) {
+          toast.error("کاربری پیدا نشد!");
+        }
       }
     } catch (error) {
       console.error("Error editing post:", error);
@@ -159,11 +178,13 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
       setIsEditing(false);
       queryClient.invalidateQueries({ queryKey: ["post", postId] });
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-      onClose();
+      toast.success("ویرایش با موفقیت انجام شد.");
+
+      // onClose();
     }
   };
 
-  ///////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   return (
     <div dir="rtl" className="flex min-w-[360px] flex-col items-center">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -290,6 +311,7 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
               placeholder=""
               register={register}
               error={errors.mentions?.message}
+              className="input-ltr"
             />
             <ToggleSwitch
               label="فقط نمایش به دوستان نزدیک"

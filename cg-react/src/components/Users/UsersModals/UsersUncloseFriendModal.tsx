@@ -57,6 +57,9 @@ const UsersUnCloseFriendModal = ({
       await queryClient.invalidateQueries({
         queryKey: ["othersProfile", username],
       });
+      await queryClient.invalidateQueries({
+        queryKey: ["CloseFriendList", token],
+      });
     } finally {
       onClick();
     }

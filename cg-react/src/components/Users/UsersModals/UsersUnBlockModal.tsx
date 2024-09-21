@@ -45,6 +45,9 @@ const UsersUnBlockModal: React.FC<UsersUnBlockModalProps> = ({
       await queryClient.invalidateQueries({
         queryKey: ["othersProfile", username],
       });
+      await queryClient.invalidateQueries({
+        queryKey: ["blackList", token],
+      });
     } finally {
       onClick();
     }
