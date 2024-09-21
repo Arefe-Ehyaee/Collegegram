@@ -57,6 +57,7 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
   const [selectedPhotos, setSelectedPhotos] = useState<File[]>([]);
   const [currentStep, setCurrentStep] = useState(1);
   const fetchWrapper = useFetchWrapper();
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleDeleteUploadImage = (index: number) => {
     setSelectedPhotos((prevState) => {
@@ -69,6 +70,9 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
   const onSubmit = async (data: UploadPostProps) => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const formData = new FormData();
+
+    if (isUploading) return; 
+    setIsUploading(true);
 
     if (data.pictures) {
       data.pictures.forEach((file) => {
@@ -97,6 +101,7 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
     } catch (error) {
       console.error("Error uploading:", error);
     } finally {
+      setIsUploading(false);
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       onClose();
     }

@@ -98,10 +98,6 @@ export default function SearchPagePeopleComponent() {
     }
   }, [searchTagsData]);
 
-  const handleSelectHistoryTerm = (username: string) => {
-    console.log("searchPeopleData", searchTagsData);
-  };
-
   const handleTagsSearchResult = () => {
     setIsToggleMenuClicked((prevState) => !prevState);
     setShowDropDown(false);
@@ -119,7 +115,17 @@ export default function SearchPagePeopleComponent() {
       await searchTagsRefetch();
     } finally {
       // navigate(`/posts/${id}`);
+      setShowSearchTerm(true);
     }
+  };
+
+  const handleSelectHistoryTerm = (tag: string) => {
+    setSearchPostsInput(tag);
+    setIsToggleMenuClicked((prevState) => !prevState);
+    setShowDropDown(false);
+    setShowSearchTerm(true);
+    const form = document.getElementById("searchForm") as HTMLFormElement;
+    form?.reset();
   };
 
   useEffect(() => {
@@ -128,7 +134,6 @@ export default function SearchPagePeopleComponent() {
   }, []);
 
   const handleClearSearch = () => {
-    toast.success("clear");
     setShowSearchTerm(false);
     setSearchPostsInput("");
     const form = document.getElementById("searchForm") as HTMLFormElement;
@@ -146,23 +151,23 @@ export default function SearchPagePeopleComponent() {
   }
   const getResponsiveColumnSpan = (index: number) => {
     if (index < 3) {
-      return "md:col-span-4"; 
+      return "md:col-span-4";
     } else if (index >= 3 && index < 7) {
-      return "md:col-span-3"; 
+      return "md:col-span-3";
     } else {
-      return "md:col-span-2"; 
+      return "md:col-span-2";
     }
   };
-  
+
   const getSmallScreenColumnSpan = (index: number) => {
     if (index === 0) {
-      return "col-span-12"; 
+      return "col-span-12";
     } else if (index === 1 || index === 2) {
       return "col-span-6";
     } else if (index >= 3 && index <= 5) {
-      return "col-span-4"; 
+      return "col-span-4";
     } else {
-      return "col-span-3"; 
+      return "col-span-3";
     }
   };
 
@@ -235,7 +240,7 @@ export default function SearchPagePeopleComponent() {
                 <div>
                   {searchStoredTags.length > 0 && (
                     <ul className="border-t border-grey-400 py-2">
-                      {searchStoredTags.slice(-5).map((tag, index) => (
+                      {searchStoredTags?.slice(-5).map((tag, index) => (
                         <li
                           key={index}
                           onClick={() => handleSelectHistoryTerm(tag)}
@@ -279,22 +284,28 @@ export default function SearchPagePeopleComponent() {
         </div>
       )}
 
+      {isFetchingSearchPost && (
+        <div className="flex justify-center py-2">
+          <BeatLoader size={10} />
+        </div>
+      )}
+
       {searchPostData && (
-         <div className="my-8 grid rounded-3xl">
-         <div className="grid grid-cols-12 gap-6">
-           {allPosts.map((post: Posts, globalIndex: number) => (
-             <img
-               key={post.id}
-               className={`aspect-square max-h-[304px] w-full cursor-pointer rounded-3xl object-cover ${
-                 globalIndex >= 7
-                   ? "md:col-span-2"
-                   : `${getResponsiveColumnSpan(globalIndex)} ${getSmallScreenColumnSpan(globalIndex)}`
-               }`}
-               src={`${post.media[0].url}`}
-               onClick={() => handleOnClick(post.id)}
-             />
-           ))}
-         </div>
+        <div className="my-8 grid rounded-3xl">
+          <div className="grid grid-cols-12 gap-6">
+            {allPosts.map((post: Posts, globalIndex: number) => (
+              <img
+                key={post.id}
+                className={`aspect-square max-h-[304px] w-full cursor-pointer rounded-3xl object-cover ${
+                  globalIndex >= 7
+                    ? "md:col-span-2"
+                    : `${getResponsiveColumnSpan(globalIndex)} ${getSmallScreenColumnSpan(globalIndex)}`
+                }`}
+                src={`${post.media[0]?.url}`}
+                onClick={() => handleOnClick(post.id)}
+              />
+            ))}
+          </div>
 
           {showPostModal && (
             <ModalTemplatePost

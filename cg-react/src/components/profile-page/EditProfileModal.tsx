@@ -84,6 +84,9 @@ interface ProfileFormProps {
 const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+
   const [defaultChecked,setDefaultChecked] = useState<boolean>(false)
   useEffect(()=>{
     userProfile.isPrivate && setDefaultChecked(userProfile.isPrivate)
@@ -112,6 +115,9 @@ console.log('105',userProfile)
     console.log("Raw form data:", data);
 
     const filteredData = new FormData();
+
+    if (isEditingProfile) return; 
+    setIsEditingProfile(true);
 
     Object.entries(data).forEach(([key, value]) => {
       if (value !== undefined && value !== "") {
@@ -147,6 +153,7 @@ console.log('105',userProfile)
     } catch (error) {
       console.error("Error updating profile:", error);
     } finally {
+      setIsEditingProfile(false);
       queryClient.invalidateQueries({ queryKey: ["profileData"] });
       onClose();
     }

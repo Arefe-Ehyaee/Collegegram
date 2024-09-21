@@ -59,7 +59,7 @@ export default function ToggleMenu({
 
 
   return (
-    <div className="relative">
+    <div className="relative" style={{ zIndex: 50 }}>
       <button ref={buttonRef} onClick={onClick} className="relative flex flex-row gap-x-2">
         <img src={imgSrc} alt="Toggle Menu" className="max-h-[22px] max-w-[22px]" /> <p>{label}</p>
       </button>

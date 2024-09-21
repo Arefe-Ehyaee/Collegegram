@@ -95,8 +95,12 @@ export default function SearchPagePeopleComponent() {
   };
 
   const handleSelectHistoryTerm = (username: string) => {
-    // setSelectedSearchTerm(username);
-    console.log("searchPeopleData", searchPeopleData);
+    setSearchPeopleInput(username);
+    setIsToggleMenuClicked((prevState) => !prevState);
+    setShowDropDown(false);
+    setShowSearchTerm(true);
+    const form = document.getElementById("searchForm") as HTMLFormElement;
+    form?.reset();
   };
 
   useEffect(() => {
@@ -136,12 +140,9 @@ export default function SearchPagePeopleComponent() {
     setShowDropDown(false);
     setShowSearchTerm(true);
     console.log(searchPeopleCardData);
-    console.log("I clicked");
-    toast.success("clicked");
   };
 
   const handleClearSearch = () => {
-    toast.success("clear");
     setShowSearchTerm(false);
     setSearchPeopleInput("");
     const form = document.getElementById("searchForm") as HTMLFormElement;
@@ -150,16 +151,15 @@ export default function SearchPagePeopleComponent() {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      e.preventDefault(); 
+      e.preventDefault();
       handleUsersSearchResult();
     }
     setShowDropDown(false);
   };
 
-
   const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); 
-    handleUsersSearchResult(); 
+    e.preventDefault();
+    handleUsersSearchResult();
   };
 
   return (
@@ -168,14 +168,14 @@ export default function SearchPagePeopleComponent() {
         <div className="justify-center pr-4">
           <form id="searchForm" onSubmit={handleFormSubmit}>
             <input
-            autoComplete="off"
+              autoComplete="off"
               id="username"
               name="username"
               type="text"
               placeholder="جستجو در افراد..."
               onChange={handleChange}
               onFocus={handleFocus}
-              onKeyDown={handleKeyDown} 
+              onKeyDown={handleKeyDown}
               className="bg-transparent text-gray-900 placeholder:text-gray-400 border-1 mt-9 block w-80 flex-1 rounded-full px-2 py-2 focus:ring-0 sm:text-sm sm:leading-6"
             />
           </form>
@@ -214,7 +214,7 @@ export default function SearchPagePeopleComponent() {
                   {searchStoredUsernames.length > 0 && (
                     <ul className="border-t border-grey-400 py-2">
                       {searchStoredUsernames
-                        .slice(-5)
+                        ?.slice(-5)
                         .map((username, index) => (
                           <li
                             key={index}
@@ -259,10 +259,16 @@ export default function SearchPagePeopleComponent() {
         </div>
       )}
 
+      {searchPeopleDataIsFetching && (
+        <div className="flex justify-center py-2">
+          <BeatLoader size={10} />
+        </div>
+      )}
+
       {searchPeopleCardData && (
         <div className="grid grid-cols-1 items-center gap-6 px-10 md:grid-cols-3 md:gap-2">
           {searchPeopleCardData?.pages.flatMap((page) =>
-            page.data?.users.map((user: User) => (
+            page.data?.users?.map((user: User) => (
               <SearchUsersCard
                 name={user.username}
                 followersNumber={user.followersCount}
