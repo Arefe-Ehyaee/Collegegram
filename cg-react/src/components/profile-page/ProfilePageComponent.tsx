@@ -19,24 +19,24 @@ import defaultAvatar from "../../assets/icons/defaultavatar.svg"
 
 
 export interface Follower {
-  id?: string;
+  id: string;
   avatar: {url:string};
   username: string;
   first_name?: string;
   last_name?: string;
   bio?: string;
-  followersCount?: number;
+  followersCount: number;
   isCloseFriend:boolean
 }
 
 export interface Following {
-  id?: string;
+  id: string;
   avatar: {url:string};
   username: string;
   first_name?: string;
   last_name?: string;
   bio?: string;
-  followersCount?: number;
+  followersCount: number;
   isCloseFriend:boolean
 }
 
@@ -215,18 +215,19 @@ export default function ProfilePageComponent() {
           showModal={FollowerListModal}
         >
           <div className="pb-8 text-xl font-bold">دنبال کننده ها</div>
-          {/* {isFetchingFollowers && <BeatLoader />} */}
           <div className="max-h-[450px] overflow-y-scroll">
             {followersData &&
               !isFetchingFollowers &&
               followersData.pages.map((page) =>
                 page.map((follower: Follower) => (
                   <FollowerFollowing
+                    id={follower.id}
                     key={follower.id}
                     name={follower.username}
                     followersNumber={follower.followersCount}
                      avatar={ follower?.avatar?.url || defaultAvatar}
                      isCloseFriend={follower.isCloseFriend}
+                     FollowerFollowingList = {"FollowerList"}
                   />
                 )),
               )}
@@ -255,11 +256,13 @@ export default function ProfilePageComponent() {
               followingsData?.pages.map((page) =>
                 page?.map((following: Following) => (
                   <FollowerFollowing
+                    id={following.id}
                     key={following.id}
                     name={following.username}
                     followersNumber={following.followersCount}
                     avatar={following?.avatar?.url || defaultAvatar}
                     isCloseFriend={following.isCloseFriend}
+                    FollowerFollowingList = {"FollowingList"}
                   />
                 )),
               )}

@@ -8,15 +8,15 @@ import { useInView } from "react-intersection-observer";
 import { BeatLoader } from "react-spinners";
 
 export interface User {
-  id?: string;
+  id: string;
   avatar: { url: string };
   username: string;
   firstname?: string;
   lastname?: string;
   postsCount: number;
   bio?: string;
-  followersCount?: number;
-  followingsCount?: number;
+  followersCount: number;
+  followingsCount: number;
   isCloseFriend: boolean
 }
 
@@ -70,11 +70,13 @@ export default function CloseFriendsPageComponent() {
           CloseFriendListData?.pages.flatMap((page) =>
             page.data?.users.map((user: User) => (
               <FollowerFollowing
+                id={user.id}
                 key={user.id}
                 name={user.username}
                 followersNumber={user.followersCount}
-                avatar={user?.avatar.url || defaultAvatar}
+                avatar={user?.avatar?.url || defaultAvatar}
                 isCloseFriend={user.isCloseFriend}
+                CloseBlackList = {"CloseFriendList"}
               />
             )),
           )}

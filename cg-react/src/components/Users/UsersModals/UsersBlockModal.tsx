@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-import CustomButton from "../CustomButton";
+import CustomButton from "../../CustomButton";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ClipLoader } from "react-spinners";
-import { BlockAUser } from "../profile-page/Blocking/BlockAUser";
-import BlockingModal from "../profile-page/Blocking/BlockingModal";
+import { BlockAUser } from "../../profile-page/Blocking/BlockAUser";
+import BlockingModal from "../../profile-page/Blocking/BlockingModal";
 
 interface UsersBlockModalProps {
   username: string;
   avatar: string;
   followersCount: number;
   userId: string | null;
-  token: string | null;
   onClick: () => void;
 }
 
@@ -19,12 +18,12 @@ const UsersBlockModal = ({
   avatar,
   followersCount,
   userId,
-  token,
   onClick,
 }: UsersBlockModalProps) => {
   // const [blockModal, setBlockModal] = useState(false);
   const queryClient = useQueryClient();
-
+  const token: string = localStorage.getItem("token") ?? "";
+  
   const {
     data: blockData,
     isError: blockError,

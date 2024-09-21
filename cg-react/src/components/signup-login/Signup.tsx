@@ -16,20 +16,24 @@ import { toast } from "react-toastify";
 const signupSchema = z
   .object({
     username: z
-      .string({ required_error: "نام کاربری مورد نیاز است" })
+      .string({ required_error: "نام کاربری برای ثبت نام لازمه!" })
       .min(3, { message: "نام کاربری باید حداقل 3 کاراکتر باشد" })
+      .max(30,{ message: "نام کاربری باید حداکثر 30 کاراکتر باشد" } )
+      .regex(/^[a-zA-Z0-9]+$/, { message: "نام کاربری فقط باید شامل حروف بزرگ و کوچک و اعداد باشد" })
       .refine(s => !s.includes(' '), { message: "نام کاربری نباید شامل فاصله باشد" }),
     email: z
-      .string({ required_error: "ایمیل مورد نیاز است" })
-      .min(3, { message: "ایمیل نامعتبر است" }),
+      .string({ required_error: "ایمیل برای ثبت نام لازمه!" })
+      .max(255,{ message: "ایمیل نباید بیشتر از 255 کاراکتر باشد" } )
+      .email({ message: "ایمیل نامعتبر است" }),
     password: z
-      .string({ required_error: "رمز عبور مورد نیاز است" })
-      .min(3, { message: "رمز عبور باید حداقل 3 کاراکتر باشد" })
+      .string({ required_error: "رمز عبور برای ثبت نام لازمه!" })
+      .min(8, { message: "رمز عبور باید حداقل 8 کاراکتر باشد" })
+      .max(50,{ message: "نام کاربری باید حداکثر 50 کاراکتر باشد" } )
       .regex(/[A-Z]/, { message: "رمز عبور باید شامل حداقل یک حرف بزرگ باشد" })
+      .regex(/[a-z]/, { message: "رمز عبور باید شامل حداقل یک حرف کوچک باشد" })
       .regex(/[0-9]/, { message: "رمز عبور باید شامل حداقل یک عدد باشد" }),
     repeatpassword: z
-      .string({ required_error: "رمز عبور مورد نیاز است" })
-      .min(3, { message: "رمز عبور باید حداقل 3 کاراکتر باشد" }),
+      .string({ required_error: "تکرار رمز عبور مورد نیاز است" })
   })
   .superRefine(({ repeatpassword, password }, ctx) => {
     if (repeatpassword !== password) {
