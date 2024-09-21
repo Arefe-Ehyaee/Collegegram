@@ -50,9 +50,9 @@ const FollowerListModalComponent = ({userId, token, onClick, FollowerListModal} 
       
   return (
     <div dir="rtl">
-      <div className="pb-8 text-xl font-bold">دنبال کننده ها</div>
+      <div className="pb-8 text-xl text-center font-bold">دنبال کننده ها</div>
       {isFetchingFollowers && <BeatLoader />}
-      <div className="max-h-[450px] min-h-[400px] overflow-y-scroll">
+      <div className="max-h-[450px] min-h-[300px] overflow-y-scroll">
         {followersData &&
           !isFetchingFollowers &&
           followersData.pages.map((page) =>
@@ -69,11 +69,13 @@ const FollowerListModalComponent = ({userId, token, onClick, FollowerListModal} 
           )}
       </div>
       <div className="flex justify-center" ref={followerRef}></div>
-      <CustomButton
-        text={"بستن"}
-        className="mt-[34px] bg-red-200"
-        handleOnClick={() => onClick()}
-      ></CustomButton>
+      <div className="flex justify-center">
+        <CustomButton
+          text={"بستن"}
+          className="mt-[34px] bg-red-200"
+          handleOnClick={() => onClick()}
+        ></CustomButton>
+      </div>
     </div>
   );
 };

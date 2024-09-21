@@ -215,7 +215,7 @@ export default function ProfilePageComponent() {
           showModal={FollowerListModal}
         >
           <div className="pb-8 text-xl font-bold">دنبال کننده ها</div>
-          <div className="max-h-[450px] overflow-y-scroll">
+          <div className="max-h-[450px] min-h-[300px] overflow-y-scroll">
             {followersData &&
               !isFetchingFollowers &&
               followersData.pages.map((page) =>
@@ -250,7 +250,7 @@ export default function ProfilePageComponent() {
         >
           <div className="pb-8 text-xl font-bold">دنبال شونده ها</div>
           {/* {isFetchingFollowing && <BeatLoader />} */}
-          <div className="max-h-[450px] overflow-y-scroll">
+          <div className="max-h-[450px] min-h-[300px] overflow-y-scroll">
           {followingsData &&
               !isFetchingFollowing &&
               followingsData?.pages.map((page) =>

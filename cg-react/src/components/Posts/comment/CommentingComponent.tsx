@@ -1,5 +1,5 @@
 import send from "../../../assets/icons/send.svg";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { PostAComment } from "./PostAComments";
 
@@ -17,8 +17,12 @@ const CommentingComponent = (props: CommentingComponentProps) => {
   const comment = useRef<HTMLInputElement | null>(null);
   const token: string = localStorage.getItem("token") ?? "";
   const queryClient = useQueryClient();
+  const [isSending, setIsSending] = useState(false);
 
   const handleSendClick = async () => {
+    if (isSending) return;
+    setIsSending(true);
+
     const commentValue = comment.current?.value ?? "";
     console.log(commentValue);
     if (token && comment.current) {
@@ -30,7 +34,11 @@ const CommentingComponent = (props: CommentingComponentProps) => {
         queryClient.refetchQueries({ queryKey: ["post", id] });
       } catch (error) {
         console.error("Error sending comment:", error);
+      } finally {
+        setIsSending(false); 
       }
+    } else {
+      setIsSending(false); 
     }
   };
 
@@ -38,17 +46,17 @@ const CommentingComponent = (props: CommentingComponentProps) => {
     ? `در پاسخ به ${commnetUsername} نظر خود را بنویسید...`
     : "نظر خود را بنویسید...";
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === "Enter") {
-        e.preventDefault(); 
-        handleSendClick();
-      }
-    };
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSendClick();
+    }
+  };
 
-    const handleFormSubmit = (e: React.FormEvent) => {
-      e.preventDefault(); 
-      handleSendClick(); 
-    };
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSendClick();
+  };
 
   return (
     <div
@@ -69,7 +77,7 @@ const CommentingComponent = (props: CommentingComponentProps) => {
           className={`flex h-[100%] w-[100%] flex-col items-center rounded-3xl border border-grey-400 py-2 pr-2 font-isf text-xs font-normal placeholder-grey-400 ${styling}`}
           dir="rtl"
           placeholder={placeholderText}
-          onKeyDown={handleKeyDown} 
+          onKeyDown={handleKeyDown}
         />
       </form>
       <button onClick={handleSendClick}>

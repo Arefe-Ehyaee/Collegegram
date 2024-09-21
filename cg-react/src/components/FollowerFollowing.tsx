@@ -100,7 +100,7 @@ const FollowerFollowing = ({
       className="flex items-center justify-between gap-[130px] border-b border-grey-700 py-4"
       dir="rtl"
     >
-      <div className="flex items-center gap-[27px]">
+      <div className="flex items-center gap-[40px]">
         <div className="relative aspect-square h-14 rounded-full object-cover">
           <img
             src={avatar ? avatar : defaultAvatar}

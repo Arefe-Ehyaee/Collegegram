@@ -79,7 +79,7 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
   const [selectedPhotos, setSelectedPhotos] = useState<File[]>([]);
   const [deletedPhotos, setDeletedPhotos] = useState<string[]>([]);
   const [currentStep, setCurrentStep] = useState(1);
-
+  const [isEditing, setIsEditing] = useState(false);
 
   const token: string = localStorage.getItem("token") ?? "";
 
@@ -120,6 +120,8 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
     const formData = new FormData();
 
     // data.deletedMedia = deletedPhotos;
+    if (isEditing) return; 
+    setIsEditing(true);
 
     if (data.pictures && data.pictures.length > 0) {
       data.pictures.forEach((file) => {
@@ -154,7 +156,7 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
     } catch (error) {
       console.error("Error editing post:", error);
     } finally {
-      console.log("موفقققققققققق");
+      setIsEditing(false);
       queryClient.invalidateQueries({ queryKey: ["post", postId] });
       queryClient.invalidateQueries({ queryKey: ["posts"] });
       onClose();

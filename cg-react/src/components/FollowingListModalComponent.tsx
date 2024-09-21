@@ -6,13 +6,13 @@ import { useInView } from "react-intersection-observer";
 import { FetchFollowings } from "./profile-page/FetchFollowings";
 import { useEffect } from "react";
 import FollowerFollowing from "./FollowerFollowing";
-import defaultAvatar from "../assets/icons/defaultavatar.svg"
+import defaultAvatar from "../assets/icons/defaultavatar.svg";
 
 interface FollowingListModalComponentProps {
-    userId: string;
-    token: string | null;
-    onClick: () => void;
-    FollowingListModal: Boolean;
+  userId: string;
+  token: string | null;
+  onClick: () => void;
+  FollowingListModal: Boolean;
 }
 
 export interface Following {
@@ -26,8 +26,12 @@ export interface Following {
   isCloseFriend: boolean;
 }
 
-const FollowingListModalComponent = ({userId, token, onClick, FollowingListModal} : FollowingListModalComponentProps) => {
-
+const FollowingListModalComponent = ({
+  userId,
+  token,
+  onClick,
+  FollowingListModal,
+}: FollowingListModalComponentProps) => {
   const { ref: followingRef, inView: followingInView } = useInView();
 
   const {
@@ -54,12 +58,12 @@ const FollowingListModalComponent = ({userId, token, onClick, FollowingListModal
       refetchFollowing();
     }
   }, [followingInView, hasNextPageFollowing, fetchNextPageFollowing]);
-      
+
   return (
     <div dir="rtl">
-      <div className="pb-8 text-xl font-bold">دنبال کننده ها</div>
+      <div className="pb-8 text-xl text-center font-bold">دنبال کننده ها</div>
       {isFetchingFollowing && <BeatLoader />}
-      <div className="max-h-[450px] min-h-[400px] overflow-y-scroll">
+      <div className="max-h-[450px] min-h-[300px] overflow-y-scroll">
         {followingsData &&
           !isFetchingFollowing &&
           followingsData.pages.map((page) =>
@@ -76,11 +80,13 @@ const FollowingListModalComponent = ({userId, token, onClick, FollowingListModal
           )}
       </div>
       <div className="flex justify-center" ref={followingRef}></div>
-      <CustomButton
-        text={"بستن"}
-        className="mt-[34px] bg-red-200"
-        handleOnClick={() => onClick()}
-      ></CustomButton>
+      <div className="flex justify-center">
+        <CustomButton
+          text={"بستن"}
+          className="mt-[34px] bg-red-200"
+          handleOnClick={() => onClick()}
+        ></CustomButton>
+      </div>
     </div>
   );
 };
