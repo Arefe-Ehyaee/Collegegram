@@ -58,7 +58,7 @@ const SearchUsersCard = ({
   }, [followFetching, unfollowFetching]);
 
   useEffect(() => {
-    if (followingStatus !== "NotFollowing ") {
+    if (followingStatus !== "NotFollowing") {
       setIconVisible(false);
     }
   }, [followingStatus]);

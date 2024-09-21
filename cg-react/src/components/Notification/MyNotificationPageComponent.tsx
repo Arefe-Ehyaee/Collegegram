@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import NotificationComponent, {
   NotificationComponentprops,
@@ -12,43 +12,20 @@ import defaultAvatar from "../../assets/icons/defaultavatar.svg";
 import { fetchPersonalNotificationCount } from "./fetch-requests/fetchPersonalNotificationsCount";
 import { fetchFriendsNotificationCount } from "./fetch-requests/fetchFriendsNotificationsCount";
 import { markNotificationsAsSeen } from "./fetch-requests/patchNotifications";
-import { FollowStatus } from "../Users/UsersProfilePageComponent";
+import {  CommentNotification, FollowNotification, MentionNotification, ShowNotification } from './backendInterface'; 
+
 export interface Notif {
   notifCounts: number;
 }
-export interface ApiNotification {
-  id: string;
-  actionType: string;
-  actionDate: string
-  actor: {
-    id: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    followingStatus: FollowStatus;
-    followedStatus: FollowStatus;
-    avatar?: string;
-  };
-  isSeen: boolean;
-  media: {
-    url: string;
-    id: string;
-  } | null;
-  receiver: {
-    followingStatus: FollowStatus;
-    followedStatus: FollowStatus;
-    id: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-  };
-  content: {
-    comment: {
-      id: string;
-      description: string;
-    };
+
+export interface ApiNotification extends ShowNotification {
+  content?: {
+    follow?: FollowNotification;
+    comment?: CommentNotification;
+    mention?: MentionNotification;
   };
 }
+
 export default function MyNotificationPageComponent() {
   const { ref, inView } = useInView();
 
@@ -138,49 +115,50 @@ export default function MyNotificationPageComponent() {
       </div>
 
       <div className="overflow-y-auto pt-16">
-        {data?.pages.flatMap((page) =>
-          page.data?.notifications.map((notification: ApiNotification) => {
-            const {
-              actionType,
-              actionDate,
-              actor,
-              isSeen,
-              media,
-              receiver,
-              content: { comment },
-            } = notification;
+      {data?.pages.flatMap((page) =>
+        page.data?.notifications.map((notification: ApiNotification) => {
+          const {
+            actionType,
+            actionDate,
+            actor,
+            isSeen,
+            media,
+            content
+          } = notification;
 
-            const notificationProps: NotificationComponentprops = {
-              followedStatus: actor.followedStatus,
-              followingStatus: actor.followingStatus,
-              notifType:
-                actionType === "follow"
-                  ? "followedYou"
-                  : (actionType as NotificationComponentprops["notifType"]),
-              actor: actor
-                ? actor.firstName || actor.lastName
-                  ? `${actor.firstName ?? ""} ${actor.lastName ?? ""}`.trim()
-                  : actor.username
-                : undefined,
-              seen: isSeen,
-              receiver: receiver
-                ? `${receiver.firstName} ${receiver.lastName}`
-                : "",
-              comment: comment?.description || "",
-              avatar: media?.url ? media.url : defaultAvatar,
-              userId:actor.id,
-              actionDate: actionDate
-            };
+          let commentDescription = '';
+          if (actionType === 'comment' && content?.comment) {
+            commentDescription = (content.comment as CommentNotification).description;
+          }
 
-            return (
-              <NotificationComponent
-                key={notification.id}
-                {...notificationProps}
-              />
-            );
-          }),
-        )}
+          const notificationProps: NotificationComponentprops = {
+            followedStatus: actor.followedStatus,
+            followingStatus: actor.followingStatus,
+            notifType:
+              actionType === "follow"
+                ? "followedYou"
+                : (actionType as NotificationComponentprops["notifType"]),
+            actor: actor
+              ? actor.firstName || actor.lastName
+                ? `${actor.firstName ?? ""} ${actor.lastName ?? ""}`.trim()
+                : actor.username
+              : undefined,
+            seen: isSeen,
+            receiver: `${actor.firstName} ${actor.lastName}`,
+            comment: commentDescription,
+            avatar: media?.url ? media.url : defaultAvatar,
+            userId: actor.id,
+            actionDate: actionDate
+          };
 
+          return (
+            <NotificationComponent
+              key={notification.id}
+              {...notificationProps}
+            />
+          );
+        }),
+      )}
         <div className="flex justify-center" ref={ref}>
           {isFetching && <BeatLoader />}
         </div>

@@ -13,7 +13,7 @@ export interface Media {
 
 export type FollowStatus =
   | "Following"
-  | "NotFollowing "
+  | "NotFollowing"
   | "Pending"
   | "isBlocked"
   | "Blocked";
