@@ -122,7 +122,6 @@ export default function SearchPagePeopleComponent() {
       );
     }
     navigate(`/users/profile?username=${username}`);
-
   };
 
   useEffect(() => {
@@ -157,6 +156,9 @@ export default function SearchPagePeopleComponent() {
     e.preventDefault();
     handleUsersSearchResult();
   };
+
+  const allUsers =
+    searchPeopleCardData?.pages.flatMap((page) => page.data.users) || [];
 
   return (
     <div dir="rtl" className="px-[72px] max-sm:pr-2">
@@ -261,22 +263,24 @@ export default function SearchPagePeopleComponent() {
         </div>
       )}
 
-      {searchPeopleCardData && (
+      {searchPeopleCardData && allUsers.length === 0 ? (
+        <div className="flex justify-center py-4">
+          <p className="text-gray-500">کاربری پیدا نشد!</p>
+        </div>
+      ) : (
         <div className="grid grid-cols-1 items-center gap-6 px-10 md:grid-cols-3 md:gap-2">
-          {searchPeopleCardData?.pages.flatMap((page) =>
-            page.data?.users?.map((user: User) => (
-              <SearchUsersCard
-                name={user.username}
-                followersNumber={user.followersCount}
-                avatar={user.avatar?.url || defaultAvatar}
-                followedStatus={user.followedStatus}
-                followingStatus={user.followingStatus}
-                isCloseFriend={user.isCloseFriend}
-                userId={user.id}
-                onClick={() => handleSelectPerson(user.username)}
-              ></SearchUsersCard>
-            )),
-          )}
+          {allUsers.map((user: User) => (
+            <SearchUsersCard
+              name={user.username}
+              followersNumber={user.followersCount}
+              avatar={user.avatar?.url || defaultAvatar}
+              followedStatus={user.followedStatus}
+              followingStatus={user.followingStatus}
+              isCloseFriend={user.isCloseFriend}
+              userId={user.id}
+              onClick={() => handleSelectPerson(user.username)}
+            ></SearchUsersCard>
+          ))}
         </div>
       )}
 

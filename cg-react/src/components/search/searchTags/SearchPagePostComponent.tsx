@@ -297,7 +297,11 @@ export default function SearchPagePeopleComponent() {
         </div>
       )}
 
-      {searchPostData && (
+      {searchPostData && allPosts.length === 0 ? (
+        <div className="flex justify-center py-4">
+          <p className="text-gray-500">پستی پیدا نشد!</p>
+        </div>
+      ) : (
         <div className="my-8 grid rounded-3xl">
           <div className="grid grid-cols-12 gap-6">
             {allPosts.map((post: Posts, globalIndex: number) => (
@@ -308,7 +312,7 @@ export default function SearchPagePeopleComponent() {
                     ? "md:col-span-2"
                     : `${getResponsiveColumnSpan(globalIndex)} ${getSmallScreenColumnSpan(globalIndex)}`
                 }`}
-                src={`${post.media[0]?.url}`}
+                src={`${post?.media[0]?.url}`}
                 onClick={() => handleOnClick(post.id)}
               />
             ))}

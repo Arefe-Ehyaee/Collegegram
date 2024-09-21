@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ShowComment, { ShowCommentProps } from "../ShowComment";
+import ShowComment, { ShowCommentProps } from "./ShowComment";
 import CommentingComponent, {
   CommentingComponentProps,
 } from "./CommentingComponent";
