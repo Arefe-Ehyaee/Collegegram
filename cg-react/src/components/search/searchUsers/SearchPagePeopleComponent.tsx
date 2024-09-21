@@ -161,7 +161,7 @@ export default function SearchPagePeopleComponent() {
     searchPeopleCardData?.pages.flatMap((page) => page.data.users) || [];
 
   return (
-    <div dir="rtl" className="px-[72px] max-sm:pr-2">
+    <div dir="rtl" className="md:px-[72px] max-sm:pr-2">
       <div className="relative">
         <div className="justify-center pr-4">
           <form id="searchForm" onSubmit={handleFormSubmit}>
@@ -268,7 +268,7 @@ export default function SearchPagePeopleComponent() {
           <p className="text-gray-500">کاربری پیدا نشد!</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 items-center gap-6 px-10 md:grid-cols-3 md:gap-2">
+        <div className="grid grid-cols-1 items-center gap-6 px-6 md:px-10 md:grid-cols-3 md:gap-2">
           {allUsers.map((user: User) => (
             <SearchUsersCard
               name={user.username}
