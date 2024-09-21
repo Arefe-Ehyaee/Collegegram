@@ -42,12 +42,14 @@ const UsersRemoveFollowerModal = ({
   const handleRemoveFollower = async () => {
     try {
       await removeFollowerRefetch();
-      queryClient.invalidateQueries({
-        queryKey: ["othersProfile", username],
+      await queryClient.invalidateQueries({
+        queryKey: ["othersProfile"],
       });
-      queryClient.invalidateQueries({
-        queryKey: ["followers", userId],
+      await queryClient.invalidateQueries({
+        queryKey: ["CloseFriendList"],
       });
+      await queryClient.invalidateQueries({queryKey: ["followers"]});
+      await queryClient.invalidateQueries({queryKey: ["followings"]});
     } finally {
       onClick();
     }

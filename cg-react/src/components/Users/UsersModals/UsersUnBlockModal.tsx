@@ -43,11 +43,15 @@ const UsersUnBlockModal: React.FC<UsersUnBlockModalProps> = ({
     try {
       await unblockRefetch();
       await queryClient.invalidateQueries({
-        queryKey: ["othersProfile", username],
+        queryKey: ["othersProfile"],
       });
       await queryClient.invalidateQueries({
-        queryKey: ["blackList", token],
+        queryKey: ["CloseFriendList"],
       });
+      await queryClient.invalidateQueries({queryKey: ["followers"]});
+      await queryClient.invalidateQueries({queryKey: ["followings"]});
+      await queryClient.invalidateQueries({queryKey: ["closeFriendList"]});
+      await queryClient.invalidateQueries({queryKey: ["blackList"]});
     } finally {
       onClick();
     }
