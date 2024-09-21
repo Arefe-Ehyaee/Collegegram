@@ -15,6 +15,10 @@ import ToggleSwitch from "../ToggleButton";
 import PostToggleButton from "./PostToggleButton";
 import { toast } from "react-toastify";
 
+const getTextDirection = (text: string) => {
+  const persianRegex = /[\u0600-\u06FF]/;
+  return persianRegex.test(text) ? "rtl" : "ltr";
+};
 
 interface EditModalProps {
   onClose: Function;
@@ -131,7 +135,6 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     const formData = new FormData();
 
-    // data.deletedMedia = deletedPhotos;
     if (isEditing) return; 
     setIsEditing(true);
 
@@ -167,9 +170,13 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
       if (response.ok) {
         console.log(response);
         onClose();
+        toast.success("ویرایش با موفقیت انجام شد.");
       } else {
         if (responseData.message && responseData.message.includes("No users were found")) {
           toast.error("کاربری پیدا نشد!");
+        } 
+        else if (Array.isArray(responseData.message) && responseData.message.includes("Mention string format is not correct.")) {
+          toast.error("فرمت منشن درست نیست!");
         }
       }
     } catch (error) {
@@ -178,9 +185,6 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
       setIsEditing(false);
       queryClient.invalidateQueries({ queryKey: ["post", postId] });
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-      toast.success("ویرایش با موفقیت انجام شد.");
-
-      // onClose();
     }
   };
 
@@ -311,7 +315,6 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
               placeholder=""
               register={register}
               error={errors.mentions?.message}
-              className="input-ltr"
             />
             <ToggleSwitch
               label="فقط نمایش به دوستان نزدیک"

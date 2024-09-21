@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import replyButton from "../../assets/icons/reply.svg";
-import likeButton from "../../assets/icons/commentHeart.svg";
-import likeButtonActive from "../../assets/icons/commentHeartActive.svg";
-import timeTranslate from "../../utilities/timeTranslationFunction";
+import replyButton from "../../../assets/icons/reply.svg";
+import likeButton from "../../../assets/icons/commentHeart.svg";
+import likeButtonActive from "../../../assets/icons/commentHeartActive.svg";
+import timeTranslate from "../../../utilities/timeTranslationFunction";
 import { QueryClient, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CommentLike } from "./comment/CommentLike";
-import { CommentUnLike } from "./comment/CommentUnLike";
+import { CommentLike } from "./CommentLike";
+import { CommentUnLike } from "./CommentUnLike";
 
 export interface ShowCommentProps {
   id: string;
@@ -106,7 +106,7 @@ const ShowComment = (props: ShowCommentProps) => {
           </button>
           <button
             onClick={handleReplyClick}
-            className={`${isReplyClicked ? "rounded-md bg-grey-400 p-2" : ""}`}
+            // className={`${isReplyClicked ? "rounded-md bg-grey-400 p-2" : ""}`}
           >
             <img src={replyButton} alt="reply button" className="h-[19px]" />
           </button>

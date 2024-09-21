@@ -108,7 +108,7 @@ const Login = () => {
             name="password"
             iconsrc={keySvg}
           />
-          <RememberMe />
+          {/* <RememberMe /> */}
           <CustomButton
             text="ورود"
             className="mt-8 bg-red-200 text-sm"

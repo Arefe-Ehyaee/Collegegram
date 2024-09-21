@@ -72,10 +72,10 @@ export default function SideNavbarComponent() {
                   <img src={bookmark} alt="bookmarks icon" className="ml-2" />
                   <button onClick={() => navigate("/bookmarks")}>ذخیره‌ها</button>
                 </li>
-                <li className="flex items-center rounded-3xl p-4 hover:bg-grey-500">
+                {/* <li className="flex items-center rounded-3xl p-4 hover:bg-grey-500">
                   <img src={chat} alt="chats icon" className="ml-2" />
                   <a href="#">پیام‌ها</a>
-                </li>
+                </li> */}
                 <li className="flex items-center rounded-3xl p-4 hover:bg-grey-500"> 
                   <img src={bell} alt="notifications icon" className="ml-2" />
                   <div className="flex">
