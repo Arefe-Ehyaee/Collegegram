@@ -31,7 +31,7 @@ import { getButtonProperties } from "./UsersGetButtonProperties";
 import useFollowUnfollow from "./useFollowUnfollow";
 export type FollowStatus =
 | "Following"
-| "NotFollowing "
+| "NotFollowing"
 | "Pending"
 | "isBlocked"
 | "Blocked";
@@ -48,9 +48,9 @@ export default function UsersProfilePageComponent() {
   const [showFollowerList, setShowFollowerList] = useState(false);
   const [showFollowingList, setShowFollowingList] = useState(false);
   const [followingStatus, setFollowingStatus] =
-    useState<FollowStatus>("NotFollowing ");
+    useState<FollowStatus>("NotFollowing");
   const [followedStatus, setFollowedStatus] =
-    useState<FollowStatus>("NotFollowing ");
+    useState<FollowStatus>("NotFollowing");
   const queryClient = useQueryClient();
   const loggedUserData = useRecoilValue(userProfileAtom);
   const [userProfile, setUserProfile] = useRecoilState(userProfileAtom);
@@ -131,7 +131,7 @@ export default function UsersProfilePageComponent() {
   }, [followFetching, unfollowFetching]);
 
   useEffect(() => {
-    if (followingStatus !== "NotFollowing ") {
+    if (followingStatus !== "NotFollowing") {
       setIconVisible(false);
     }
   }, [followingStatus]);

@@ -25,7 +25,7 @@ export const getNotificationMessage = (
       case "requestFollow":
         return `${actor} درخواست دوستی داده!`;
     case "followedOthers":
-      return `${reciever}، ${actor} رو دنبال کرده!`;
+      return `${actor}، ${reciever} رو دنبال کرده!`;
     case "followedYou":
       return `${actor} دنبالت کرده!`;
   }

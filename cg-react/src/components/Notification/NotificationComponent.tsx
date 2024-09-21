@@ -2,19 +2,19 @@ import { toast } from "react-toastify";
 import defaultAvatar from "../../assets/icons/defaultavatar.svg";
 import CustomButton from "../CustomButton";
 import { getButtonProperties } from "../Users/UsersGetButtonProperties";
-import { FollowStatus } from "../Users/UsersProfilePageComponent";
 import { getNotificationMessage } from "./getNotificationMessage";
 import useFollowUnfollow from "../Users/useFollowUnfollow";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import timeTranslate from "../../utilities/timeTranslationFunction";
 import { acceptFollow } from "./follow-requests/acceptFollow";
 import { rejectFollow } from "./follow-requests/rejectFollow";
+import { TFollowStatus } from "./backendInterface";
 
 export interface NotificationComponentprops {
   actor?: string;
   userId?: string;
-  followingStatus: FollowStatus;
-  followedStatus: FollowStatus;
+  followingStatus: TFollowStatus;
+  followedStatus:TFollowStatus ;
   actionDate: string;
   avatar?: string;
   notifType:
@@ -127,7 +127,7 @@ const MyNotificationComponent = ({
     >
       <div className="flex items-center gap-[27px]">
         <img
-          src={avatar}
+          src={avatar ? avatar : defaultAvatar}
           alt="avatar"
           className="aspect-square h-[64px] w-[64px] rounded-full object-cover"
         />

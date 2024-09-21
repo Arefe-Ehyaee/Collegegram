@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import {  useEffect } from "react";
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { useInView } from "react-intersection-observer";
 import { BeatLoader } from "react-spinners";
@@ -13,6 +13,7 @@ import defaultAvatar from "../../assets/icons/defaultavatar.svg";
 import { fetchFriendsNotificationCount } from "./fetch-requests/fetchFriendsNotificationsCount";
 import { fetchPersonalNotificationCount } from "./fetch-requests/fetchPersonalNotificationsCount";
 import { markNotificationsAsSeen } from "./fetch-requests/patchNotifications";
+import { CommentNotification, FollowNotification } from "./backendInterface";
 
 export interface Notif {
   notifCounts: number;
@@ -116,50 +117,62 @@ export default function MyFriendssNotificationPageComponent() {
         </NavLink>
       </div>
       <div className="overflow-y-auto pt-16">
-        {data?.pages.flatMap((page) =>
-          page.data?.notifications.map((notification: ApiNotification) => {
-            const {
-              actionDate,
-              actionType,
-              actor,
-              isSeen,
-              media,
-              receiver,
-              content: { comment },
-            } = notification;
+      {data?.pages.flatMap((page) =>
+        page.data?.notifications.map((notification: ApiNotification) => {
+          const {
+            actionType,
+            actionDate,
+            actor,
+            isSeen,
+            media,
+            content
+          } = notification;
 
-            const notificationProps: NotificationComponentprops = {
-              followedStatus: receiver.followedStatus,
-              followingStatus: receiver.followingStatus,
-              notifType:
-                actionType === "follow"
-                  ? "followedOthers"
-                  : (actionType as NotificationComponentprops["notifType"]),
-              actor: actor
-                ? actor.firstName || actor.lastName
-                  ? `${actor.firstName ?? ""} ${actor.lastName ?? ""}`.trim()
-                  : actor.username
-                : undefined,
-              avatar: media?.url ? media.url : defaultAvatar,
-              seen: isSeen,
-              receiver: receiver
-                ? `${receiver.firstName} ${receiver.lastName}`
-                : "",
-              comment: comment?.description || "",
-              userId:actor.id,
-              actionDate: actionDate
+          let commentDescription = '';
+          if (actionType === 'comment' && content?.comment) {
+            commentDescription = (content.comment as CommentNotification).description;
+          }
+          let followedStatus = actor.followedStatus;
+          let followingStatus = actor.followingStatus;
+          let userId = actor.id;
+          let receiver = '';
 
-            };
+          if (actionType === 'follow' && content?.follow) {
+            followedStatus = (content.follow as FollowNotification).following.followedStatus;
+            followingStatus = (content.follow as FollowNotification).following.followingStatus;
+            userId = (content.follow as FollowNotification).following.id;
+            receiver = content.follow.following.firstName || content.follow.following.lastName ? `${content.follow.following.firstName} ${content.follow.following.lastName}`.trim() : content.follow.following.username;
+          }
+        
 
-            return (
-              <NotificationComponent
-                key={notification.id}
-                {...notificationProps}
-              />
-            );
-          }),
-        )}
+          const notificationProps: NotificationComponentprops = {
+            followedStatus: followedStatus,
+            followingStatus: followingStatus,
+            notifType:
+              actionType === "follow"
+                ? "followedOthers"
+                : (actionType as NotificationComponentprops["notifType"]),
+            actor: actor
+              ? actor.firstName || actor.lastName
+                ? `${actor.firstName ?? ""} ${actor.lastName ?? ""}`.trim()
+                : actor.username
+              : undefined,
+            seen: isSeen,
+            receiver: receiver,
+            comment: commentDescription,
+            avatar: media?.url ? media.url : defaultAvatar,
+            userId: userId,
+            actionDate: actionDate
+          };
 
+          return (
+            <NotificationComponent
+              key={notification.id}
+              {...notificationProps}
+            />
+          );
+        }),
+      )}
         <div className="flex justify-center" ref={ref}>
           {isFetching && <BeatLoader />}
         </div>
