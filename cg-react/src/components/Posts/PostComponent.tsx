@@ -127,7 +127,7 @@ const PostComponent = (props: PostsPageProps) => {
   return (
     <div className="mx-auto mt-4 max-md:h-full max-md:w-full max-sm:h-[770px] max-sm:overflow-y-auto no-scrollbar" dir="rtl">
       <div className="grid grid-cols-1 gap-1 md:grid-cols-2">
-        <div className="w-[520px] max-sm:w-[100%]">
+        <div className="w-[520px] md:min-w-96 max-sm:w-[100%]">
           <Swiper
             spaceBetween={10}
             slidesPerView={1}

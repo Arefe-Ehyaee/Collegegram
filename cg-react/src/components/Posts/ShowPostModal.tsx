@@ -75,7 +75,7 @@ const ShowPostModal = ({ onClose, id }: ShowPostModalProps) => {
         <img src={openPostPage} alt="Open Post" />
       </button>
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
-        <div className="h-auto min-w-96 w-full md:max-w-[520px]">
+        <div className="h-auto md:min-w-96 w-full md:max-w-[520px]">
           <Swiper
             spaceBetween={10}
             slidesPerView={1}
