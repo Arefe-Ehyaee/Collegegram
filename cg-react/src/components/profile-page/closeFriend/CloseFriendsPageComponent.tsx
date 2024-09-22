@@ -44,7 +44,6 @@ export default function CloseFriendsPageComponent() {
   });
 
   useEffect(() => {
-    console.log("blackListData", CloseFriendListData?.pages[0].data.users);
 
     if (inView && hasNextPageCloseFriendList) {
       fetchNextPageCloseFriendList();

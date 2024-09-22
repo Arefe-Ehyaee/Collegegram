@@ -95,7 +95,7 @@ const UploadPostsModal = ({ onClose }: UploadModalProps) => {
         formData,
       );
       if (response.ok) {
-        console.log(response);
+        console.log('success');
       } else {
         console.error("Failed to upload", response.statusText);
       }

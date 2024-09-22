@@ -45,7 +45,6 @@ export default function BlackListPageComponent() {
   });
 
   useEffect(() => {
-    console.log("blackListData", blackListData?.pages[0].data.users);
 
     if (inView && hasNextPageblackListData) {
       fetchNextPageblackListData();

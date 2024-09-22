@@ -19,6 +19,7 @@ interface Author {
   username: string;
   followersCount: number;
   avatar: Avatar | null;
+  isCloseFriend:boolean
 }
 interface Posts {
   author: Author;
@@ -29,7 +30,7 @@ interface Posts {
   commentsCount: number;
   isBookmarked: boolean;
   isLiked: boolean;
-  isCloseFriend: boolean;
+  CloseFriendsOnly: boolean;
 }
 
 const ExploreComponent = () => {
@@ -92,6 +93,7 @@ const ExploreComponent = () => {
               name: post.author.username,
               followersCount: post.author.followersCount,
               avatar: post.author.avatar?.url || defaultAvatar,
+              isCloseFriend: post.author.isCloseFriend
             };
   
             const postCardInteractionProps = {
@@ -101,11 +103,10 @@ const ExploreComponent = () => {
               id: post.id,
               isLiked: post.isLiked,
               isBookmarked: post.isBookmarked,
-              isCloseFriend: post.isCloseFriend,
+              CloseFriendsOnly: post.CloseFriendsOnly,
             };
   
             const postImageSrc = post.media[0] || "";
-            console.log("imgsrc", post.media[0]);
             return (
               <ExplorePostCard
                 key={post.id}

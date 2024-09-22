@@ -98,7 +98,6 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
 
 
   useEffect(() => {
-    console.log("postData", postData);
     if (postData) {
       setValue("caption", postData.caption || "");
       // setValue("mentions", postData.mentions ? `@${postData.mentions}` : "");
@@ -168,7 +167,6 @@ const EditPostsModal = ({ onClose, postData, postId }: EditModalProps) => {
       const responseData = await response.json();
 
       if (response.ok) {
-        console.log(response);
         onClose();
         toast.success("ویرایش با موفقیت انجام شد.");
       } else {

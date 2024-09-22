@@ -113,7 +113,6 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
   const queryClient = useQueryClient();
   const fetchWrapper = useFetchWrapper();
   const onSubmit = async (data: ProfileFormProps) => {
-    console.log("Raw form data:", data);
 
     const filteredData = new FormData();
 
@@ -132,7 +131,6 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
       }
     });
 
-    console.log("filteredData", filteredData);
     try {
       const response = await fetchWrapper.patch(
         `${API_BASE_URL}/users/profile`,
@@ -140,7 +138,7 @@ const EditProfileModal = ({ onClose, profileImage }: EditProfileProps) => {
       );
 
       if (response.ok) {
-        console.log(response.data);
+        console.log('success');
       } else {
         console.error("Failed to update profile", response.statusText);
       }

@@ -66,7 +66,6 @@ const SignUp = () => {
   const onSubmit = async (data: SignupFormData) => {
     const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
     try {
-      console.log(data);
       axios
         .post(`${API_BASE_URL}/auth/sign-up`, {
           username: data.username,
@@ -74,9 +73,7 @@ const SignUp = () => {
           password: data.password,
           confirmPassword: data.repeatpassword,
         })
-        .then((res) => {
-          const result = res;
-          console.log(result, res.status, res.data);
+        .then(() => {
           navigate("/login");
           toast.success("با موفقیت ثبت نام شدید!");
         });

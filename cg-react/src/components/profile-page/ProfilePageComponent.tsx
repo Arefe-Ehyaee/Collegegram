@@ -138,8 +138,6 @@ export default function ProfilePageComponent() {
       queryClient.invalidateQueries({ queryKey: ["followings"] });
       refetchFollowing();
     }
-    console.log("followingData", followingsData);
-    console.log("profileData", userProfile)
   };
 
   // if (isFetchingFollowing) {

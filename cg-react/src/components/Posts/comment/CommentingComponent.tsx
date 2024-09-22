@@ -24,7 +24,6 @@ const CommentingComponent = (props: CommentingComponentProps) => {
     setIsSending(true);
 
     const commentValue = comment.current?.value ?? "";
-    console.log(commentValue);
     if (token && comment.current) {
       try {
         await PostAComment(token, id, commentValue, parentId ?? null);
