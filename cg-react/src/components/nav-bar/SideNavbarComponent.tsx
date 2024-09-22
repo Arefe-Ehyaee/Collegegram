@@ -38,7 +38,8 @@ export default function SideNavbarComponent() {
 
   const {data:notifDataTotal} = useQuery({queryKey:['navbar notification count'],
     queryFn:fetchNotificationCount,
-    refetchOnWindowFocus:true
+    refetchOnWindowFocus:true,
+    refetchInterval:3000
   })
   return (
     <div dir="rtl" className="flex flex-col items-center justify-center">
