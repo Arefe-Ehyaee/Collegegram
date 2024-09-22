@@ -17,13 +17,11 @@ export interface PostInteractionsProps {
   id: string;
   isLiked: boolean;
   isBookmarked: boolean;
-  CloseFriendsOnly?: boolean
+  closeFriendsOnly?: boolean
 }
 
 const PostCardInteractions = (props: PostInteractionsProps) => {
   const { comments, likes, bookmarks, id, isBookmarked, isLiked } = props;
-  const [isLikedButton, setIsLikedButton] = useState(false);
-  const [isBookmarkedButton, setIsBookmarkedButton] = useState(false);
   const token: string = localStorage.getItem("token") ?? "";
   const queryClient = useQueryClient();
 

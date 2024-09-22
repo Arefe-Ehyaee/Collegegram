@@ -12,7 +12,7 @@ interface ExplorePostCardProps {
 
 const ExplorePostCard = (props: ExplorePostCardProps) => {
   const { posterInfoProps, postCardInteractionProps, postImageSrc, onClick } = props;
-  const closeFriendsOnly = postCardInteractionProps.CloseFriendsOnly
+  const closeFriendsOnly = postCardInteractionProps.closeFriendsOnly
   const borderColor = closeFriendsOnly ? "border-2 border-green-500" : "border border-grey-400"
   return (
     <div dir="rtl" className={`flex flex-col rounded-3xl max-w-full max-h-[27.5rem]  ${borderColor} `}>

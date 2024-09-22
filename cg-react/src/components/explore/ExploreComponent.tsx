@@ -30,7 +30,7 @@ interface Posts {
   commentsCount: number;
   isBookmarked: boolean;
   isLiked: boolean;
-  CloseFriendsOnly: boolean;
+  closeFriendsOnly: boolean;
 }
 
 const ExploreComponent = () => {
@@ -103,7 +103,7 @@ const ExploreComponent = () => {
               id: post.id,
               isLiked: post.isLiked,
               isBookmarked: post.isBookmarked,
-              CloseFriendsOnly: post.CloseFriendsOnly,
+              closeFriendsOnly: post.closeFriendsOnly,
             };
   
             const postImageSrc = post.media[0] || "";
